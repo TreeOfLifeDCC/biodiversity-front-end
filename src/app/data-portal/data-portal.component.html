@@ -1,0 +1,187 @@
+<br>
+
+<br>
+
+<div class="vf-body vf-u-margin__top--800">
+
+<section class="vf-grid">
+
+  <div class="vf-content vf-u-grid__col--span-1">
+    <div  class="row column filterList">
+      <legend  class="vf-form__legend hide-for-small-only" style="
+    margin-top: 75px;">Filter by:</legend>
+      <br>
+
+      <legend class="vf-form__legend"> Data Status </legend>
+      <div class="vf-form__item vf-form__item--checkbox" *ngIf="getStatusCount(aggregations?.biosamples.buckets)">
+        <input type="checkbox" name="BioSamples - Submitted" value="BioSamples - Submitted" id="bioSamplesSubmitted" class="vf-form__checkbox"  [style]="checkStyle('BioSamples - Submitted')" (click)="onFilterClick('BioSamples - Submitted')">
+        <label for="bioSamplesSubmitted" class="vf-form__label">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</label>
+      </div>
+      <div class="vf-form__item vf-form__item--checkbox" *ngIf="getStatusCount(aggregations?.raw_data.buckets)">
+        <input type="checkbox" name="Raw Data - Submitted" value="Raw Data - Submitted" id="rawDataSubmitted" class="vf-form__checkbox"  [style]="checkStyle('Raw Data - Submitted')" (click)="onFilterClick('Raw Data - Submitted')">
+        <label for="rawDataSubmitted" class="vf-form__label">Raw Data - Submitted ({{getStatusCount(aggregations?.raw_data.buckets)}})</label>
+      </div>
+      <div class="vf-form__item vf-form__item--checkbox" *ngIf="getStatusCount(aggregations?.mapped_reads.buckets)">
+        <input type="checkbox" name="Mapped Reads - Submitted" value="Mapped Reads - Submitted" id="mappedReadsSubmitted" class="vf-form__checkbox"  [style]="checkStyle('Mapped Reads - Submitted')" (click)="onFilterClick('Mapped Reads - Submitted')">
+        <label for="mappedReadsSubmitted" class="vf-form__label">Mapped Reads - Submitted ({{getStatusCount(aggregations?.mapped_reads.buckets)}})</label>
+      </div>
+      <div class="vf-form__item vf-form__item--checkbox" *ngIf="getStatusCount(aggregations?.assemblies_status.buckets)">
+        <input type="checkbox" name="Assemblies - Submitted" value="Assemblies - Submitted" id="assembliesSubmitted" class="vf-form__checkbox"  [style]="checkStyle('Assemblies - Submitted')" (click)="onFilterClick('Assemblies - Submitted')">
+        <label for="assembliesSubmitted" class="vf-form__label">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</label>
+      </div>
+      <div class="vf-form__item vf-form__item--checkbox" *ngIf="getStatusCount(aggregations?.annotation_complete.buckets)">
+        <input type="checkbox" name="Annotation Complete - Done" value="Annotation Complete - Done" id="annotationCompleteDone" class="vf-form__checkbox"  [style]="checkStyle('Annotation Complete - Done')" (click)="onFilterClick('Annotation Complete - Done')">
+        <label for="annotationCompleteDone" class="vf-form__label">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</label>
+      </div>
+
+      <br>
+      <div  class="row column filterList">
+        <legend class="vf-form__legend">Projects</legend>
+        <div *ngFor="let project of aggregations?.project_name.buckets">
+          <div class="vf-form__item vf-form__item--checkbox">
+            <input type="checkbox"  class="vf-form__checkbox" id="{{project.key}}" name="{{project.key}}"
+                   value="{{project.key}}"  style="cursor: pointer" [style]="checkStyle(convertProjectName(project.key))"
+                   (click)="onFilterClick(convertProjectName(project.key))">
+            <label for="{{project.key}}" class="vf-form__label" >{{convertProjectName(project.key)}} ({{project.doc_count}})</label>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div  class="row column filterList">
+        <legend class="vf-form__legend">Phylogeny/{{currentClass}}
+          <mat-icon *ngIf="phylogenyFilters.length !== 0" (click)="onRefreshClick()" style="cursor: pointer">
+            refresh
+          </mat-icon>
+          <mat-icon *ngIf="phylogenyFilters.length !== 0" (click)="onHistoryClick()" style="cursor: pointer">
+            arrow_circle_left
+          </mat-icon></legend>
+        <div *ngFor="let phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets">
+          <div class="vf-form__item vf-form__item--checkbox">
+            <input type="checkbox"  class="vf-form__checkbox" id="{{phylogeny_name.key}}" value="{{phylogeny_name.key}}"
+                   name="{{phylogeny_name.key}}" style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
+                   (dblclick)="onFilterClick(phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
+            <label for="{{phylogeny_name.key}}" class="vf-form__label" >{{phylogeny_name.key}}
+              ({{phylogeny_name.doc_count}})</label>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+  <div class="vf-content vf-u-grid__col--span-3">
+    <div class="example-container mat-elevation-z8">
+      <div class="example-loading-shade"
+           *ngIf="isLoadingResults || isRateLimitReached">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+          Something went wrong, please try again!
+        </div>
+      </div>
+
+      <div class="example-table-container">
+
+        <div class="container2">
+          <mat-chip-list>
+            <div *ngFor="let item of activeFilters" class="item4">
+              <mat-chip  selected (click)="onFilterClick(item)" style="cursor: pointer">
+                {{item}}
+                <mat-icon class="vf-badge vf-font-plex-mono">x</mat-icon>
+              </mat-chip>
+            </div>
+          </mat-chip-list>
+        </div>
+
+        <br>
+
+<!--        <button mat-raised-button-->
+<!--                color="accent">-->
+<!--          Download metadata-->
+<!--        </button>-->
+        <div class="vf-form__item | vf-search__item" >
+          <label class="vf-page-header__heading"> <h1>Data Portal</h1></label>
+          <input type="search" id="search" style="width: 82%;" placeholder="Search" name="search_query" class="vf-search__input | vf-form__input" data-vf-search-client-side-input="" data-vf-search-client-side-destination-prefix="">
+          <button style="float: right; margin-top: -50px; " type="submit"  class="vf-search__button | vf-button vf-button--primary">
+            Search
+          </button></div>
+<!--        <mat-form-field appearance="standard" class="vf-search">-->
+<!--          <mat-label class="vf-form__item | vf-search__item vf-button__text">Search</mat-label>-->
+<!--          <input  type="search" id="search" matInput (keyup)="applyFilter($event)" placeholder="ex. Salmo trutta" #input>-->
+<!--        </mat-form-field>-->
+        <br>
+        <br>
+        <table class="example-table example-table-tr "  mat-table [dataSource]="data"  matSort matSortActive="currentStatus"
+               matSortDisableClear
+               matSortDirection="asc" matTableExporter >
+          <!-- Number Column -->
+          <ng-container matColumnDef="organism">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear class="example-table-th">Organism</th>
+            <td mat-cell *matCellDef="let row">
+              <a mat-button [routerLink]="['/data_portal', row._source.organism]">
+                {{row._source.organism}}
+              </a>
+            </td>
+          </ng-container>
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="commonName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear class="example-table-th">Common Name</th>
+            <td mat-cell *matCellDef="let row">{{row._source.commonName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="commonNameSource">
+            <th mat-header-cell *matHeaderCellDef class="example-table-th">Common Name Source</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-chip selected [style]="getCommonNameSourceStyle(row._source.commonNameSource)"
+                        *ngIf="row._source.commonNameSource && row._source.commonName">
+                {{row._source.commonNameSource}}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- State Column -->
+          <ng-container matColumnDef="currentStatus">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear class="example-table-th">Current Status</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-chip selected [style]="getStyle(row['_source']['currentStatus'])">
+                {{row._source.currentStatus}}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="externalReferences">
+            <th mat-header-cell *matHeaderCellDef class="example-table-th">External References</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-chip *ngIf="checkGenomeNotes(row._source)">
+                <a mat-button href="{{row._source.genome_notes[0]['url']}}">Genome Note</a>
+              </mat-chip>
+              <mat-chip *ngIf="row._source.goat_info && row._source.goat_info.length !== 0" style="margin-left: 5px; background-color: cornflowerblue; color: white">
+                <a mat-button href="{{row._source.goat_info['url']}}">GoaT Info</a>
+              </mat-chip>
+              <mat-chip *ngIf="row._source.tolid" style="margin-left: 5px; background-color: limegreen; color: black">
+                <a mat-button href="{{generateTolidLink(row._source)}}">ToL QC</a>
+              </mat-chip>
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+<!--          <tr class="mat-row" *matNoDataRow>-->
+<!--            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>-->
+<!--          </tr>-->
+        </table>
+      </div>
+
+
+
+      <mat-paginator [length]="resultsLength"
+                     [pageSizeOptions]="[15, 50, 100]"
+                     aria-label="Select page" showFirstLastButtons></mat-paginator>
+    </div>
+
+  </div>
+
+</section>
+
+<br>
+
