@@ -125,7 +125,7 @@
                 <div style="float: right;font-size: 14px; font-weight: 400;">
 
                     <button style="float: left;margin-top: 10px;" type="submit"
-                            class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="exporter.exportTable('csv', {fileName: 'data_portal'})">Download metadata
+                            class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="exporter.exportTable('csv', {fileName: 'data_portal'})" >Download metadata
                     </button>
                 </div>
 
@@ -158,7 +158,7 @@
                     <table mat-table [dataSource]="data" style="width:100%; height: auto;" matSort
                            matSortActive="currentStatus"
                            matSortDisableClear
-                           matSortDirection="asc" matTableExporter #exporter="matTableExporter" >
+                           matSortDirection="asc" matTableExporter #exporter="matTableExporter" [hiddenColumns]="[4]">
                         <!-- Number Column -->
                         <ng-container matColumnDef="organism">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Organism</th>

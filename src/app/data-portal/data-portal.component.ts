@@ -51,12 +51,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         z: 'archea'
     };
     public isScrollBarPresent: boolean | undefined;
-    displayedColumns: string[] = ['organism', 'commonName', 'currentStatus', 'externalReferences'];
+    displayedColumns: string[] = ['organism', 'commonName','commonNameSource',  'currentStatus', 'externalReferences'];
     dataColumnsDefination = [{name: 'Organism', label: 'organism', selected: true}, {
         name: 'Common Name',
         label: 'commonName',
         selected: true
-    }, {name: 'Current Status', label: 'currentStatus', selected: true}, {
+    }, {name: 'Common Name Source', label: 'commonNameSource', selected: true},
+        {name: 'Current Status', label: 'currentStatus', selected: true}, {
         name: 'External references',
         label: 'externalReferences',
         selected: true
