@@ -1,0 +1,70 @@
+<!--
+  Copyright (C) 2006-2021 EMBL - European Bioinformatics Institute
+
+  Licensed under the Apache License, Version 2.0 (the License);
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an AS IS BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ -->
+
+<section
+        class="vf-hero vf-hero--800 vf-hero--search | vf-u-fullbleed"
+        style="--vf-hero--bg-image: url('/assets/biodiversityday.jpg');background-color: #cadeed;--vf-hero--spacing:7rem"
+>
+</section>
+
+<div class="vf-body">
+    <div class="vf-grid | vf-grid__col-3 vf-grid--has-sidebar vf-u-margin__top--800">
+
+        <div data-e2e="summaries" class="summaries-wrapper vf-content vf-grid__col--span-2">
+            <div class="vf-grid | vf-grid__col-2">
+
+                <ng-container>
+                    <article *ngFor="let category of categories" class="vf-card vf-card--brand vf-card--bordered">
+
+                        <div class="vf-card__content | vf-stack vf-stack--400">
+
+                            <h3 class="vf-card__heading">
+                                <a  class="vf-card__link" [attr.label]="category.label" [routerLink]="[category.link]">{{ category.title }}
+                                    <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
+                                </a>
+                            </h3>
+                            <br>
+                            <p class="vf-card__text">
+                                {{ category.description }}
+                            </p>
+                        </div>
+
+                    </article>
+                </ng-container>
+            </div>
+<!--            <div class="vf-box vf-box&#45;&#45;is-link vf-box-theme&#45;&#45;primary vf-box&#45;&#45;normal vf-u-margin__top&#45;&#45;1200">-->
+<!--                <h3 class="vf-box__heading"><a class="vf-box__link" [routerLink]="['/submit-data']">Share new COVID-19 data  &gt;</a></h3>-->
+<!--                <p class="vf-box__text">-->
+<!--                    Contact our curator teams, who will assist you with submitting your data to EMBL-EBI repositories &gt;-->
+<!--                </p>-->
+<!--            </div>-->
+        </div>
+
+        <div class="vf-content vf-grid__col--span-1">
+
+
+            <section class="vf-u-margin__bottom--1200">
+                <h2 class="vf-u-type__text-heading--4">About this portal</h2>
+                <article class="vf-summary vf-summary--publication">
+                    <p class="vf-box__text vf-text-body--2">
+                        The Biodiversity Data Portal has the Darwin Tree of Life data, whose goal is to sequence the genomes of 70,000 eukaryotic species in Britain and Ireland
+                        and the Aquatic Symbiosis Genomics data that aims to address important questions about the ecology and evolution of
+                        symbiosis in marine and freshwater species (where at least one partner is a microbe) and the European Reference Genome Atlas a pan-European scientific response to present threats to biodiversity     </p>
+                </article>
+            </section>
+        </div>
+    </div>
+</div>

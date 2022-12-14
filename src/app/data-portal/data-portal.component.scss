@@ -1,0 +1,100 @@
+.checkbox-label-filter {
+  font-family: Roboto, Helvetica Neue, sans-serif;
+  font-size: 16px !important;
+  white-space: normal;
+  color: #000;
+  line-height: 24px;
+}
+
+
+//
+//.mat-paginator-outer-container {
+//  display: flex;
+//}
+//*, :after, :before {
+//  box-sizing: border-box;
+//}
+//
+//.mat-paginator-container {
+//  display: flex;
+//  align-items: center;
+//  justify-content: flex-end;
+//  padding: 0 8px;
+//  flex-wrap: wrap-reverse;
+//  width: 100%;
+//}
+//.mat-paginator-container {
+//  min-height: 56px;
+//}
+//.mat-option-text {
+//  display: inline-block;
+//  flex-grow: 1;
+//  overflow: hidden;
+//  text-overflow: ellipsis;
+//}
+//.mat-select-value {
+//  width: 100%;
+//  overflow: hidden;
+//  text-overflow: ellipsis;
+//  white-space: nowrap;
+//}
+//.pagination-panal {
+//  display: flex;
+//  justify-content: flex-start;
+//}
+// .mat-select {
+//   font-family: Roboto,Helvetica Neue,sans-serif;
+//   width: 5em;
+//   margin-left: 0.4em;
+//   margin-right: 0.4em;
+//   border: solid #f3f3f3;
+//   padding: 0.4em;
+// }
+//
+
+ //.mat-select {
+ //  display: inline-block;
+ //  width: 100%;
+ //  outline: none;
+ //}
+//div, input, select, span {
+//  font-size: 14px;
+//  align-items: center;
+//}
+//
+//div.paginator-main-pane {
+//  margin-top: 0.3em;
+//}
+//
+
+input.vf-form__input, select.vf-form__select {
+  font-size: 14px;
+}
+
+
+div.paginator-main-pane {
+  margin-top: 0.3em;
+}
+
+
+div.page-size-pane {
+  display: flex;
+  justify-content: flex-start;
+}
+select.vf-form__select {
+  width: 100px;;
+  margin-left: 1em;
+  margin-right: 1em;
+  padding-top: 0.4em;
+  padding-bottom: 0.4em;
+  padding-left: 0.4em;
+}
+div.pages-navigation-pane {
+  display: flex;
+  justify-content: flex-end;
+}
+
+div.pages-navigation-pane span {
+  grid-gap: 1em;
+  margin: 0 1em 0 1em;
+}

@@ -1,0 +1,146 @@
+/**
+ * Copyright (C) 2006-2021 EMBL - European Bioinformatics Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the License);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+@import 'vf-preamble.scss';
+
+@import 'vf-grid/vf-grid.scss';
+@import 'vf-summary/vf-summary.scss';
+@import 'vf-section-header/vf-section-header.scss';
+@import 'vf-box/vf-box.scss';
+@import 'vf-text/vf-text.scss';
+@import 'vf-link/vf-link.scss';
+@import 'vf-card/vf-card.scss';
+@import 'vf-hero/vf-hero.scss';
+
+@media (min-width:1220px) {
+    .vf-grid--has-sidebar>:last-child {
+        position: relative;
+        padding-left: 24px
+    }
+    .vf-grid--has-sidebar>:last-child:before {
+        background-color: #d8d8d8;
+        content: "";
+        height: 100%;
+        left: calc(var(--page-grid-gap) / -2);
+        position: absolute;
+        width: 1px
+    }
+}
+
+@media (min-width:846px) and (max-width:1219px) {
+    .vf-grid--has-sidebar>:last-child {
+        padding-left: 24px
+    }
+}
+
+.data-sharing-statement-link {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+
+svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+}
+
+.summaries-wrapper {
+    margin-bottom: 2rem !important;
+}
+
+article.vf-summary a {
+    margin-bottom: 1rem;
+}
+
+#participate-container .vf-card-container__inner {
+    padding: 0px;
+}
+
+.margin__bottom-0 {
+    margin-bottom: 0px !important;
+}
+
+.news-item {
+    position: relative;
+
+&__date {
+     font-size: 0.9rem;
+ }
+
+&__title {
+     font-size: 1.125rem !important;
+     margin: 0.4rem 0 0 0 !important;
+
+a {
+    color: #3b6fb6 !important;
+    text-decoration: underline !important;
+
+&:hover {
+     color: #193f90 !important;
+     text-decoration: none !important;
+ }
+}
+}
+
+&--has-image &__content {
+     position: absolute;
+     bottom: 4px; // TODO(699): Check this
+ background-color: rgba(0, 0, 0, 0.75);
+     color: #fff;
+     padding: 0.5rem 0.7rem;
+     width: 80%;
+ }
+
+&--has-image  &__title a {
+     color: #fff !important;
+
+&:hover {
+     color: #fff !important;
+ }
+}
+}
+
+.featured-news {
+    border-bottom-color: #3b6fb6;
+&__date {
+     font-size: 0.9rem;
+ }
+}
+
+.notification {
+    background-color: #3B6FB6;
+    color: #FFF;
+    padding: 3rem 0;
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    line-height: 1.421;
+    font-weight: 400;
+&__content {
+     font-size: 19px;
+ }
+&__heading {
+     margin-top: 0;
+     font-weight: 500;
+     font-size: 1.3em;
+a {
+    color: inherit;
+}
+}
+&__button {
+     padding: 8px 2em;
+     margin-top: 8px;
+     margin-left: 24px;
+ }
+}
+

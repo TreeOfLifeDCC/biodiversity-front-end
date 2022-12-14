@@ -25,11 +25,27 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@visual-framework/vf-font-plex-mono/assets/IBM-Plex-Mono",
+                "output": "./assets/fonts/IBM-Plex-Mono"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@visual-framework/vf-font-plex-sans/assets/IBM-Plex-Sans",
+                "output": "./assets/fonts/IBM-Plex-Sans"
+              }
             ],
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/@visual-framework/",
+                "src/styles"
+              ]
+            },
             "scripts": []
           },
           "configurations": {

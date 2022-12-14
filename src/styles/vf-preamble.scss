@@ -1,0 +1,9 @@
+$vf-font-plex-mono-prefix: '/assets/fonts';
+$vf-font-plex-sans-prefix: '/assets/fonts';
+
+// Sass Variables, Mixins, and Functions
+@import 'vf-sass-config/index.scss';
+
+// Include the relevant IBM Plex typefaces
+@import 'vf-font-plex-mono/vf-font-plex-mono.scss';
+@import 'vf-font-plex-sans/vf-font-plex-sans.scss';
