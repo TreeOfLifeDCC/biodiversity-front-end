@@ -98,3 +98,13 @@ div.pages-navigation-pane span {
   grid-gap: 1em;
   margin: 0 1em 0 1em;
 }
+.commonSourceName {
+  letter-spacing: 0;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: initial;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  margin-left: .5rem;
+}

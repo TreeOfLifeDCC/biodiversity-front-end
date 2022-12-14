@@ -132,7 +132,7 @@
                 <br>
                 <br>
 
-                <div style="overflow: auto hidden; display: block; white-space: nowrap; width: 992px; height: auto;">
+                <div style="overflow: auto hidden; display: block; white-space: nowrap; width: 992px; height: auto; cursor: pointer;">
                     <mat-expansion-panel (opened)="expanded()">
                         <mat-expansion-panel-header
                                 class="select-columns-button vf-u-margin__right--0 vf-u-margin__top--200 vf-u-padding__right--0 vf-button vf-button--sm vf-button--no-shadow vf-button--link"
@@ -178,10 +178,10 @@
                         <ng-container matColumnDef="commonNameSource">
                             <th mat-header-cell *matHeaderCellDef>Common Name Source</th>
                             <td mat-cell *matCellDef="let row">
-                                <mat-chip selected [style]="getCommonNameSourceStyle(row._source.commonNameSource)"
+                                <span class="vf-badge vf-badge--secondary commonSourceName"  [style]="getCommonNameSourceStyle(row._source.commonNameSource)"
                                           *ngIf="row._source.commonNameSource && row._source.commonName">
                                     {{row._source.commonNameSource}}
-                                </mat-chip>
+                                </span>
                             </td>
                         </ng-container>
 
