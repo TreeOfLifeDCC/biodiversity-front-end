@@ -17,7 +17,7 @@ export class ApiService {
         const project_names = ['DToL', 'ASG', 'ERGA'];
         const offset = pageIndex * pageSize;
         // let url = `https://portal.erga-biodiversity.eu/api/${index_name}?limit=${pageSize}&offset=${offset}`;
-        let url = `http://localhost:8000/${index_name}?limit=${pageSize}&offset=${offset}`;
+        let url = `http://45.88.81.74/api/${index_name}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -57,8 +57,10 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
-    getDetailsData(organismName: any, indexName = 'data_portal') {
-        const url = `https://portal.erga-biodiversity.eu/api/${indexName}/${organismName}`;
+    getDetailsData(organismName: any, indexName = 'data_portal_index') {
+        // const url = `https://portal.erga-biodiversity.eu/api/${indexName}/${organismName}`;
+        console.log(indexName);
+        let url = `http://45.88.81.74/api//${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }
 

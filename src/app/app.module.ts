@@ -30,6 +30,11 @@ import {FormsModule} from "@angular/forms";
 import {PaginatorComponent} from "./paginator/paginator.component";
 import {HomeComponent} from "./home/home.component";
 import {MatTableExporterModule} from "mat-table-exporter";
+import {OrganismDetailsComponent} from "./organism-details/organism-details.component";
+import {SpecimenDetailsComponent} from "./specimen-details/specimen-details.component";
+import {ApiDocumentationComponent} from "./api-documentation/api-documentation.component";
+import {HelpComponent} from "./help/help.component";
+import {AboutComponent} from "./about/about.component";
 
 
 @NgModule({
@@ -39,19 +44,22 @@ import {MatTableExporterModule} from "mat-table-exporter";
         DataPortalDetailsComponent,
         TrackingSystemComponent,
         PaginatorComponent,
-        HomeComponent
+        HomeComponent,
+        OrganismDetailsComponent,
+        SpecimenDetailsComponent,
+        ApiDocumentationComponent,
+        HelpComponent,
+        AboutComponent
 
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        MatListModule,
         MatCardModule,
         MatChipsModule,
         MatProgressSpinnerModule,
         MatIconModule,
-        MatTableModule,
         MatPaginatorModule,
         MatInputModule,
         MatTabsModule,
@@ -63,7 +71,6 @@ import {MatTableExporterModule} from "mat-table-exporter";
         MatTableModule,
         NgxSpinnerModule,
         MatFormFieldModule,
-        MatPaginatorModule,
         CommonModule,
         MatCheckboxModule,
         MatExpansionModule,

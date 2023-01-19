@@ -1,56 +1,77 @@
-<br>
-<div class="vf-gird">
+<div class="vf-u-margin__top--800" style="margin: 0 10% 10%">
+
+<!--    <section >-->
+
+        <div class="vf-content vf-u-grid__col--span-1">
     <!--  <div class="item0"></div>-->
     <!--  <div class="item1"></div>-->
     <div>
         <mat-card>
-            <mat-card-title class="card-header filter-heading"
-                            style="text-align: center">{{organismData?.organism}}</mat-card-title>
+            <mat-card-title
+                    style="text-align: center"> <label class="vf-page-header__heading"><h1>{{organismData?.organism}}</h1></label></mat-card-title>
             <mat-card-actions>
                 <dl>
                     <ng-container *ngIf="organismData?.commonName">
-                        <dt><b>Common name:</b></dt>
-                        <dd>{{organismData?.commonName}}</dd>
+                        <dt><h4>Common name:</h4>  <dd>{{organismData?.commonName}}</dd>
+
+
                     </ng-container>
                     <ng-container *ngIf="organismData?.tolid">
-                        <dt><b>ToL ID:</b></dt>
+                        <dt><h4>ToL ID:</h4></dt>
                         <dd>{{organismData?.tolid}}</dd>
                     </ng-container>
                     <ng-container *ngIf="organismData?.sex">
-                        <dt><b>Sex:</b></dt>
+                        <dt><h4>Sex:</h4></dt>
                         <dd>{{organismData?.sex}}</dd>
                     </ng-container>
                 </dl>
             </mat-card-actions>
         </mat-card>
         <br>
-        <mat-tab-group>
-            <mat-tab label="Metadata">
-                <div class="example-loading-shade"
+        <mat-tab-group >
+            <mat-tab label="Metadata" style="width:100%">
+                <hr>
+                <h2>Related Organisms</h2>
+                <div
                      *ngIf="isLoadingResults || isRateLimitReached">
                     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-                    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+                    <div  *ngIf="isRateLimitReached">
                         Something went wrong, please try again!
                     </div>
                 </div>
+<!--                <button mat-raised-button-->
+<!--                        color="accent">-->
+<!--                    Download metadata-->
+<!--                </button>-->
+
+<!--                <mat-form-field appearance="standard">-->
+<!--                    <mat-label>Filter</mat-label>-->
+<!--                    <input matInput (keyup)="applyFilter($event, 'metadata')" placeholder="Ex. Mia" #input>-->
+<!--                </mat-form-field>-->
+                
+                <div class="vf-form__item | vf-search__item">
+                    <input type="search" id="searchValue" matInput style="
+    width: 99%;"  name="searchValue" class="vf-search__input | vf-form__input" (keyup)="applyFilter($event, 'metadata')" placeholder="Ex. Mia" #input>
+
+                </div>
+
+                <div style="float: right;font-size: 14px; font-weight: 400;">
+
+                    <button style="float: left;margin-top: 10px;" type="submit"
+                            class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                            (click)="exporter.exportTable('csv', {fileName: 'related_organisms'})">Download metadata
+                    </button>
+                </div>
 
                 <br>
+                <br>
 
-                <button mat-raised-button
-                        color="accent">
-                    Download metadata
-                </button>
-
-                <mat-form-field appearance="standard">
-                    <mat-label>Filter</mat-label>
-                    <input matInput (keyup)="applyFilter($event, 'metadata')" placeholder="Ex. Mia" #input>
-                </mat-form-field>
-                <table mat-table class="vf_table" [dataSource]="metadataData" matSort #metadataSort="matSort"
-                       matTableExporter>
+                <table mat-table  [dataSource]="metadataData" matSort #metadataSort="matSort"
+                       matTableExporter #exporter="matTableExporter">
 
                     <!-- ID Column -->
                     <ng-container matColumnDef="accession">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession </th>
                         <td mat-cell *matCellDef="let row">
                             <a mat-button [routerLink]="['/organism', row.accession]">{{row.accession}}</a>
                         </td>
@@ -79,9 +100,9 @@
                         <td mat-cell *matCellDef="let row"> {{row.organismPart}} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="trackingSystem">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
-                        <td mat-cell *matCellDef="let row">
+                    <ng-container matColumnDef="trackingSystem" style="min-width: 320px;">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 320px;"> Status</th>
+                        <td mat-cell *matCellDef="let row" >
                             <mat-chip selected [style]="getStyle(row.trackingSystem)">
                                 {{row.trackingSystem}}
                             </mat-chip>
@@ -97,33 +118,45 @@
                     </tr>
                 </table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
-                               #metadataPaginator [length]="metadataDataLength"></mat-paginator>
+                <mat-paginator  class="pagination"  [pageSizeOptions]="[5, 10, 25, 100]"  aria-label="Select page of metadataData"
+                                #metadataPaginator
+                                [length]="metadataDataLength">
+                </mat-paginator>
+
 
             </mat-tab>
             <mat-tab label="Data"
-                     *ngIf="annotationDataLength !== 0 || assembliesDataLength !== 0 || filesDataLength !== 0">
-                <div class="example-loading-shade"
+                     *ngIf="annotationDataLength !== 0 || assembliesDataLength !== 0 || filesDataLength !== 0" style=" white-space: nowrap; cursor: pointer;">
+                <hr>
+                <div
                      *ngIf="isLoadingResults || isRateLimitReached">
                     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-                    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+                    <div  *ngIf="isRateLimitReached">
                         Something went wrong, please try again!
                     </div>
                 </div>
                 <br>
                 <ng-container *ngIf="annotationDataLength !== 0">
-                    <h1>Annotation</h1>
+                    <h2>Annotation</h2>
 
-                    <button mat-raised-button
 
-                            color="accent">Download metadata
-                    </button>
 
-                    <mat-form-field appearance="standard">
-                        <mat-label>Filter</mat-label>
-                        <input matInput (keyup)="applyFilter($event, 'annotation')" placeholder="Illumina" #input>
-                    </mat-form-field>
+                    <div class="vf-form__item | vf-search__item">
+                        <input type="search"  matInput style="
+                         width: 99%;"  name="searchValue" class="vf-search__input | vf-form__input"  (keyup)="applyFilter($event, 'annotation')" placeholder="Illumina" #input>
+
+                    </div>
+
+                    <div style="float: right;font-size: 14px; font-weight: 400;">
+
+                        <button style="float: left;margin-top: 10px;" type="submit"
+                                class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                                (click)="annotationExporter.exportTable('csv', {fileName: 'related_annotations'})">Download metadata
+                        </button>
+                    </div>
+
                     <table mat-table [dataSource]="annotationData" matSort #annotationSort="matSort" matTableExporter
+                           #annotationExporter="matTableExporter"
                     >
 
                         <!-- ID Column -->
@@ -179,7 +212,7 @@
                         <ng-container matColumnDef="repeat_library">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Repeat Library FASTA</th>
                             <td mat-cell *matCellDef="let row">
-                                <a mat-button href="{{row.repeat_library.FASTA}}">FASTA</a>
+                               FASTA
                             </td>
                         </ng-container>
 
@@ -207,28 +240,41 @@
                         </tr>
                     </table>
 
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+                    <mat-paginator   [pageSizeOptions]="[5, 10, 25, 100]"
+                                     aria-label="Select page of users"
                                    #annotationPaginator
                                    [length]="annotationDataLength">
                     </mat-paginator>
+
+<!--                    <app-paginator  #annotationPaginator-->
+<!--                            [pageSize]=1-->
+<!--                            [pageSizeOptions]="[5, 10, 25, 100]"-->
+<!--                            [pageIndex]=1-->
+<!--                            [length]=this.annotationDataLength-->
+<!--                            (page)="changePage($event,this.annotationDataLength)"-->
+<!--                    ></app-paginator>-->
                 </ng-container>
 
                 <br>
 
                 <ng-container *ngIf="assembliesDataLength !== 0">
-                    <h1>Related Assemblies</h1>
-                    <button mat-raised-button
+                    <h2>Related Assemblies</h2>
 
-                            color="accent">Download metadata
-                    </button>
+                    <div class="vf-form__item | vf-search__item">
+                        <input type="search"  matInput style="
+                         width: 99%;"  name="searchValue" class="vf-search__input | vf-form__input"  (keyup)="applyFilter($event, 'assemblies')" placeholder="Illumina" #input>
 
+                    </div>
 
-                    <mat-form-field appearance="standard">
-                        <mat-label>Filter</mat-label>
-                        <input matInput (keyup)="applyFilter($event, 'assemblies')" placeholder="Illumina" #input>
-                    </mat-form-field>
+                    <div style="float: right;font-size: 14px; font-weight: 400;">
+
+                        <button style="float: left;margin-top: 10px;" type="submit"
+                                class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                                (click)="assembliesExporter.exportTable('csv', {fileName: 'related_assemblies'})">Download metadata
+                        </button>
+                    </div>
                     <table mat-table [dataSource]="assembliesData" matSort #assembliesSort="matSort" matTableExporter
-                    >
+                           #assembliesExporter="matTableExporter">
 
                         <!-- ID Column -->
                         <ng-container matColumnDef="accession">
@@ -250,8 +296,8 @@
                         </ng-container>
 
                         <!-- Fruit Column -->
-                        <ng-container matColumnDef="description">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Description</th>
+                        <ng-container matColumnDef="description" style="min-width: 560px;">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 560px;"> Description</th>
                             <td mat-cell *matCellDef="let row">{{row.description}}</td>
                         </ng-container>
 
@@ -264,37 +310,43 @@
                         </tr>
                     </table>
 
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
-                                   #assembliesPaginator
-                                   [length]="assembliesDataLength">
+                    <mat-paginator   class="pagination"  [pageSizeOptions]="[5, 10, 25, 100]"
+                                     aria-label="Select page of assemblies"
+                                     #assembliesPaginator
+                                     [length]="assembliesDataLength">
                     </mat-paginator>
                 </ng-container>
 
                 <br>
                 <ng-container *ngIf="filesDataLength !== 0">
-                    <h1>Related Files</h1>
+                    <h2>Related Files</h2>
 
-                    <button mat-raised-button
 
-                            color="accent">Download metadata
-                    </button>
+                    <div class="vf-form__item | vf-search__item">
+                        <input type="search"  matInput style="
+                         width: 99%;"  name="searchValue" class="vf-search__input | vf-form__input"
+                               (keyup)="applyFilter($event, 'files')" placeholder="Illumina" #input>
 
-                    <mat-form-field appearance="standard">
-                        <mat-label>Filter</mat-label>
-                        <input matInput (keyup)="applyFilter($event, 'files')" placeholder="Illumina" #input>
-                    </mat-form-field>
-                    <table mat-table [dataSource]="filesData" matSort #filesSort="matSort" matTableExporter
-                    >
+                    </div>
+
+                    <div style="float: right;font-size: 14px; font-weight: 400;">
+
+                        <button style="float: left;margin-top: 10px;" type="submit"
+                                class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                                (click)="filesExporter.exportTable('csv', {fileName: 'related_files'})">Download metadata
+                        </button>
+                    </div>
+
+                    <table mat-table [dataSource]="filesData" matSort #filesSort="matSort" matTableExporter style="overflow: auto hidden; min-width: 100% ; "
+                           #filesExporter="matTableExporter">
                         <ng-container [matColumnDef]="column" *ngFor="let column of filesDisplayedColumns">
-                            <th mat-header-cell *matHeaderCellDef
-                                mat-sort-header> {{getHumanReadableName(column)}} </th>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{getHumanReadableName(column)}} </th>
                             <td mat-cell *matCellDef="let element">
                                 <ng-container *ngIf="column === 'study_accession'">
                                     <a mat-button href="{{getStudyLink(element[column])}}">{{element[column]}}</a>
                                 </ng-container>
                                 <ng-container *ngIf="keyInSpecialColumns(column)">
-                                    <a mat-button
-                                       href="{{element.column}}">{{getKeyFromSpecialColumns(element[column])}}</a>
+                                    <a mat-button href="{{element.column}}">{{getKeyFromSpecialColumns(element[column])}}</a>
                                 </ng-container>
                                 <ng-container *ngIf="!keyInSpecialColumns(column) && column !== 'study_accession'">
                                     {{element[column]}}
@@ -304,46 +356,71 @@
 
                         <tr mat-header-row *matHeaderRowDef="filesDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: filesDisplayedColumns;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                        </tr>
                     </table>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page" #filesPaginator
-                                   [length]="filesDataLength" showFirstLastButtons>
+
+                    <mat-paginator   class="pagination"   [pageSizeOptions]="[5, 10, 25, 100]"
+                                     aria-label="Select page of files"
+                                     #filesPaginator
+                                     [length]="filesDataLength" showFirstLastButtons>
                     </mat-paginator>
+
                 </ng-container>
 
             </mat-tab>
             <mat-tab label="Genome Note" *ngIf="showGenomeNote">
-                <div class="example-loading-shade"
+                <hr>
+                <div
                      *ngIf="isLoadingResults || isRateLimitReached">
                     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-                    <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+                    <div  *ngIf="isRateLimitReached">
                         Something went wrong, please try again!
                     </div>
                 </div>
 
-                <mat-card class="example-card">
-                    <mat-card-header>
-                        <mat-card-title>{{getGenomeNoteData(organismData.genome_notes, 'title')}}</mat-card-title>
-                    </mat-card-header>
-                    <img mat-card-image src="{{getGenomeNoteData(organismData.genome_notes, 'figureURI')}}"
-                         alt="Figure 1">
-                    <mat-card-content>
-                        <p>
-                            {{getGenomeNoteData(organismData.genome_notes, 'caption')}}
-                        </p>
-                        <p>
-                            {{getGenomeNoteData(organismData.genome_notes, 'abstract')}}
-                        </p>
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <a mat-button href="{{getGenomeNoteData(organismData.genome_notes, 'url')}}"
-                           style="background-color: limegreen; color: black; margin-bottom: 5px">
-                            Read the Genome Note in full here
-                        </a>
-                        <p>
-                            {{getGenomeNoteData(organismData.genome_notes, 'citeURL')}}
-                        </p>
-                    </mat-card-actions>
-                </mat-card>
+<!--      -->
+                <div class="goat-box" *ngIf="organismData?.genome_notes">
+
+                    <mat-expansion-panel [expanded]="true" *ngIf="organismData?.genome_notes?.length">
+                        <mat-expansion-panel-header class="page-header">
+                            <h3>Published Genome Note</h3>
+                        </mat-expansion-panel-header>
+                        <div *ngFor="let gen of organismData?.genome_notes">
+                            <div class="card figpanel">
+                                <div class="row">
+                                    <h4 class="page-header">{{gen.title}}</h4>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <img class="card-img-left" src="{{gen.figureURI}}" style="width: 150px;float: left;">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <!-- <h1>Abstract</h1> -->
+                                        <p>{{gen.abstract}}</p>
+                                        <a href="{{gen.url}}" class="btn btn-success" target="_blank">Read the Genome
+                                            Note
+                                            in
+                                            full
+                                            here</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h5 class="card-title rounded mx-auto d-block">{{gen.caption}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="card-title rounded mx-auto d-block">{{gen.citeURL}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </div>
 
             </mat-tab>
 
@@ -402,3 +479,6 @@
     </div>
     <div></div>
 </div>
+<!--    </section>-->
+</div>
+

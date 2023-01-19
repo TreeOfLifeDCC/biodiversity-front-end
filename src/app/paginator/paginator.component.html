@@ -5,7 +5,7 @@
     <select class="vf-form__select" [ngModel]="pageSize" (change)="changeSize($event)">
                                             <option *ngFor="let size of pageSizeOptions" [value]="size" [attr.selected]="pageSize === size">{{ size }}</option>
                                        </select>
-          results
+          results of {{length}}
         </div>
 
         <div class="pages-navigation-pane">

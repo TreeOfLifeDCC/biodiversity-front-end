@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>BiodiversityPortalFe</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <link rel="icon" type="image/x-icon" href="favicon.ico">-->
+
+    <!--    <link rel="icon" type="image/x-icon" href="favicon.ico">-->
     <!--  <link rel="stylesheet" href="https://dev.assets.emblstatic.net/vf/v2.0.0-beta.6/css/styles.css">-->
     <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2.5.8/css/styles.css">
     <!-- Tell the VF 1.4 not to display a data protection banner. -->
@@ -29,38 +31,38 @@
     <!--  <link rel="stylesheet" href="https://stable.visual-framework.dev/assets/vf-search/vf-search.css" type="text/css" media="all" />-->
     <meta name="robots" content="index, follow">
 
-    <header class="vf-global-header">
-        <a href="/" class="vf-logo | vf-logo--has-text">
-            <img class="vf-logo__image" src="assets/biodiversitty.png" alt="Aquatic Symbiosis Project Data Portal"
-                 loading="eager">
-            <span class="vf-logo__text">Biodiversity Data Portal</span>
-        </a>
-
-        <nav class="vf-navigation vf-navigation--global | vf-cluster">
-            <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
-
-                <li class="vf-navigation__item">
-                    <a href="/data_portal" class="vf-navigation__link">Data portal</a>
-                </li>
-                <li class="vf-navigation__item">
-                    <a href="/tracking" class="vf-navigation__link">Status tracking</a>
-                </li>
-                <li class="vf-navigation__item">
-                    <a href="/status_tracking" class="vf-navigation__link">About</a>
-                </li>
-                <li class="vf-navigation__item">
-                    <a href="JavaScript:Void(0);" class="vf-navigation__link">API Documentation</a>
-                </li>
-                <li class="vf-navigation__item">
-                    <a href="JavaScript:Void(0);" class="vf-navigation__link">Help</a>
-                </li>
-            </ul>
-        </nav>
-
-    </header>
 
 </head>
-<body id="page-wrapper">
+<body class="mat-typography">
+<header class="vf-global-header">
+    <a href="/" class="vf-logo | vf-logo--has-text">
+        <img class="vf-logo__image" src="assets/biodiversitty.png" alt="Aquatic Symbiosis Project Data Portal"
+             loading="eager">
+        <span class="vf-logo__text">Biodiversity Data Portal</span>
+    </a>
+
+    <nav class="vf-navigation vf-navigation--global | vf-cluster">
+        <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
+
+            <li class="vf-navigation__item">
+                <a href="/data_portal" class="vf-navigation__link">Data portal</a>
+            </li>
+            <li class="vf-navigation__item">
+                <a href="/tracking" class="vf-navigation__link">Status tracking</a>
+            </li>
+            <li class="vf-navigation__item">
+                <a href="/status_tracking" class="vf-navigation__link">About</a>
+            </li>
+            <li class="vf-navigation__item">
+                <a href="/api_documentation" class="vf-navigation__link">API Documentation</a>
+            </li>
+            <li class="vf-navigation__item">
+                <a href="/help" class="vf-navigation__link">Help</a>
+            </li>
+        </ul>
+    </nav>
+
+</header>
 <section class="vf-content">
     <app-root></app-root>
 </section>

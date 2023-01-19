@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../api.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {merge, of as observableOf} from "rxjs";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {keyframes} from "@angular/animations";
@@ -85,19 +85,20 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showMetadata = false;
     showData = false;
     showGenomeNote = false;
+
     // @ts-ignore
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator;
     // @ts-ignore
     @ViewChild('metadataSort') metadataSort: MatSort;
-    // @ts-ignore
+// @ts-ignore
     @ViewChild('annotationPaginator') annotationPaginator: MatPaginator;
     // @ts-ignore
     @ViewChild('annotationSort') annotationSort: MatSort;
-    // @ts-ignore
+// @ts-ignore
     @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator;
     // @ts-ignore
     @ViewChild('assembliesSort') assembliesSort: MatSort;
-    // @ts-ignore
+// @ts-ignore
     @ViewChild('filesPaginator') filesPaginator: MatPaginator;
     // @ts-ignore
     @ViewChild('filesSort') filesSort: MatSort;
@@ -118,19 +119,19 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
                 this.organismData = data.results[0]['_source'];
                 this.metadataData = new MatTableDataSource(data.results[0]['_source']['records']);
-                this.metadataDataLength = data.results[0]['_source']['records'].length;
+                this.metadataDataLength = data.results[0]['_source']['records'] ? data.results[0]['_source']['records'].length : 0;
 
                 this.annotationData = new MatTableDataSource(data.results[0]['_source']['annotation']);
-                this.annotationDataLength = data.results[0]['_source']['annotation'].length;
+                this.annotationDataLength = data.results[0]['_source']['annotation']  ? data.results[0]['_source']['annotation'].length : 0;
 
                 this.assembliesData = new MatTableDataSource(data.results[0]['_source']['assemblies']);
-                this.assembliesDataLength = data.results[0]['_source']['assemblies'].length;
+                this.assembliesDataLength = data.results[0]['_source']['assemblies']  ? data.results[0]['_source']['assemblies'].length : 0;
 
                 this.filesData = new MatTableDataSource(data.results[0]['_source']['experiment']);
-                this.filesDataLength = data.results[0]['_source']['experiment'].length;
+                this.filesDataLength = data.results[0]['_source']['experiment']  ? data.results[0]['_source']['experiment'].length :0 ;
 
                 this.goatData = new MatTableDataSource(data.results[0]['_source']['goat_info']['attributes'])
-                this.goatDataLength = data.results[0]['_source']['goat_info']['attributes'].length;
+                this.goatDataLength = data.results[0]['_source']['goat_info']['attributes'] ? data.results[0]['_source']['goat_info']['attributes'].length : 0 ;
                 this.goatDataLink = data.results[0]['_source']['goat_info']['url'];
 
 
@@ -146,10 +147,10 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.filesData.paginator = this.filesPaginator;
                 this.filesData.sort = this.filesSort;
 
-                if (data.results[0]['_source']['records'].length > 0) {
+                if (data.results[0]['_source']['records'] && data.results[0]['_source']['records'].length > 0) {
                     this.showMetadata = true;
                 }
-                if (data.results[0]['_source']['annotation'].length > 0 ||
+                if (data.results[0]['_source']['annotation'] && data.results[0]['_source']['annotation'].length > 0 ||
                     data.results[0]['_source']['assemblies'].length > 0 || data.results[0]['_source']['experiment'].length > 0) {
                     this.showData = true;
                 }
