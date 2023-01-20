@@ -227,5 +227,11 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         const clade = this.codes[firstChar as keyof typeof this.codes];
         return `https://tolqc.cog.sanger.ac.uk/darwin/${clade}/${organismName}`;
     }
-
+    typeofTol(tolid: any) {
+        if (typeof(tolid) === 'string'){
+            return tolid;
+        }else{
+            return tolid.join(', ');
+        }
+    }
 }

@@ -145,8 +145,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             for (let key in params) {
             if (key === 'phylogeny_filters') {
                 this.phylogenyFilters = params[key];
+                this.appendActiveFilters(key, params);
             }else if(key === 'currentClass'){
                 this.currentClass = params[key];
+                this.appendActiveFilters(key, params);
             }else if (key === 'phylogeny') {
                     this.isFilterSelected = true;
                     this.selectedFilterValue = params[key];
@@ -155,6 +157,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 this.appendActiveFilters(key, params);
             }
 
+
             }
         }
     }
@@ -162,7 +165,17 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     appendActiveFilters(key, params) {
         // @ts-ignore
         this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
-        this.activeFilters.push(params[key]);
+        if(!(key === 'phylogeny_filters' || key === 'currentClass' )){
+            this.activeFilters.push(params[key]);
+        }
+        // if(key === 'phylogeny_filters' || key === 'currentClass' || key ===  'phylogeny') {
+        //     const filterIndex1 = this.urlAppendFilterArray.indexOf('currentClass');
+        //     this.urlAppendFilterArray.splice(filterIndex1, 1);
+        //     const filterIndex2 = this.urlAppendFilterArray.indexOf('phylogeny_filters');
+        //     this.urlAppendFilterArray.splice(filterIndex2, 1);
+        //     const filterIndex3 = this.urlAppendFilterArray.indexOf('phylogeny');
+        //     this.urlAppendFilterArray.splice(filterIndex3, 1);
+        // }
 
     }
     ngAfterViewInit() {
@@ -394,10 +407,25 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             let inactiveClassName: string;
             this.urlAppendFilterArray.filter(obj => {
                 // @ts-ignore
-                if(obj.value === filter){
-                    const filterIndex = this.urlAppendFilterArray.indexOf(obj);
-                    this.urlAppendFilterArray.splice(filterIndex, 1);
-                }
+                if(obj.value === filter && obj.name === 'phylogeny'){
+                        this.isFilterSelected = false;
+                        this.selectedFilterValue = '';
+                        // @ts-ignore
+                    const filterIndex1 = this.urlAppendFilterArray.findIndex(a => a.name === 'currentClass');
+                        this.urlAppendFilterArray.splice(filterIndex1, 1);
+                    // @ts-ignore
+                        const filterIndex2 = this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny_filters')
+                        this.urlAppendFilterArray.splice(filterIndex2, 1);
+                    // @ts-ignore
+                        const filterIndex3 =  this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny');
+                        this.urlAppendFilterArray.splice(filterIndex3, 1);
+                    // @ts-ignore
+                    }else if(obj.value === filter && obj.name !== 'phylogeny'){
+                        const filterIndex = this.urlAppendFilterArray.indexOf(obj);
+                        this.urlAppendFilterArray.splice(filterIndex, 1);
+                    }
+
+
             });
         }
     }
