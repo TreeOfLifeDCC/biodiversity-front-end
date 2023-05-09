@@ -2,57 +2,57 @@
 
     <section class="embl-grid">
 
-        <div class="vf-content vf-u-grid__col--span-1">
+        <div class="vf-content vf-u-grid__col--span-2--lg"  style="margin: -21px;">
 
             <div class="row column filterList">
                 <legend class="vf-form__legend hide-for-small-only" style="
 margin-top: 165px;">Filter by:
                 </legend>
                 <br>
-                <mat-card class="container" style="min-width: 95%;">
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
                     <mat-card-title>Data status</mat-card-title>
                     <mat-card-actions >
                         <mat-list role="list">
-                            <mat-list-item role="listitem" *ngIf="getStatusCount(aggregations?.biosamples.buckets)"
-                                           [style]="checkStyle('BioSamples - Submitted')"
-                                           (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;left: -10px;">
-                                <h4 matLine>BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
-                            </mat-list-item>
-                            <mat-list-item role="listitem" *ngIf="getStatusCount(aggregations?.raw_data.buckets)"
-                                           [style]="checkStyle('Raw Data - Submitted')"
-                                           (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;left: -10px;">
-                                <h4 matLine>Raw Data - Submitted(
-                                    {{getStatusCount(aggregations?.raw_data.buckets)}})</h4>
-                            </mat-list-item>
-                            <mat-list-item role="listitem" *ngIf="getStatusCount(aggregations?.mapped_reads.buckets)"
-                                           [style]="checkStyle('Mapped Reads - Submitted')"
-                                           (click)="onFilterClick('mapped_reads','Mapped Reads - Submitted')" style="cursor: pointer;left: -10px;">
-                                <h4 matLine>Mapped Reads - Submitted({{getStatusCount(aggregations?.mapped_reads.buckets)}})</h4>
-                            </mat-list-item>
-                            <mat-list-item role="listitem" *ngIf="getStatusCount(aggregations?.assemblies_status.buckets)"
-                                           [style]="checkStyle('Assemblies - Submitted')"
-                                           (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;left: -10px;">
-                                <h4 matLine>Assemblies - Submitted({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
-                            </mat-list-item>
-                            <mat-list-item role="listitem" *ngIf="getStatusCount(aggregations?.annotation_complete.buckets)"
-                                           [style]="checkStyle('Annotation Complete - Done')"
-                                           (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;left: -10px;">
-                                <h4 matLine>Annotation Complete - Done({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
-                            </mat-list-item>
+                            <mat-divider></mat-divider><mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.biosamples.buckets)"
+                                                                      [style]="checkStyle('BioSamples - Submitted')"
+                                                                      (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
+                        </mat-list-item>
+                            <mat-divider></mat-divider> <mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.raw_data.buckets)"
+                                                                       [style]="checkStyle('Raw Data - Submitted')"
+                                                                       (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">Raw Data - Submitted (
+                                {{getStatusCount(aggregations?.raw_data.buckets)}})</h4>
+                        </mat-list-item>
+                            <mat-divider></mat-divider> <mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.mapped_reads.buckets)"
+                                                                       [style]="checkStyle('Mapped Reads - Submitted')"
+                                                                       (click)="onFilterClick('mapped_reads','Mapped Reads - Submitted')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">Mapped Reads - Submitted ({{getStatusCount(aggregations?.mapped_reads.buckets)}})</h4>
+                        </mat-list-item>
+                            <mat-divider></mat-divider><mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.assemblies_status.buckets)"
+                                                                      [style]="checkStyle('Assemblies - Submitted')"
+                                                                      (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
+                        </mat-list-item>
+                            <mat-divider></mat-divider><mat-list-item  role="listbox" *ngIf="getStatusCount(aggregations?.annotation_complete.buckets)"
+                                                                       [style]="checkStyle('Annotation Complete - Done')"
+                                                                       (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
+                        </mat-list-item>
                         </mat-list>
                     </mat-card-actions>
                 </mat-card>
                 <br>
-                <mat-card class="container" style="min-width: 95%;">
+                <mat-card fxFlex class="mat-elevation-z8"  >
                     <mat-card-title>Projects</mat-card-title>
-                    <br>
                     <mat-card-actions >
-                        <mat-list role="list" >
-                            <mat-list-item role="listitem"   *ngFor="let project of aggregations?.project_name.buckets"
-                                           style="cursor: pointer;left: -91px;top:10px ;" [style]="checkStyle(project.key) "
-                                           (click)="onFilterClick('project_name',convertProjectName(project.key))">
-                                <h4 matLine>{{convertProjectName(project.key)}}({{project.doc_count}})</h4>
-                            </mat-list-item>
+                        <mat-list role="list" *ngFor="let project of aggregations?.project_name.buckets">
+
+                            <mat-divider></mat-divider><mat-list-item role="listbox"
+                                                                      style="cursor: pointer;" [style]="checkStyle(project.key) "
+                                                                      (click)="onFilterClick('project_name',convertProjectName(project.key))">
+                            <h4 matLine class="ellipsis"  style="white-space: normal;">{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>
+                        </mat-list-item>
 
                         </mat-list>
                     </mat-card-actions>
@@ -60,7 +60,7 @@ margin-top: 165px;">Filter by:
 
                 <br>
 
-                <mat-card class="container" style="min-width: 95%;">
+                <mat-card fxFlex class="mat-elevation-z8"  >
                     <mat-card-title>
                         Phylogeny/{{currentClass}}
                         <mat-icon *ngIf="phylogenyFilters.length !== 0" (click)="onRefreshClick()" style="cursor: pointer;">
@@ -72,19 +72,21 @@ margin-top: 165px;">Filter by:
                     </mat-card-title>
                     <mat-card-actions>
                         <mat-list role="list" *ngIf="isFilterSelected" >
-                            <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                                           (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
-                                <h4 matLine>{{selectedFilterValue}} (
-                                    {{resultsLength}})</h4>
-                            </mat-list-item>
+                            <mat-divider></mat-divider><mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
+                                                                      (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
+                            <h4 matLine class="ellipsis">{{selectedFilterValue}} (
+                                {{resultsLength}})</h4>
+                        </mat-list-item>
                         </mat-list>
-                        <mat-list role="list" *ngIf="!isFilterSelected" >
-                            <mat-list-item  role="listbox" *ngFor="let phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets"
-                                            style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
-                                            (dblclick)="onFilterClick('phylogeny',phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
-                                <h4 matLine>{{phylogeny_name.key}}({{phylogeny_name.doc_count}})</h4>
+                        <div *ngIf="!isFilterSelected">
+                            <mat-list role="list"  *ngFor="let phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets">
+                                <mat-divider></mat-divider> <mat-list-item  role="listbox"
+                                                                            style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
+                                                                            (dblclick)="onFilterClick('phylogeny',phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
+                                <h4 matLine class="ellipsis">{{phylogeny_name.key}} ({{phylogeny_name.doc_count}})</h4>
                             </mat-list-item>
-                        </mat-list>
+                            </mat-list>
+                        </div>
                     </mat-card-actions>
                 </mat-card>
 
@@ -97,7 +99,7 @@ margin-top: 165px;">Filter by:
             <mat-chip-list>
                 <div *ngFor="let item of activeFilters" class="item4">
                     <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
-                        {{item}}
+                        {{convertProjectNameKey(item)}}
                         <mat-icon>close</mat-icon>
                     </mat-chip>
                 </div>
@@ -105,7 +107,7 @@ margin-top: 165px;">Filter by:
             <br>
             <div class="vf-form__item | vf-search__item">
                 <input type="search" id="searchValue" matInput style="
-    width: 99%;" placeholder="ex. Salmo trutta" name="searchValue" class="vf-search__input | vf-form__input" [(ngModel)]='this.searchValue'
+    width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search__input | vf-form__input" [(ngModel)]='this.searchValue'
                        (ngModelChange)="this.searchUpdate.next($event)">
             </div>
 
@@ -117,6 +119,7 @@ margin-top: 165px;">Filter by:
             </div>
 
             <br>
+
             <br>
             <br>
             <br>

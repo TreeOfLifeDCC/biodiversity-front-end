@@ -636,10 +636,15 @@ table.mat-table {
   border-spacing: 0;
   font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
 }
-
+body::-webkit-scrollbar{
+  display: none;
+}
 .vf-grid {
   margin: 0;
   max-width: initial;
+  body::-webkit-scrollbar{
+    display: none;
+  }
 }
 
 .column-actions__scroller {

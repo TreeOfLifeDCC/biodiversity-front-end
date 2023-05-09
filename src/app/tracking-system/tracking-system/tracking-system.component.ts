@@ -8,6 +8,7 @@ import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 @Component({
     selector: 'app-status-tracking',
     templateUrl: './tracking-system.component.html',
@@ -59,7 +60,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     @Output()
     // @ts-ignore
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router ) {
+    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,private titleService: Title ) {
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -70,6 +71,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.titleService.setTitle('Status tracking');
         const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
         // @ts-ignore
         const params = queryParamMap['params'];
@@ -152,12 +154,22 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             return data;
         }
     }
-
+    convertProjectNameKey(data: string) {
+        if (data === 'DToL') {
+            return 'Darwin Tree of Life';
+        } else if(data=='ASG'){
+            return 'The Aquatic Symbiosis Project';
+        }else if(data=='ERGA'){
+            return 'European Reference Genome Atlas';
+        }else{
+            return data;
+        }
+    }
     onFilterClick(filterName:string, filterValue: string) {
         console.log('double click');
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
-        const index = this.activeFilters.indexOf(filterValue);
+        const index = this.activeFilters.indexOf(this.convertProjectNameKey(filterValue));
         if (index !== -1) {
             this.removeFilter(filterValue);
         } else {

@@ -16,6 +16,7 @@ import { PageEvent } from '@angular/material/paginator';
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Title} from "@angular/platform-browser";
 
 @Component({
     selector: 'app-data-portal',
@@ -111,11 +112,11 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     @Input()
         // @ts-ignore
-    pageSizeOptions: number[] = [10,20,50,100];
+    pageSizeOptions: number[] = [15,30,50,100];
 
     @Input()
         // @ts-ignore
-    pageSize: number = 10;
+    pageSize: number = 15;
 
     isFilterSelected = false;
     selectedFilterValue = '';
@@ -124,7 +125,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
 
 
-    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router ) {
+    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,private titleService: Title ) {
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -138,6 +139,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isOpen = false;
 
     ngOnInit(): void {
+        this.titleService.setTitle('Data portal');
         const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
         // @ts-ignore
         const params = queryParamMap['params'];
@@ -166,6 +168,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         // @ts-ignore
         this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
         if(!(key === 'phylogeny_filters' || key === 'currentClass' )){
+            console.log(params[key]);
             this.activeFilters.push(params[key]);
         }
         // if(key === 'phylogeny_filters' || key === 'currentClass' || key ===  'phylogeny') {
@@ -263,11 +266,22 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
 
-
+    convertProjectNameKey(data: string) {
+        if (data === 'DToL') {
+            return 'Darwin Tree of Life';
+        } else if(data=='ASG'){
+            return 'The Aquatic Symbiosis Project';
+        }else if(data=='ERGA'){
+            return 'European Reference Genome Atlas';
+        }else{
+            return data;
+        }
+    }
     onFilterClick(filterName:String , filterValue: string) {
         console.log('double click');
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
+
         const index = this.activeFilters.indexOf(filterValue);
         if (index !== -1) {
             this.removeFilter(filterValue);
