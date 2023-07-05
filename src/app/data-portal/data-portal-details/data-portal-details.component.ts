@@ -129,23 +129,30 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
                 this.filesData = new MatTableDataSource(data.results[0]['_source']['experiment']);
                 this.filesDataLength = data.results[0]['_source']['experiment']  ? data.results[0]['_source']['experiment'].length :0 ;
-
-                this.goatData = new MatTableDataSource(data.results[0]['_source']['goat_info']['attributes'])
-                this.goatDataLength = data.results[0]['_source']['goat_info']['attributes'] ? data.results[0]['_source']['goat_info']['attributes'].length : 0 ;
-                this.goatDataLink = data.results[0]['_source']['goat_info']['url'];
-
-
+                if (data.results[0]['_source']['goat_info'] !== undefined){
+                    this.goatData = new MatTableDataSource(data.results[0]['_source']['goat_info']['attributes'] )
+                    this.goatDataLength = data.results[0]['_source']['goat_info']['attributes'] ? data.results[0]['_source']['goat_info']['attributes'].length : 0 ;
+                    this.goatDataLink = data.results[0]['_source']['goat_info']['url'];
+                }else {
+                    this.goatData = new MatTableDataSource(data.results[0]['_source']['goat_info'] == undefined ? null: data.results[0]['_source']['goat_info']['attributes'])
+                    this.goatDataLength = 0;
+                    this.goatDataLink ="";
+                }
                 this.metadataData.paginator = this.metadataPaginator;
                 this.metadataData.sort = this.metadataSort;
+                if (this.annotationData.length > 0){
+                    this.annotationData.paginator = this.annotationPaginator;
+                    this.annotationData.sort = this.annotationSort;
+                }
 
-                this.annotationData.paginator = this.annotationPaginator;
-                this.annotationData.sort = this.annotationSort;
-
-                this.assembliesData.paginator = this.assembliesPaginator;
-                this.assembliesData.sort = this.assembliesSort;
-
-                this.filesData.paginator = this.filesPaginator;
-                this.filesData.sort = this.filesSort;
+                if (this.assembliesData.length > 0) {
+                    this.assembliesData.paginator = this.assembliesPaginator;
+                    this.assembliesData.sort = this.assembliesSort;
+                }
+                if (this.filesData.length > 0) {
+                    this.filesData.paginator = this.filesPaginator;
+                    this.filesData.sort = this.filesSort;
+                }
 
                 if (data.results[0]['_source']['records'] && data.results[0]['_source']['records'].length > 0) {
                     this.showMetadata = true;

@@ -47,17 +47,33 @@ margin-top: 165px;">Filter by:
                 <br>
 
                 <mat-card fxFlex class="mat-elevation-z8"  >
-                    <mat-card-title>Projects</mat-card-title>
-                    <mat-card-actions >
-                        <mat-list role="list" *ngFor="let project of aggregations?.project_name.buckets">
+                    <mat-card-title>Projects
+                        <i class="material-icons float-right"  *ngIf="(( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)" (click)="toggleCollapse()">add</i>
+                        <i class="material-icons float-right"   *ngIf="( !isCollapsed)" (click)="toggleCollapse()">remove</i>
 
-                            <mat-divider></mat-divider><mat-list-item role="listbox"
-                                           style="cursor: pointer;" [style]="checkStyle(project.key) "
-                                           (click)="onFilterClick('project_name',convertProjectName(project.key))">
-                                <h4 matLine style="white-space: normal;">{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>
-                            </mat-list-item>
+                    </mat-card-title>
 
+                    <mat-card-actions>
+                        <mat-list  role="listbox">
+                            <mat-divider></mat-divider>
+                            <ng-container *ngFor="let project of  aggregations?.project_name.buckets;  let i = index">
+                                 <mat-list-item *ngIf="i<itemLimit"
+                                    [style]="checkStyle(project.key)  "
+                                      (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
+                                     <mat-divider></mat-divider><h4 matLine class="ellipsis" style="white-space: normal;">{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>
+                                </mat-list-item>
+                            </ng-container>
                         </mat-list>
+<!--                       ` <mat-list role="list">-->
+<!--                            <ng-container style=" white-space: normal;" *ngFor="let project of  aggregations?.project_name.buckets; let i = index">-->
+<!--                                <mat-divider *ngIf="i<itemLimit" ></mat-divider><mat-list-item   *ngIf="i<itemLimit" role="listbox"-->
+<!--                                           style="cursor: pointer; white-space: normal;" [style]="checkStyle(project.key)  " class=" d-flex justify-content-between"-->
+<!--                                           (click)="onFilterClick('project_name',convertProjectName(project.key))">-->
+<!--                            <h4 matLine >{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>-->
+<!--                                </mat-list-item>-->
+<!--                            </ng-container>-->
+<!--                        </mat-list>-->
+
                     </mat-card-actions>
                 </mat-card>
 

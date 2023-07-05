@@ -35,6 +35,8 @@ import {SpecimenDetailsComponent} from "./specimen-details/specimen-details.comp
 import {ApiDocumentationComponent} from "./api-documentation/api-documentation.component";
 import {HelpComponent} from "./help/help.component";
 import {AboutComponent} from "./about/about.component";
+import {ProjectsComponent} from "./projects/projects.component";
+
 
 
 @NgModule({
@@ -49,7 +51,9 @@ import {AboutComponent} from "./about/about.component";
         SpecimenDetailsComponent,
         ApiDocumentationComponent,
         HelpComponent,
-        AboutComponent
+        AboutComponent,
+        ProjectsComponent,
+
 
     ],
     imports: [

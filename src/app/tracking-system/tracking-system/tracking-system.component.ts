@@ -29,7 +29,10 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
 
     activeFilters = new Array<string>();
 
-
+    isCollapsed = true;
+    itemLimit = 5;
+    @Input() isShowCount = true;
+    @Input() filterSize=  5;
     currentClass = 'kingdom';
     classes = ["superkingdom", "kingdom", "subkingdom", "superphylum", "phylum", "subphylum", "superclass", "class",
         "subclass", "infraclass", "cohort", "subcohort", "superorder", "order", "suborder", "infraorder", "parvorder",
@@ -186,10 +189,19 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     checkStyle(filterValue: string) {
+        console.log(filterValue.length)
         if (this.activeFilters.includes(filterValue)) {
-            return 'background-color: cornflowerblue; color: white;';
+            if(filterValue.length > 50){
+                return 'background-color: cornflowerblue; color: white;height: 80px;';
+            }else {
+                return 'background-color: cornflowerblue; color: white;'
+            }
         } else {
-            return '';
+            if (filterValue.length > 50) {
+                return 'cursor: pointer;height: 80px;';
+            } else {
+                return 'cursor: pointer;'
+            }
         }
     }
 
@@ -349,5 +361,14 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         }
 
 
+    }
+    toggleCollapse = () => {
+        if (this.isCollapsed) {
+            this.itemLimit = 10000;
+            this.isCollapsed = false;
+        } else {
+            this.itemLimit = this.filterSize;
+            this.isCollapsed = true;
+        }
     }
 }

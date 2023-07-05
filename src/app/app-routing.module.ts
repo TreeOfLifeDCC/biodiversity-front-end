@@ -9,6 +9,7 @@ import {SpecimenDetailsComponent} from "./specimen-details/specimen-details.comp
 import {ApiDocumentationComponent} from "./api-documentation/api-documentation.component";
 import {HelpComponent} from "./help/help.component";
 import {AboutComponent} from "./about/about.component";
+import {ProjectsComponent} from "./projects/projects.component";
 
 const routes: Routes = [
 
@@ -25,6 +26,7 @@ const routes: Routes = [
     { path: 'specimen/:specimenId', component: SpecimenDetailsComponent },
     { path: 'api_documentation', component: ApiDocumentationComponent },
     { path: 'help', component: HelpComponent },
+    { path: 'projects', component: ProjectsComponent },
     { path: 'about', component: AboutComponent }
 ];
 

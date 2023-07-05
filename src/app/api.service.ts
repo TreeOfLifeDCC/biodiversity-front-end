@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, throwError} from 'rxjs';
 import {catchError, retry} from 'rxjs/operators';
+import {Constants} from "./projects";
 
 @Injectable({
     providedIn: 'root'
@@ -13,11 +14,8 @@ export class ApiService {
 
     getData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
             filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
-        console.log(filterValue);
-        const project_names = ['DToL', 'ASG', 'ERGA'];
-        const offset = pageIndex * pageSize;
-        // let url = `https://portal.erga-biodiversity.eu/api/${index_name}?limit=${pageSize}&offset=${offset}`;
-        let url = `http://45.88.81.74/api/${index_name}?limit=${pageSize}&offset=${offset}`;
+       const offset = pageIndex * pageSize;
+       let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/${index_name}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -28,8 +26,11 @@ export class ApiService {
             let filterStr = '&filter=';
             let filterItem;
             for (let i = 0; i < filterValue.length; i++) {
-                if (project_names.indexOf(filterValue[i]) !== -1) {
-                    filterValue[i] === 'DToL' ? filterItem = 'project_name:DToL' : filterItem = `project_name:${filterValue[i]}`;
+                const isPresent = Constants.projects.some(function (el) {
+                    return el.title === filterValue[i]
+                });
+                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='CanSeq150 Project (Genome Data and Assemblies)')) {
+                   filterItem = `project_name:${filterValue[i]}`;
                 } else if (filterValue[i].includes('-')) {
                     filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
                     if (filterItem === 'assemblies') {
@@ -40,7 +41,7 @@ export class ApiService {
                     filterItem = `${currentClass}:${filterValue[i]}`;
                 }
                 filterStr === '&filter=' ? filterStr += `${filterItem}` : filterStr += `,${filterItem}`;
-                console.log(filterStr);
+
             }
             url += filterStr;
         }
@@ -49,22 +50,17 @@ export class ApiService {
             for (let i = 0; i < phylogeny_filters.length; i++) {
                 filterStr === '&phylogeny_filters=' ? filterStr += `${phylogeny_filters[i]}` : filterStr += `-${phylogeny_filters[i]}`;
             }
-            console.log(filterStr);
+
             url += filterStr;
         }
         url += `&current_class=${currentClass}`;
-        console.log(url);
+
         return this.http.get<any>(url);
     }
 
     getDetailsData(organismName: any, indexName = 'data_portal_index') {
-        // const url = `https://portal.erga-biodiversity.eu/api/${indexName}/${organismName}`;
-        console.log(indexName);
-        let url = `http://45.88.81.74/api//${indexName}/${organismName}`;
+        let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }
 
-    getSummaryData() {
-        return this.http.get<any>('https://portal.erga-biodiversity.eu/api/summary');
-    }
 }

@@ -11,6 +11,7 @@ export class HelpComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Home');
   }
 
 }

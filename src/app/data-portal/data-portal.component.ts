@@ -76,7 +76,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         {name: 'Annotation submitted to ENA', label: 'annotation_status', selected: false}]
 
     data: any;
-
+    isCollapsed = true;
+    itemLimit = 5;
+    @Input() isShowCount = true;
+    @Input() filterSize=  5;
     searchValue: string | undefined;
     searchChanged = new EventEmitter<any>();
     filterChanged = new EventEmitter<any>();
@@ -168,7 +171,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         // @ts-ignore
         this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
         if(!(key === 'phylogeny_filters' || key === 'currentClass' )){
-            console.log(params[key]);
+
             this.activeFilters.push(params[key]);
         }
         // if(key === 'phylogeny_filters' || key === 'currentClass' || key ===  'phylogeny') {
@@ -222,7 +225,15 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     expanded() {
     }
-
+    toggleCollapse = () => {
+        if (this.isCollapsed) {
+            this.itemLimit = 10000;
+            this.isCollapsed = false;
+        } else {
+            this.itemLimit = this.filterSize;
+            this.isCollapsed = true;
+        }
+    }
     showSelectedColumn(selectedColumn: any, checked: any) {
         let index = this.dataColumnsDefination.indexOf(selectedColumn);
         let item = this.dataColumnsDefination[index];
@@ -278,7 +289,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
     onFilterClick(filterName:String , filterValue: string) {
-        console.log('double click');
+
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
 
@@ -300,7 +311,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
     changeCurrentClass(filterValue: string) {
-        console.log('single click');
+
         let delay = 200;
         this.preventSimpleClick = false;
         this.timer = setTimeout(() => {
@@ -308,7 +319,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
                 const index = this.classes.indexOf(this.currentClass) + 1;
                 this.currentClass = this.classes[index];
-                console.log(this.phylogenyFilters);
+
                 this.filterChanged.emit();
             }
         }, delay);
@@ -400,12 +411,22 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 });
     }
     checkStyle(filterValue: string) {
+
         if (this.activeFilters.includes(filterValue)) {
-            return 'background-color: cornflowerblue; color: white;';
+            if(filterValue.length > 50){
+                return 'background-color: cornflowerblue; color: white;height: 80px;';
+            }else {
+                return 'background-color: cornflowerblue; color: white;'
+            }
         } else {
-            return '';
+            if (filterValue.length > 50) {
+                return 'cursor: pointer;height: 80px;';
+            } else {
+                return 'cursor: pointer;'
+            }
         }
     }
+
 
     removeFilter(filter: string) {
         if (filter !== undefined) {
