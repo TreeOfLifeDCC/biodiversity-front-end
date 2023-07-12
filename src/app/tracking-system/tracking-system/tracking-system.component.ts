@@ -189,7 +189,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     checkStyle(filterValue: string) {
-        console.log(filterValue.length)
+
         if (this.activeFilters.includes(filterValue)) {
             if(filterValue.length > 50){
                 return 'background-color: cornflowerblue; color: white;height: 80px;';

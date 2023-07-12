@@ -1,54 +1,82 @@
 <br>
 <div style="text-align: center">
-<!--  <div class="container-fluid" style="min-height:87vh">-->
+
     <h2>The Biodiversity Projects</h2>
   <hr>
 <br>
 
     <div class="vf-grid vf-grid__col-3">
 
-
-        <mat-card style="height: 90px;" class="z-depth card">
-            <div class="vf-box" >
-                <a href="https://portal.darwintreeoflife.org/" class="vf-logo | vf-logo--has-text | vf-logo--extreme">
-                  <img class="vf-logo__image" src="assets/dtol-logo.png" style="height:120px" alt="Darwin Tree of Life" loading="eager">
-                </a>
-            </div>
-        </mat-card>
-
-
-      <mat-card style="height: 90px;" class="z-depth card">
-          <div class="vf-box" >
-         <a href="https://portal.aquaticsymbiosisgenomics.org/" class="vf-logo | vf-logo--has-text | vf-logo--extreme">
-          <img class="vf-logo__image" src="assets/asg-logo.png" style="height:120px" alt="The Aquatic Symbiosis Project" loading="eager">
-        </a>
-          </div>
-      </mat-card>
-
-
-        <mat-card style="height: 90px;" class="z-depth card">
-            <div class="vf-box" >
-          <a href="https://portal.erga-biodiversity.eu/" class="vf-logo | vf-logo--has-text | vf-logo--extreme">
-            <img class="vf-logo__image" src="assets/erga_logo.png" style="height:120px" alt="ERGA Data Portal" loading="eager">
-          </a>
-            </div>
-        </mat-card>
-        <mat-card style="height: 90px;" class="z-depth card">
-            <div class="vf-box vf-box-theme--primary vf-box--normal  "  style="height: 100px;">
-                <a href="http://www.cgen.ca/canseq150" class="vf-logo | vf-logo--has-text | vf-logo--extreme">
-                    <img class="vf-logo__image" src="assets/cropped-2.CGen.png" style="height: 70px;width:222px" alt="ERGA Data Portal" loading="eager">
-                </a>
-            </div>
-        </mat-card>
         <div *ngFor="let project of projects" >
+            <mat-card  class="z-depth card" style="height: 190px;">
 
-            <mat-card  style="height: 90px;" class="z-depth card">
-                <div class="vf-box vf-box-theme--primary vf-box--normal"   style="height: 100px;">
-                    <h3 class="vf-box__heading" >{{project.title}} (<a href="https://www.ebi.ac.uk/ena/browser/view/{{project.accession}}" style="color:#f3f3f3">{{project.accession}}</a>)</h3>
-                </div>
+                <img *ngIf="project.image"  class="vf-logo__image" src="{{project.image}}" style="height:120px"   loading="eager">
+                <h4 *ngIf="!project.image" > {{project.title}}</h4>
+                <br>
+                <a
+                        class="vf-button vf-button--secondary vf-button--sm"
+                        href="/biodiversity/data_portal?project_name={{project.title}}"
+                        target="_blank"
+                >
+                    View Records
+                </a>
+                <a
+                        *ngIf="project.image" class="vf-button vf-button--secondary vf-button--sm"
+                        href="{{project.url}}"
+                        target="_blank"
+                >
+                    Data Portal
+                </a>
+                <a
+                        *ngIf="!project.image" class="vf-button vf-button--secondary vf-button--sm"
+                        href="{{project.url}}"
+                        target="_blank"
+                >
+                    View ENA Data
+                </a>
             </mat-card>
 
         </div>
+        <mat-card  class="z-depth card">
+            <h4>Anopheles Reference Genomes Project (Data and assemblies)</h4>
+            <img class="vf-logo__image" src="assets/projects-logo-images/Anopheles-Reference-Genomes-Project-Logo-600.jpg" style="height:120px" loading="eager">
+            <br>
+            <a
+                    class="vf-button vf-button--secondary vf-button--sm"
+                    href="/biodiversity/data_portal?project_name=Anopheles Reference Genomes Project (Data and assemblies)"
+                    target="_blank"
+            >
+                View Records
+            </a>
+
+            <a  class="vf-button vf-button--secondary vf-button--sm"
+                href="https://www.ebi.ac.uk/ena/browser/view/PRJEB51690"
+                target="_blank"
+            >
+                View ENA Data
+            </a>
+        </mat-card>
+        <mat-card  class="z-depth card">
+            <h4>DNA Zoo</h4>
+            <img class="vf-logo__image" src="assets/projects-logo-images/DNA-zoo.jpg" style="height:120px" loading="eager">
+            <br>
+            <a
+                    class="vf-button vf-button--secondary vf-button--sm"
+                    href="/biodiversity/data_portal?project_name=DNA Zoo"
+                    target="_blank"
+            >
+                View Records
+            </a>
+
+            <a
+                     class="vf-button vf-button--secondary vf-button--sm"
+                    href="https://www.dnazoo.org/"
+                    target="_blank"
+            >
+                Data Portal
+            </a>
+        </mat-card>
+
     </div>
 </div>
 

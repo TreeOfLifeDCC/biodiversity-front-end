@@ -29,7 +29,7 @@ export class ApiService {
                 const isPresent = Constants.projects.some(function (el) {
                     return el.title === filterValue[i]
                 });
-                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='CanSeq150 Project (Genome Data and Assemblies)')) {
+                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
                    filterItem = `project_name:${filterValue[i]}`;
                 } else if (filterValue[i].includes('-')) {
                     filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');

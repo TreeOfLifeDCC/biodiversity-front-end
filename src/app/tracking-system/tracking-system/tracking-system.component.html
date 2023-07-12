@@ -45,8 +45,8 @@ margin-top: 165px;">Filter by:
                 <br>
                 <mat-card fxFlex class="mat-elevation-z8"  >
                     <mat-card-title>Projects
-                        <i class="material-icons float-right"  *ngIf="(( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)" (click)="toggleCollapse()">add</i>
-                        <i class="material-icons float-right"   *ngIf="( !isCollapsed)" (click)="toggleCollapse()">remove</i>
+                        <i class="material-icons float-right" style="cursor: pointer;" *ngIf="(( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)" (click)="toggleCollapse()">add</i>
+                        <i class="material-icons float-right" style="cursor: pointer;"  *ngIf="( !isCollapsed)" (click)="toggleCollapse()">remove</i>
 
                     </mat-card-title>
                     <mat-card-actions>
