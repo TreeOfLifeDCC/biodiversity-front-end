@@ -39,15 +39,22 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "src/assets/css/MarkerCluster.css",
+              "src/assets/css/MarkerCluster.Default.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "node_modules/@visual-framework/",
-                "src/styles"
+                "src/styles",
+                "./node_modules/leaflet/dist/leaflet.css",
+                "src/assets/css/MarkerCluster.css",
+                "src/assets/css/MarkerCluster.Default.css"
               ]
             },
-            "scripts": []
+            "scripts": [
+              "src/assets/js/autocomplete.js"]
           },
           "configurations": {
             "production": {

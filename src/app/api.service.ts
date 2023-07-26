@@ -63,4 +63,49 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
+    getGistData(searchValue: string | undefined,
+                filterValue: string[], currentClass: string, phylogeny_filters: string[]) {
+
+        // let url = `http://localhost:8000/${index_name}?limit=${pageSize}&offset=${offset}`;
+        let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/gis_filter?`
+        if (searchValue) {
+            url += `&search=${searchValue}`;
+        }
+
+        if (filterValue.length !== 0) {
+            let filterStr = '&filter=';
+            let filterItem;
+            for (let i = 0; i < filterValue.length; i++) {
+                const isPresent = Constants.projects.some(function (el) {
+                    return el.title === filterValue[i]
+                });
+                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
+                    filterItem = `project_name:${filterValue[i]}`;
+                } else if (filterValue[i].includes('-')) {
+                    filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
+                    if (filterItem === 'assemblies') {
+                        filterItem = 'assemblies_status:Done';
+                    } else
+                        filterItem = `${filterItem}:Done`;
+                } else {
+                    filterItem = `${currentClass}:${filterValue[i]}`;
+                }
+                filterStr === '&filter=' ? filterStr += `${filterItem}` : filterStr += `,${filterItem}`;
+
+            }
+            url += filterStr;
+        }
+        if (phylogeny_filters.length !== 0) {
+            let filterStr = '&phylogeny_filters=';
+            for (let i = 0; i < phylogeny_filters.length; i++) {
+                filterStr === '&phylogeny_filters=' ? filterStr += `${phylogeny_filters[i]}` : filterStr += `-${phylogeny_filters[i]}`;
+            }
+
+            url += filterStr;
+        }
+        url += `&current_class=${currentClass}`;
+
+        return this.http.get<any>(url);
+    }
+
 }

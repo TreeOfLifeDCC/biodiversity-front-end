@@ -174,14 +174,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
             this.activeFilters.push(params[key]);
         }
-        // if(key === 'phylogeny_filters' || key === 'currentClass' || key ===  'phylogeny') {
-        //     const filterIndex1 = this.urlAppendFilterArray.indexOf('currentClass');
-        //     this.urlAppendFilterArray.splice(filterIndex1, 1);
-        //     const filterIndex2 = this.urlAppendFilterArray.indexOf('phylogeny_filters');
-        //     this.urlAppendFilterArray.splice(filterIndex2, 1);
-        //     const filterIndex3 = this.urlAppendFilterArray.indexOf('phylogeny');
-        //     this.urlAppendFilterArray.splice(filterIndex3, 1);
-        // }
+
 
     }
     ngAfterViewInit() {

@@ -36,6 +36,10 @@ import {ApiDocumentationComponent} from "./api-documentation/api-documentation.c
 import {HelpComponent} from "./help/help.component";
 import {AboutComponent} from "./about/about.component";
 import {ProjectsComponent} from "./projects/projects.component";
+import {GisComponent} from "./gis/gis.component";
+
+import {MatRadioModule} from "@angular/material/radio";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 
@@ -53,6 +57,7 @@ import {ProjectsComponent} from "./projects/projects.component";
         HelpComponent,
         AboutComponent,
         ProjectsComponent,
+        GisComponent
 
 
     ],
@@ -82,6 +87,8 @@ import {ProjectsComponent} from "./projects/projects.component";
         MatSelectModule,
         FormsModule,
         MatTableExporterModule,
+        MatRadioModule,
+        MatAutocompleteModule,
 
 
     ],

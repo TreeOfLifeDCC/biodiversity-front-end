@@ -10,6 +10,7 @@ import {ApiDocumentationComponent} from "./api-documentation/api-documentation.c
 import {HelpComponent} from "./help/help.component";
 import {AboutComponent} from "./about/about.component";
 import {ProjectsComponent} from "./projects/projects.component";
+import {GisComponent} from "./gis/gis.component";
 
 const routes: Routes = [
 
@@ -27,7 +28,10 @@ const routes: Routes = [
     { path: 'api_documentation', component: ApiDocumentationComponent },
     { path: 'help', component: HelpComponent },
     { path: 'projects', component: ProjectsComponent },
-    { path: 'about', component: AboutComponent }
+    { path: 'about', component: AboutComponent },
+    {
+        path: 'gis', component: GisComponent
+    }
 ];
 
 @NgModule({

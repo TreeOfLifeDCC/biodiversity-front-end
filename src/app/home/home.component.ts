@@ -23,6 +23,13 @@ export class HomeComponent implements OnInit {
       link: '/tracking',
       key: 'tracking',
       label: 'TrackingSystem'
+    },
+    {
+      title: 'Sampling Map',
+      description: 'Sampling Map has data for statuses of all Organism and Species for all Biodiversity projects.',
+      link: '/gis',
+      key: 'gis',
+      label: 'GisComponent'
     }
   ];
   constructor(
