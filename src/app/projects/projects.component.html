@@ -8,74 +8,35 @@
     <div class="vf-grid vf-grid__col-3">
 
         <div *ngFor="let project of projects" >
-            <mat-card  class="z-depth card" style="height: 190px;">
-
-                <img *ngIf="project.image"  class="vf-logo__image" src="{{project.image}}" style="height:120px"   loading="eager">
-                <h4 *ngIf="!project.image" > {{project.title}}</h4>
+            <mat-card  class="z-depth card" style="height: 280px;">
+                <h5 > {{project.name}}</h5>
+                   <img *ngIf="project.image"  class="vf-logo__image" src="{{project.image}}" style="height:120px;cursor: pointer;" alt="{{project.title}}"  loading="eager">
                 <br>
                 <a
+                        *ngIf="project.url" class="vf-button vf-button--secondary vf-button--sm"
+                        href="{{project.url}}"
+                        target="_blank"
+                >
+                    Project website
+                </a>  <a
+                    *ngIf="project.data_portal_url" class="vf-button vf-button--secondary vf-button--sm"
+                    href="{{project.data_portal_url}}"
+                    target="_blank"
+            >
+                Data Portal
+            </a>
+                                    <a
                         class="vf-button vf-button--secondary vf-button--sm"
                         href="/biodiversity/data_portal?project_name={{project.title}}"
                         target="_blank"
                 >
                     View Records
                 </a>
-                <a
-                        *ngIf="project.image" class="vf-button vf-button--secondary vf-button--sm"
-                        href="{{project.url}}"
-                        target="_blank"
-                >
-                    Data Portal
-                </a>
-                <a
-                        *ngIf="!project.image" class="vf-button vf-button--secondary vf-button--sm"
-                        href="{{project.url}}"
-                        target="_blank"
-                >
-                    View ENA Data
-                </a>
+
             </mat-card>
 
         </div>
-        <mat-card  class="z-depth card">
-            <h4>Anopheles Reference Genomes Project (Data and assemblies)</h4>
-            <img class="vf-logo__image" src="assets/projects-logo-images/Anopheles-Reference-Genomes-Project-Logo-600.jpg" style="height:120px" loading="eager">
-            <br>
-            <a
-                    class="vf-button vf-button--secondary vf-button--sm"
-                    href="/biodiversity/data_portal?project_name=Anopheles Reference Genomes Project (Data and assemblies)"
-                    target="_blank"
-            >
-                View Records
-            </a>
 
-            <a  class="vf-button vf-button--secondary vf-button--sm"
-                href="https://www.ebi.ac.uk/ena/browser/view/PRJEB51690"
-                target="_blank"
-            >
-                View ENA Data
-            </a>
-        </mat-card>
-        <mat-card  class="z-depth card">
-            <h4>DNA Zoo</h4>
-            <img class="vf-logo__image" src="assets/projects-logo-images/DNA-zoo.jpg" style="height:120px" loading="eager">
-            <br>
-            <a
-                    class="vf-button vf-button--secondary vf-button--sm"
-                    href="/biodiversity/data_portal?project_name=DNA Zoo"
-                    target="_blank"
-            >
-                View Records
-            </a>
-
-            <a
-                     class="vf-button vf-button--secondary vf-button--sm"
-                    href="https://www.dnazoo.org/"
-                    target="_blank"
-            >
-                Data Portal
-            </a>
-        </mat-card>
 
     </div>
 </div>

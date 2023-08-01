@@ -140,7 +140,7 @@ margin-top: 80px;">Filter by:
                 <div class="vf-form__item | vf-search__item">
                     <input type="search" id="searchValue" matInput style="
 width: 99%; left:9px"  class="vf-search__input | vf-form__input" #searchInput [(ngModel)]='searchValue'
-                           (ngModelChange)="filterSearchResults()" placeholder="Search for species"  #matInput [matAutocomplete]="auto">
+                           (keyup.enter)="searchGisData()"   (keyup)="filterSearchResults()" placeholder="Search for species"  #matInput [matAutocomplete]="auto">
 
                 </div>
                 <mat-autocomplete #auto="matAutocomplete">

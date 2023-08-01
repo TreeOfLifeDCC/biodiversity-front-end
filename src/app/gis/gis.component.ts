@@ -484,7 +484,7 @@ export class GisComponent implements AfterViewInit {
   }
   searchGisData = () => {
     this.isLoadingResults=true;
-    this.updateActiveRouteParams()
+    this.getSearchData(this.searchValue)
   }
 
   getSearchData(search: any) {

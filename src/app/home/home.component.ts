@@ -30,6 +30,13 @@ export class HomeComponent implements OnInit {
       link: '/gis',
       key: 'gis',
       label: 'GisComponent'
+    },
+    {
+      title: 'Projects',
+      description: 'View records by biodiversity project/network, with links to specific data portals and project websites.',
+      link: '/projects',
+      key: 'projects',
+      label: 'ProjectsComponent'
     }
   ];
   constructor(
