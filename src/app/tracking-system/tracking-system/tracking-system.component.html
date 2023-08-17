@@ -24,11 +24,6 @@ margin-top: 165px;">Filter by:
                             <h4 matLine class="ellipsis">Raw Data - Submitted (
                                 {{getStatusCount(aggregations?.raw_data.buckets)}})</h4>
                         </mat-list-item>
-                            <mat-divider></mat-divider> <mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.mapped_reads.buckets)"
-                                                                       [style]="checkStyle('Mapped Reads - Submitted')"
-                                                                       (click)="onFilterClick('mapped_reads','Mapped Reads - Submitted')" style="cursor: pointer;">
-                            <h4 matLine class="ellipsis">Mapped Reads - Submitted ({{getStatusCount(aggregations?.mapped_reads.buckets)}})</h4>
-                        </mat-list-item>
                             <mat-divider></mat-divider><mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.assemblies_status.buckets)"
                                                                       [style]="checkStyle('Assemblies - Submitted')"
                                                                       (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
