@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 })
 export class StatusesService {
 
-    private API_BASE_URL = 'https://portal.aquaticsymbiosisgenomics.org/api';
+    private API_BASE_URL = 'https://biodiversity-backend-fxwvdmcjia-nw.a.run.app';
     // private API_BASE_URL = 'http://45.88.81.97/backend';
     // private API_BASE_URL = 'http://localhost:8080';
 
