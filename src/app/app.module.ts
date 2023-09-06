@@ -40,6 +40,7 @@ import {GisComponent} from "./gis/gis.component";
 
 import {MatRadioModule} from "@angular/material/radio";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {FooterComponent} from "./footer/footer.component";
 
 
 
@@ -57,7 +58,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
         HelpComponent,
         AboutComponent,
         ProjectsComponent,
-        GisComponent
+        GisComponent,
+        FooterComponent
 
 
     ],
