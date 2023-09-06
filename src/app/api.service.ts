@@ -15,7 +15,7 @@ export class ApiService {
     getData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
             filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
        const offset = pageIndex * pageSize;
-       let url = `http://45.88.81.74/biodiversity/api/${index_name}?limit=${pageSize}&offset=${offset}`;
+       let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/${index_name}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -59,7 +59,7 @@ export class ApiService {
     }
 
     getDetailsData(organismName: any, indexName = 'data_portal_index') {
-        let url = `http://45.88.81.74/biodiversity/api/${indexName}/${organismName}`;
+        let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }
 
@@ -67,7 +67,7 @@ export class ApiService {
                 filterValue: string[], currentClass: string, phylogeny_filters: string[]) {
 
         // let url = `http://localhost:8000/${index_name}?limit=${pageSize}&offset=${offset}`;
-        let url = `http://45.88.81.74/biodiversity/api/gis_filter?`
+        let url = `https://wwwdev.ebi.ac.uk/biodiversity/api/gis_filter?`
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
