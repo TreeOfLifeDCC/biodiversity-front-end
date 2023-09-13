@@ -34,7 +34,14 @@ mat-toolbar {
   margin: 0;
   cursor: pointer;
 }
-
+.container {
+  height: 100%;
+  background: lightgray;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+  flex-direction: column
+}
 .label {
   display: inline-block;
   line-height: 30px;

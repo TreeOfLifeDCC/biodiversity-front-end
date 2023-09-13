@@ -257,6 +257,33 @@ export class Constants {
             "image":"assets/projects-logo-images/AfricaBP.jpg",
             "data_portal_url": ""
         },
+        {
+            "accession": "PRJNA785018",
+            "title": "Genome sequencing and assembly of primate species Genome sequencing and assembly",
+            "name": "Genome sequencing and assembly of primate species Genome sequencing and assembly",
+            "description": "The AfricaBP initiative plans to sequence the genomes of 105,000 African endemic species. AfricaBP is a coordinated pan-African effort to build capacity to generate, analyze and deploy genomics data for the improvement and sustainable use of biodiversity and agriculture across Africa. The project aims to foster scientific collaborations and partnerships provide the platform for innovations and policy change across Africa through biodiversity genomics.",
+            "url": "",
+            "image":"",
+            "data_portal_url": ""
+        },
+        // {
+        //     "accession": "PRJNA911016",
+        //     "title": "Cephalopachus bancanus breed:not provided Genome sequencing and assembly",
+        //     "name": "Cephalopachus bancanus breed:not provided Genome sequencing and assembly",
+        //     "description": "Phylogenomic analyses provide insights into primate genomic and phenotypic evolution.",
+        //     "url": "",
+        //     "image":"",
+        //     "data_portal_url": ""
+        // },
+        {
+            "accession": "PRJEB65317",
+            "title": "Earth BioGenome Project Norway (EBP-Nor)",
+            "name": "Earth BioGenome Project Norway (EBP-Nor)",
+            "description": "Repository for data generated from EBP-Nor, the Norwegian initiative for the Earth Biogenome Project, which aims to generate a detailed catalogue of the genomes of eukaryotic species in Norway.",
+            "url": "https://goat.genomehubs.org/projects/EBPN",
+            "image":"assets/projects-logo-images/ebpn.jpeg",
+            "data_portal_url": ""
+        },
         // { No data available
         //     "accession": "PRJNA707235",
         //     "title": "University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
