@@ -191,7 +191,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                     return this._apiService.getData(this.pageIndex,
                         // @ts-ignore
                         this.pageSize, this.searchValue, this.sort.active, this.sort.direction, this.activeFilters,
-                        this.currentClass, this.phylogenyFilters, 'data_portal_index'
+                        this.currentClass, this.phylogenyFilters, 'data_portal'
                     ).pipe(catchError(() => observableOf(null)));
                 }),
                 map(data => {
