@@ -15,12 +15,16 @@
 }
 
 .img-fluid4 {
-  max-width: 9% !important;
+  max-width: 8% !important;
   max-height: 10% !important;
   /*margin-right: 27% !important;*/
 }
 .img-fluid5 {
   max-width: 13% !important;
+  max-height: 10% !important;
+}
+.img-fluid6 {
+  max-width: 25% !important;
   max-height: 10% !important;
 }
 mat-toolbar {
