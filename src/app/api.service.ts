@@ -15,7 +15,9 @@ export class ApiService {
     getData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
             filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
        const offset = pageIndex * pageSize;
+
        let url = `https://biodiversity-backend-fxwvdmcjia-nw.a.run.app/${index_name}?limit=${pageSize}&offset=${offset}`;
+
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -58,8 +60,10 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
-    getDetailsData(organismName: any, indexName = 'data_portal_index') {
+
+    getDetailsData(organismName: any, indexName = 'data_portal') {
         let url = `https://biodiversity-backend-fxwvdmcjia-nw.a.run.app/${indexName}/${organismName}`;
+
         return this.http.get<any>(url);
     }
 
