@@ -42,7 +42,8 @@
               "src/styles.scss",
               "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/css/MarkerCluster.css",
-              "src/assets/css/MarkerCluster.Default.css"
+              "src/assets/css/MarkerCluster.Default.css",
+              "node_modules/cookieconsent/build/cookieconsent.min.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -54,7 +55,8 @@
               ]
             },
             "scripts": [
-              "src/assets/js/autocomplete.js"]
+              "src/assets/js/autocomplete.js",
+              "node_modules/cookieconsent/build/cookieconsent.min.js"]
           },
           "configurations": {
             "production": {
