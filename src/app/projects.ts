@@ -280,8 +280,8 @@ export class Constants {
             "title": "Earth BioGenome Project Norway (EBP-Nor)",
             "name": "Earth BioGenome Project Norway (EBP-Nor)",
             "description": "Repository for data generated from EBP-Nor, the Norwegian initiative for the Earth Biogenome Project, which aims to generate a detailed catalogue of the genomes of eukaryotic species in Norway.",
-            "url": "https://goat.genomehubs.org/projects/EBPN",
-            "image":"assets/projects-logo-images/ebpn.jpeg",
+            "url": "https://www.ebpnor.org/english/",
+            "image":"assets/projects-logo-images/ebp_nor-orig.png",
             "data_portal_url": ""
         },
         // { No data available
