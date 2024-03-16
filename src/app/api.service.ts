@@ -32,11 +32,15 @@ export class ApiService {
                 if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
                    filterItem = `project_name:${filterValue[i]}`;
                 } else if (filterValue[i].includes('-')) {
-                    filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
-                    if (filterItem === 'assemblies') {
-                        filterItem = 'assemblies_status:Done';
-                    } else
-                        filterItem = `${filterItem}:Done`;
+                    if (filterValue[i].startsWith('symbionts_') || filterValue[i].startsWith('metagenomes_')){
+                        filterItem = filterValue[i].replace('-', ':');
+                    } else {
+                        filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
+                        if (filterItem === 'assemblies') {
+                            filterItem = 'assemblies_status:Done';
+                        } else
+                            filterItem = `${filterItem}:Done`;
+                    }
                 } else {
                     filterItem = `${currentClass}:${filterValue[i]}`;
                 }
