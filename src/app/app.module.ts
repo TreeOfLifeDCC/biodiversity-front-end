@@ -45,7 +45,7 @@ import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent'
 
 const cookieConfig:NgcCookieConsentConfig = {
     "cookie": {
-        "domain": "www.ebi.ac.uk/"
+        "domain": "www.ebi.ac.uk"
     },
     "position": "bottom",
     "theme": "classic",
