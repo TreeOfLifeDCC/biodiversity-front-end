@@ -284,6 +284,15 @@ export class Constants {
             "image":"assets/projects-logo-images/ebp_nor-orig.png",
             "data_portal_url": ""
         },
+        {
+            "accession": "PRJEB65317",
+            "title": "Project Psyche - Lepidopteran Genomes for Europe",
+            "name": "Project Psyche - Lepidopteran Genomes for Europe",
+            "description": "Project Psyche - Lepidopteran Genomes for Europe",
+            "url": "https://www.projectpsyche.org/",
+            "image":"assets/projects-logo-images/psyche_logo.png",
+            "data_portal_url": ""
+        }
         // { No data available
         //     "accession": "PRJNA707235",
         //     "title": "University of California Consortium for the Earth BioGenome Project (Cal-EBP)",

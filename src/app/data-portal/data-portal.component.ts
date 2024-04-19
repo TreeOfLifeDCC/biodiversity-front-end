@@ -332,6 +332,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
     onFilterClick(filterName:String , filterValue: string) {
+        console.log(filterName);
 
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
