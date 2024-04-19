@@ -5,3 +5,7 @@
 .showhim:hover .showme {
     display: block;
 }
+
+mat-card {
+    margin-bottom: 10px;
+}
