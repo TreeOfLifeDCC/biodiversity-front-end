@@ -4,10 +4,7 @@ import {ApiService} from "../../api.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
 import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {merge, of as observableOf} from "rxjs";
-import {catchError, map, startWith, switchMap} from "rxjs/operators";
-import {keyframes} from "@angular/animations";
-import {Sample} from "../model/dashboard.model";
+
 
 @Component({
     selector: 'app-data-portal-details',
@@ -87,61 +84,52 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showData = false;
     showGenomeNote = false;
 
-    // @ts-ignore
-    @ViewChild('metadataPaginator') metadataPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('metadataSort') metadataSort: MatSort;
-    // @ts-ignore
-    @ViewChild('annotationPaginator') annotationPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('annotationSort') annotationSort: MatSort;
-    // @ts-ignore
-    @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('assembliesSort') assembliesSort: MatSort;
-    // @ts-ignore
-    @ViewChild('filesPaginator') filesPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('filesSort') filesSort: MatSort;
-    // @ts-ignore
-    specSymbiontsTotalCount;
 
-    // @ts-ignore
-    dataSourceSymbiontsAssembliesCount;
-    // @ts-ignore
-    dataSourceSymbiontsAssemblies;
+    @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
+
+    @ViewChild('metadataSort') metadataSort: MatSort | undefined;
+
+    @ViewChild('annotationPaginator') annotationPaginator: MatPaginator | undefined;
+
+    @ViewChild('annotationSort') annotationSort: MatSort | undefined;
+
+    @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator | undefined;
+
+    @ViewChild('assembliesSort') assembliesSort: MatSort | undefined;
+
+    @ViewChild('filesPaginator') filesPaginator: MatPaginator | undefined;
+
+    @ViewChild('filesSort') filesSort: MatSort  | undefined;
+
+    specSymbiontsTotalCount: number | undefined;
+    dataSourceSymbiontsAssembliesCount: number | undefined;
+    dataSourceSymbiontsAssemblies: any;
     displayedColumnsAssemblies = ['accession', 'assembly_name', 'description', 'version'];
 
     dataSourceMetagenomesAssembliesCount: any;
     dataSourceMetagenomesAssemblies: any;
     dataSourceSymbiontsRecords: any;
-
-
-    // @ts-ignore
     metagenomesRecordsTotalCount: number | undefined;
     dataSourceMetagenomesRecords: any;
 
-    // @ts-ignore
-    @ViewChild('metagenomesRecordsPaginator') metPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('metagenomesRecordsSort') metSort: MatSort;
+    @ViewChild('metagenomesRecordsPaginator') metPaginator: MatPaginator  | undefined;
 
-    // @ts-ignore
-    @ViewChild('assembliesMetagenomesPaginator') assembliesMetPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('assembliesMetagenomesSort') assembliesMetSort: MatSort;
+    @ViewChild('metagenomesRecordsSort') metSort: MatSort  | undefined;
+
+    @ViewChild('assembliesMetagenomesPaginator') assembliesMetPaginator: MatPaginator  | undefined;
+
+    @ViewChild('assembliesMetagenomesSort') assembliesMetSort: MatSort | undefined;
 
     specDisplayedColumns = ['accession', 'organism', 'commonName', 'sex', 'organismPart', 'trackingSystem'];
 
-    // @ts-ignore
-    @ViewChild('relatedSymbiontsPaginator') symPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('assembliesSymbiontsPaginator') asSymPaginator: MatPaginator;
 
-    // @ts-ignore
-    @ViewChild('relatedSymbiontsSort') relatedSymbiontsSort: MatSort;
-    // @ts-ignore
-    @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort;
+    @ViewChild('relatedSymbiontsPaginator') symPaginator: MatPaginator  | undefined;
+
+    @ViewChild('assembliesSymbiontsPaginator') asSymPaginator: MatPaginator  | undefined;
+
+    @ViewChild('relatedSymbiontsSort') relatedSymbiontsSort: MatSort  | undefined;
+
+    @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
 
 
     constructor(private route: ActivatedRoute, private _apiService: ApiService) {
@@ -184,14 +172,17 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.metagenomesRecordsTotalCount = data.results[0]['_source']['metagenomes_records'] ? data.results[0]['_source']['metagenomes_records'].length : 0;
 
                 } else {
-                    this.dataSourceMetagenomesRecords = new MatTableDataSource<Sample>();
-
+                    this.dataSourceMetagenomesRecords = new MatTableDataSource();
+                    this.metagenomesRecordsTotalCount = 0;
                 }
 
 
                 if (data.results[0]['_source']['symbionts_records']!== undefined && data.results[0]['_source']['symbionts_records'].length) {
                     this.dataSourceSymbiontsRecords = new MatTableDataSource<any>(data.results[0]['_source']['symbionts_records']);
                     this.specSymbiontsTotalCount = data.results[0]['_source']['symbionts_records'] ? data.results[0]['_source']['symbionts_records'].length : 0;
+                } else {
+                    this.dataSourceSymbiontsRecords = new MatTableDataSource();
+                    this.specSymbiontsTotalCount = 0;
                 }
 
 
@@ -199,7 +190,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.dataSourceSymbiontsAssemblies = new MatTableDataSource<any>(data.results[0]['_source']['symbionts_assemblies']);
                     this.dataSourceSymbiontsAssembliesCount = data.results[0]['_source']['symbionts_assemblies'] ? data.results[0]['_source']['symbionts_assemblies'].length : 0;
                 } else {
-                    this.dataSourceSymbiontsAssemblies = new MatTableDataSource<Sample>();
+                    this.dataSourceSymbiontsAssemblies = new MatTableDataSource();
                     this.dataSourceSymbiontsAssembliesCount = 0;
                 }
                 if (data.results[0]['_source']['metagenomes_assemblies']!== undefined && data.results[0]['_source']['metagenomes_assemblies'].length) {
@@ -207,7 +198,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.dataSourceMetagenomesAssembliesCount = data.results[0]['_source']['metagenomes_assemblies'] ? data.results[0]['_source']['metagenomes_assemblies'].length : 0;
 
                 } else {
-                    this.dataSourceMetagenomesAssemblies = new MatTableDataSource<Sample>();
+                    this.dataSourceMetagenomesAssemblies = new MatTableDataSource();
                     this.dataSourceMetagenomesAssembliesCount = 0;
                 }
 
