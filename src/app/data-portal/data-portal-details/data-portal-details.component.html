@@ -456,7 +456,8 @@
                        style="background-color: limegreen; color: black; margin-top: 5px">
                       Read the GoaT info in full here</a>
                   </mat-tab>
-            <mat-tab label="Symbionts"  *ngIf="organismData?.symbionts_records && organismData?.symbionts_records.length" style="width:100%">
+            <mat-tab label="Symbionts"  *ngIf="organismData?.symbionts_records && organismData?.symbionts_records.length"
+                     class=tab-width>
                 <div *ngIf="organismData?.symbionts_records.length">
                     <hr>
                     <h1  class="page-header">Related Symbionts</h1>
@@ -549,7 +550,8 @@
                 </div>
                 <hr>
             </mat-tab>
-            <mat-tab label="Metagenomes"  *ngIf="organismData?.metagenomes_records && organismData?.metagenomes_records.length" style="width:100%">
+            <mat-tab label="Metagenomes"  *ngIf="organismData?.metagenomes_records && organismData?.metagenomes_records.length"
+                     class=tab-width>
                 <ng-container *ngIf="organismData?.metagenomes_records.length">
                     <hr>
                     <h1 class="page-header">Related Metagenomes </h1>

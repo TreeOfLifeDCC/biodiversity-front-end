@@ -164,6 +164,9 @@ element.style {
 .mat-ripple:not(:empty) {
     transform: translateZ(0);
 }
+.tab-width {
+    width:100%
+}
 /*td {*/
 /*  text-align: center;*/
 /*}*/
