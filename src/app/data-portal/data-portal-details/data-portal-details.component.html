@@ -39,16 +39,7 @@
                         Something went wrong, please try again!
                     </div>
                 </div>
-<!--                <button mat-raised-button-->
-<!--                        color="accent">-->
-<!--                    Download metadata-->
-<!--                </button>-->
 
-<!--                <mat-form-field appearance="standard">-->
-<!--                    <mat-label>Filter</mat-label>-->
-<!--                    <input matInput (keyup)="applyFilter($event, 'metadata')" placeholder="Ex. Mia" #input>-->
-<!--                </mat-form-field>-->
-                
                 <div class="vf-form__item | vf-search__item">
                     <input type="search" id="searchValue" matInput style="
     width: 99%;"  name="searchValue" class="vf-search__input | vf-form__input" (keyup)="applyFilter($event, 'metadata')" placeholder="Ex. Mia" #input>
@@ -118,7 +109,7 @@
                     </tr>
                 </table>
 
-                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metadata Data"
                                #metadataPaginator [length]="metadataDataLength"></mat-paginator>
 
 
@@ -239,18 +230,11 @@
                     </table>
 
                     <mat-paginator   [pageSizeOptions]="[5, 10, 25, 100]"
-                                     aria-label="Select page of users"
+                                     aria-label="Select page of annotations"
                                    #annotationPaginator
                                    [length]="annotationDataLength">
                     </mat-paginator>
 
-<!--                    <app-paginator  #annotationPaginator-->
-<!--                            [pageSize]=1-->
-<!--                            [pageSizeOptions]="[5, 10, 25, 100]"-->
-<!--                            [pageIndex]=1-->
-<!--                            [length]=this.annotationDataLength-->
-<!--                            (page)="changePage($event,this.annotationDataLength)"-->
-<!--                    ></app-paginator>-->
                 </ng-container>
 
                 <br>
@@ -311,7 +295,7 @@
                         </tr>
                     </table>
 
-                    <mat-paginator   class="pagination"  [pageSizeOptions]="[5, 10, 25, 100]"
+                    <mat-paginator   [pageSizeOptions]="[5, 10, 25, 100]"
                                      aria-label="Select page of assemblies"
                                      #assembliesPaginator
                                      [length]="assembliesDataLength">
@@ -363,11 +347,9 @@
                         </tr>
                     </table>
 
-                    <mat-paginator   class="pagination"   [pageSizeOptions]="[5, 10, 25, 100]"
-                                     aria-label="Select page of files"
-                                     #filesPaginator
-                                     [length]="filesDataLength" showFirstLastButtons>
-                    </mat-paginator>
+
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of files"
+                                   #filesPaginator [length]="filesDataLength"></mat-paginator>
 
                 </ng-container>
 
@@ -424,9 +406,7 @@
                 </div>
 
             </mat-tab>
-
-
-                  <mat-tab label="GoaT" *ngIf="goatDataLength !== 0">
+            <mat-tab label="GoaT" *ngIf="goatDataLength !== 0">
                     <br>
 <!--                    <button mat-raised-button-->
 
@@ -476,6 +456,193 @@
                        style="background-color: limegreen; color: black; margin-top: 5px">
                       Read the GoaT info in full here</a>
                   </mat-tab>
+            <mat-tab label="Symbionts"  *ngIf="organismData?.symbionts_records && organismData?.symbionts_records.length" style="width:100%">
+                <div *ngIf="organismData?.symbionts_records.length">
+                    <hr>
+                    <h1  class="page-header">Related Symbionts</h1>
+
+                    <div class="table-container">
+                        <table  mat-table [dataSource]="dataSourceSymbiontsRecords" matSort #relatedSymbiontsSort="matSort" >
+
+                            <ng-container matColumnDef="accession">
+                                <th mat-header-cell *matHeaderCellDef> BioSample ID </th>
+                                <td mat-cell *matCellDef="let row">  <a href="https://www.ebi.ac.uk/biosamples/samples/{{row.accession}}">
+                                    {{row.accession}}</a> </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="organism">
+                                <th mat-header-cell *matHeaderCellDef> Organism </th>
+                                <td mat-cell *matCellDef="let row"> {{row.organism.text}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="commonName">
+                                <th mat-header-cell *matHeaderCellDef> Common Name </th>
+                                <td mat-cell *matCellDef="let row"> {{row?.commonName}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sex">
+                                <th mat-header-cell *matHeaderCellDef> Sex </th>
+                                <td mat-cell *matCellDef="let row"> {{row?.sex}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="organismPart">
+                                <th mat-header-cell *matHeaderCellDef> Organism part </th>
+                                <td mat-cell *matCellDef="let row"> {{row?.organismPart}} </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="trackingSystem">
+                                <th mat-header-cell *matHeaderCellDef> Tracking status </th>
+                                <td mat-cell *matCellDef="let row">  <mat-chip [ngStyle]="{'background-color': 'gold'}">{{row.trackingSystem}}</mat-chip> </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
+
+                        </table>
+                    </div>
+
+                   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of symbionts"
+                                   #relatedSymbiontsPaginator [length]="specSymbiontsTotalCount"></mat-paginator>
+                </div>
+
+                <div  *ngIf="dataSourceSymbiontsAssembliesCount != 0">
+                    <hr>
+                    <h1 class="page-header">Related assemblies</h1>
+
+                    <div class="table-container">
+                        <table mat-table  [dataSource]="dataSourceSymbiontsAssemblies" matSort #assembliesSymbiontsSort="matSort">
+                            <ng-container matColumnDef="accession">
+                                <th mat-header-cell *matHeaderCellDef> Accession </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <a class="no-underline" target="_blank" href="https://www.ebi.ac.uk/ena/browser/view/{{row.accession}}">{{row.accession}}</a>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="assembly_name">
+                                <th mat-header-cell *matHeaderCellDef> Assembly Name </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.assembly_name}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef> Description </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.description}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="version">
+                                <th mat-header-cell *matHeaderCellDef> Version </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.version}}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsAssemblies"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsAssemblies;"></tr>
+
+                        </table>
+                    </div>
+                    <mat-paginator #assembliesSymbiontsPaginator [pageSizeOptions]="[5,10, 20, 30]"
+                                   showFirstLastButtons [length]="dataSourceSymbiontsAssembliesCount" style="width: 100%;" ></mat-paginator>
+                </div>
+                <hr>
+            </mat-tab>
+            <mat-tab label="Metagenomes"  *ngIf="organismData?.metagenomes_records && organismData?.metagenomes_records.length" style="width:100%">
+                <ng-container *ngIf="organismData?.metagenomes_records.length">
+                    <hr>
+                    <h1 class="page-header">Related Metagenomes </h1>
+                    <table mat-table  [dataSource]="dataSourceMetagenomesRecords" matSort #metagenomesRecordsSort="matSort" style="overflow: auto hidden; min-width: 100% ; ">
+                            <ng-container matColumnDef="accession" >
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> BioSample ID </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <a href="https://www.ebi.ac.uk/biosamples/samples/{{row.accession}}">
+                                        {{row.accession}}</a>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="organism">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row.organism.text}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="commonName">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Common Name </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row?.commonName}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="sex">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sex </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row?.sex}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="organismPart">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism part </th>
+                                <td mat-cell *matCellDef="let row">
+                                    {{row?.organismPart}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="trackingSystem">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tracking status </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <mat-chip style="background-color: yellow; color: black">{{row.trackingSystem}}</mat-chip>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
+                        </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metagenomes"
+                                   #metagenomesRecordsPaginator
+                                   [length]="metagenomesRecordsTotalCount" style="width: 100%;"></mat-paginator>
+
+                </ng-container>
+                <ng-container *ngIf="dataSourceMetagenomesAssembliesCount != 0">
+                    <hr>
+                    <h1 class="page-header">Related assemblies</h1>
+                    <table mat-table  [dataSource]="dataSourceMetagenomesAssemblies"  matSort #assembliesMetagenomesSort="matSort" style="overflow: auto hidden; min-width: 100% ; ">
+                            <ng-container matColumnDef="accession">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <a class="no-underline" target="_blank" href="https://www.ebi.ac.uk/ena/browser/view/{{row.accession}}">{{row.accession}}</a>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="assembly_name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Assembly Name </th>
+                                <td mat-cell *matCellDef="let row">{{row.assembly_name}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="description">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+                                <td mat-cell *matCellDef="let row">{{row.description}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="version">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
+                                <td mat-cell *matCellDef="let row">{{row.version}}
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumnsAssemblies"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumnsAssemblies;"></tr>
+                        </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metagenomes assemblies"
+                                   #assembliesMetagenomesPaginator [length]="dataSourceMetagenomesAssembliesCount" ></mat-paginator>
+
+                </ng-container>
+                <hr>
+            </mat-tab>
         </mat-tab-group>
     </div>
     <div></div>
