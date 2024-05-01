@@ -1,10 +1,8 @@
 <div class="vf-u-margin__top--800" style="margin: 0 10% 10%">
 
-<!--    <section >-->
 
         <div class="vf-content vf-u-grid__col--span-1">
-    <!--  <div class="item0"></div>-->
-    <!--  <div class="item1"></div>-->
+
     <div>
         <mat-card>
             <mat-card-title
@@ -60,7 +58,6 @@
                 <table mat-table  [dataSource]="metadataData" matSort #metadataSort="matSort"
                        matTableExporter #exporter="matTableExporter">
 
-                    <!-- ID Column -->
                     <ng-container matColumnDef="accession">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession </th>
                         <td mat-cell *matCellDef="let row">
@@ -102,8 +99,6 @@
 
                     <tr mat-header-row *matHeaderRowDef="metadataDisplayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: metadataDisplayedColumns;"></tr>
-
-                    <!-- Row shown when there is no matching metadataData. -->
                     <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                     </tr>
@@ -147,29 +142,24 @@
                     <table mat-table [dataSource]="annotationData" matSort #annotationSort="matSort" matTableExporter
                            #annotationExporter="matTableExporter"
                     >
-
-                        <!-- ID Column -->
                         <ng-container matColumnDef="species">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Species</th>
                             <td mat-cell *matCellDef="let row"> {{row.species}} </td>
                         </ng-container>
 
-                        <!-- Progress Column -->
                         <ng-container matColumnDef="accession">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession</th>
                             <td mat-cell *matCellDef="let row"> {{row.accession}} </td>
                         </ng-container>
 
-                        <!-- Name Column -->
                         <ng-container matColumnDef="annotation_gtf">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Annotation GTF</th>
-                            <!--            <td mat-cell *matCellDef="let row"> {{row.annotation.GTF}} </td>-->
                             <td mat-cell *matCellDef="let row">
                                 <a mat-button href="{{row['annotation']['GTF']}}">GTF</a>
                             </td>
                         </ng-container>
 
-                        <!-- Fruit Column -->
+
                         <ng-container matColumnDef="annotation_gff3">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> annotation GTF3</th>
                             <td mat-cell *matCellDef="let row">
@@ -214,7 +204,6 @@
 
                         <ng-container matColumnDef="view_in_browser">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> View in Browser</th>
-                            <!--            <td mat-cell *matCellDef="let row"> {{row.view_in_browser}} </td>-->
                             <td mat-cell *matCellDef="let row">
                                 <a mat-button href="{{row.view_in_browser}}">Ensembl</a>
                             </td>
@@ -533,8 +522,10 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="version">
-                                <th mat-header-cell *matHeaderCellDef> Version </th>
+                            <ng-container matColumnDef="version"
+                                          style="min-width:520px;">
+                                <th mat-header-cell *matHeaderCellDef style="min-width:520px;">
+                                    Version </th>
                                 <td mat-cell *matCellDef="let row">
                                     {{row.version}}
                                 </td>
@@ -552,10 +543,10 @@
             </mat-tab>
             <mat-tab label="Metagenomes"  *ngIf="organismData?.metagenomes_records && organismData?.metagenomes_records.length"
                      class=tab-width>
-                <ng-container *ngIf="organismData?.metagenomes_records.length">
+                <ng-container *ngIf="organismData?.metagenomes_records.length" >
                     <hr>
                     <h1 class="page-header">Related Metagenomes </h1>
-                    <table mat-table  [dataSource]="dataSourceMetagenomesRecords" matSort #metagenomesRecordsSort="matSort" style="overflow: auto hidden; min-width: 100% ; ">
+                    <table mat-table  [dataSource]="dataSourceMetagenomesRecords" matSort #metagenomesRecordsSort="matSort">
                             <ng-container matColumnDef="accession" >
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> BioSample ID </th>
                                 <td mat-cell *matCellDef="let row">
@@ -592,8 +583,10 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="trackingSystem">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tracking status </th>
+                            <ng-container matColumnDef="trackingSystem"
+                                          style="min-width: 520px;">
+                                <th mat-header-cell *matHeaderCellDef
+                                    mat-sort-header style="min-width:520px;"> Tracking status </th>
                                 <td mat-cell *matCellDef="let row">
                                     <mat-chip style="background-color: yellow; color: black">{{row.trackingSystem}}</mat-chip>
                                 </td>
@@ -607,10 +600,13 @@
                                    [length]="metagenomesRecordsTotalCount" style="width: 100%;"></mat-paginator>
 
                 </ng-container>
-                <ng-container *ngIf="dataSourceMetagenomesAssembliesCount != 0">
+
+                <ng-container *ngIf="dataSourceMetagenomesAssembliesCount !=
+                0" style=" display: flex;">
                     <hr>
                     <h1 class="page-header">Related assemblies</h1>
-                    <table mat-table  [dataSource]="dataSourceMetagenomesAssemblies"  matSort #assembliesMetagenomesSort="matSort" style="overflow: auto hidden; min-width: 100% ; ">
+                    <table mat-table  [dataSource]="dataSourceMetagenomesAssemblies"  matSort #assembliesMetagenomesSort="matSort"
+                          >
                             <ng-container matColumnDef="accession">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession </th>
                                 <td mat-cell *matCellDef="let row">
@@ -630,8 +626,10 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="version">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Version </th>
+                            <ng-container matColumnDef="version"
+                                          style="min-width: 520px;">
+                                <th mat-header-cell *matHeaderCellDef
+                                    mat-sort-header style="min-width:520px;"> Version </th>
                                 <td mat-cell *matCellDef="let row">{{row.version}}
                                 </td>
                             </ng-container>
@@ -649,6 +647,6 @@
     </div>
     <div></div>
 </div>
-<!--    </section>-->
+
 </div>
 
