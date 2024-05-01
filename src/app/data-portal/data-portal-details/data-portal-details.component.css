@@ -164,6 +164,16 @@ element.style {
 .mat-ripple:not(:empty) {
     transform: translateZ(0);
 }
+.tab-width {
+    width:100%
+}
+.column-width {
+    min-width:320px;
+}
+.column-width-aggregation {
+    min-width:480px;
+}
+
 /*td {*/
 /*  text-align: center;*/
 /*}*/

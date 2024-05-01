@@ -52,7 +52,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         y: 'bacteria',
         z: 'archea'
     };
-    public isScrollBarPresent: boolean | undefined;
     displayedColumns: string[] = ['organism', 'commonName','commonNameSource',  'currentStatus', 'externalReferences'];
     dataColumnsDefination = [{name: 'Organism', label: 'organism', selected: true}, {
         name: 'Common Name',
@@ -92,8 +91,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     metagenomesFilters : any[] = [];
     activeFilters = new Array<string>();
     urlAppendFilterArray = new Array<string>();
-    isSelected: boolean | false | undefined;
-
     currentClass = 'kingdom';
     classes = ["superkingdom", "kingdom", "subkingdom", "superphylum", "phylum", "subphylum", "superclass", "class",
         "subclass", "infraclass", "cohort", "subcohort", "superorder", "order", "suborder", "infraorder", "parvorder",

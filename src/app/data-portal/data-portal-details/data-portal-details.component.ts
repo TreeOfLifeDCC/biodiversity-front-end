@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../../api.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
-import {merge, of as observableOf} from "rxjs";
-import {catchError, map, startWith, switchMap} from "rxjs/operators";
-import {keyframes} from "@angular/animations";
+import {MatPaginator} from "@angular/material/paginator";
+
 
 @Component({
     selector: 'app-data-portal-details',
@@ -86,22 +84,53 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showData = false;
     showGenomeNote = false;
 
-    // @ts-ignore
-    @ViewChild('metadataPaginator') metadataPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('metadataSort') metadataSort: MatSort;
-// @ts-ignore
-    @ViewChild('annotationPaginator') annotationPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('annotationSort') annotationSort: MatSort;
-// @ts-ignore
-    @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('assembliesSort') assembliesSort: MatSort;
-// @ts-ignore
-    @ViewChild('filesPaginator') filesPaginator: MatPaginator;
-    // @ts-ignore
-    @ViewChild('filesSort') filesSort: MatSort;
+
+    @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
+
+    @ViewChild('metadataSort') metadataSort: MatSort | undefined;
+
+    @ViewChild('annotationPaginator') annotationPaginator: MatPaginator | undefined;
+
+    @ViewChild('annotationSort') annotationSort: MatSort | undefined;
+
+    @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator | undefined;
+
+    @ViewChild('assembliesSort') assembliesSort: MatSort | undefined;
+
+    @ViewChild('filesPaginator') filesPaginator: MatPaginator | undefined;
+
+    @ViewChild('filesSort') filesSort: MatSort  | undefined;
+
+    specSymbiontsTotalCount: number | undefined;
+    dataSourceSymbiontsAssembliesCount: number | undefined;
+    dataSourceSymbiontsAssemblies: any;
+    displayedColumnsAssemblies = ['accession', 'assembly_name', 'description', 'version'];
+
+    dataSourceMetagenomesAssembliesCount: any;
+    dataSourceMetagenomesAssemblies: any;
+    dataSourceSymbiontsRecords: any;
+    metagenomesRecordsTotalCount: number | undefined;
+    dataSourceMetagenomesRecords: any;
+
+    @ViewChild('metagenomesRecordsPaginator') metPaginator: MatPaginator  | undefined;
+
+    @ViewChild('metagenomesRecordsSort') metSort: MatSort  | undefined;
+
+    @ViewChild('assembliesMetagenomesPaginator') assembliesMetPaginator: MatPaginator  | undefined;
+
+    @ViewChild('assembliesMetagenomesSort') assembliesMetSort: MatSort | undefined;
+
+    specDisplayedColumns = ['accession', 'organism', 'commonName', 'sex', 'organismPart', 'trackingSystem'];
+
+
+    @ViewChild('relatedSymbiontsPaginator') symPaginator: MatPaginator  | undefined;
+
+    @ViewChild('assembliesSymbiontsPaginator') asSymPaginator: MatPaginator  | undefined;
+
+    @ViewChild('relatedSymbiontsSort') relatedSymbiontsSort: MatSort  | undefined;
+
+    @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
+
 
     constructor(private route: ActivatedRoute, private _apiService: ApiService) {
     }
@@ -116,7 +145,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
             data => {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
-
                 this.organismData = data.results[0]['_source'];
                 this.metadataData = new MatTableDataSource(data.results[0]['_source']['records']);
                 this.metadataDataLength = data.results[0]['_source']['records'] ? data.results[0]['_source']['records'].length : 0;
@@ -138,20 +166,40 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.goatDataLength = 0;
                     this.goatDataLink ="";
                 }
-                this.metadataData.paginator = this.metadataPaginator;
-                this.metadataData.sort = this.metadataSort;
-                if (this.annotationData.length > 0){
-                    this.annotationData.paginator = this.annotationPaginator;
-                    this.annotationData.sort = this.annotationSort;
+
+                if (data.results[0]['_source']['metagenomes_records']!== undefined && data.results[0]['_source']['metagenomes_records'].length) {
+                    this.dataSourceMetagenomesRecords = new MatTableDataSource<any>(data.results[0]['_source']['metagenomes_records']);
+                    this.metagenomesRecordsTotalCount = data.results[0]['_source']['metagenomes_records'] ? data.results[0]['_source']['metagenomes_records'].length : 0;
+
+                } else {
+                    this.dataSourceMetagenomesRecords = new MatTableDataSource();
+                    this.metagenomesRecordsTotalCount = 0;
                 }
 
-                if (this.assembliesData.length > 0) {
-                    this.assembliesData.paginator = this.assembliesPaginator;
-                    this.assembliesData.sort = this.assembliesSort;
+
+                if (data.results[0]['_source']['symbionts_records']!== undefined && data.results[0]['_source']['symbionts_records'].length) {
+                    this.dataSourceSymbiontsRecords = new MatTableDataSource<any>(data.results[0]['_source']['symbionts_records']);
+                    this.specSymbiontsTotalCount = data.results[0]['_source']['symbionts_records'] ? data.results[0]['_source']['symbionts_records'].length : 0;
+                } else {
+                    this.dataSourceSymbiontsRecords = new MatTableDataSource();
+                    this.specSymbiontsTotalCount = 0;
                 }
-                if (this.filesData.length > 0) {
-                    this.filesData.paginator = this.filesPaginator;
-                    this.filesData.sort = this.filesSort;
+
+
+                if (data.results[0]['_source']['symbionts_assemblies']!== undefined && data.results[0]['_source']['symbionts_assemblies'].length) {
+                    this.dataSourceSymbiontsAssemblies = new MatTableDataSource<any>(data.results[0]['_source']['symbionts_assemblies']);
+                    this.dataSourceSymbiontsAssembliesCount = data.results[0]['_source']['symbionts_assemblies'] ? data.results[0]['_source']['symbionts_assemblies'].length : 0;
+                } else {
+                    this.dataSourceSymbiontsAssemblies = new MatTableDataSource();
+                    this.dataSourceSymbiontsAssembliesCount = 0;
+                }
+                if (data.results[0]['_source']['metagenomes_assemblies']!== undefined && data.results[0]['_source']['metagenomes_assemblies'].length) {
+                    this.dataSourceMetagenomesAssemblies = new MatTableDataSource<any>(data.results[0]['_source']['metagenomes_assemblies']);
+                    this.dataSourceMetagenomesAssembliesCount = data.results[0]['_source']['metagenomes_assemblies'] ? data.results[0]['_source']['metagenomes_assemblies'].length : 0;
+
+                } else {
+                    this.dataSourceMetagenomesAssemblies = new MatTableDataSource();
+                    this.dataSourceMetagenomesAssembliesCount = 0;
                 }
 
                 if (data.results[0]['_source']['records'] && data.results[0]['_source']['records'].length > 0) {
@@ -164,7 +212,25 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 if (data.results[0]['_source']['genome_notes'] && data.results[0]['_source']['genome_notes'].length !== 0) {
                     this.showGenomeNote = true;
                 }
+
+                setTimeout(() => {
+                    this.assembliesData.paginator = this.assembliesPaginator;
+                    this.assembliesData.sort = this.assembliesSort;
+                    this.filesData.paginator = this.filesPaginator;
+                    this.filesData.sort = this.filesSort;
+
+                    this.dataSourceMetagenomesAssemblies.paginator = this.assembliesMetPaginator;
+                    this.dataSourceMetagenomesAssemblies.sort = this.assembliesMetSort;
+                    this.dataSourceMetagenomesRecords.paginator = this.metPaginator;
+                    this.dataSourceMetagenomesRecords.sort = this.metSort;
+
+                    this.metadataData.paginator = this.metadataPaginator;
+                    this.metadataData.sort = this.metadataSort;
+                    this.annotationData.paginator = this.annotationPaginator;
+                    this.annotationData.sort = this.annotationSort;
+                }, 50)
             }
+
         );
     }
 
@@ -214,13 +280,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         return `https://www.ebi.ac.uk/ena/browser/view/${study_id}`;
     }
 
-    getStyle(status: string) {
-        if (status === 'Assemblies - Submitted') {
-            return 'background-color: limegreen; color: black';
-        } else {
-            return 'background-color: yellow; color: black';
-        }
-    }
 
     getGenomeNoteData(data: any, key: string) {
         if (data && data.length !== 0) {
@@ -240,5 +299,14 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         }else{
             return tolid.join(', ');
         }
+    }
+
+    getStyle(status: string) {
+        if (status === 'Annotation Complete') {
+            return 'background-color: limegreen; color: black';
+        } else {
+            return 'background-color: yellow; color: black';
+        }
+
     }
 }
