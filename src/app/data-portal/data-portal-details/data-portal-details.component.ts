@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../../api.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatSort} from "@angular/material/sort";
-import {MatPaginator, PageEvent} from "@angular/material/paginator";
+import {MatPaginator} from "@angular/material/paginator";
 
 
 @Component({
@@ -280,13 +280,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         return `https://www.ebi.ac.uk/ena/browser/view/${study_id}`;
     }
 
-    getStyle(status: string) {
-        if (status === 'Assemblies - Submitted') {
-            return 'background-color: limegreen; color: black';
-        } else {
-            return 'background-color: yellow; color: black';
-        }
-    }
 
     getGenomeNoteData(data: any, key: string) {
         if (data && data.length !== 0) {
@@ -306,5 +299,14 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         }else{
             return tolid.join(', ');
         }
+    }
+
+    getStyle(status: string) {
+        if (status === 'Annotation Complete') {
+            return 'background-color: limegreen; color: black';
+        } else {
+            return 'background-color: yellow; color: black';
+        }
+
     }
 }
