@@ -547,7 +547,7 @@ export class GisComponent implements AfterViewInit {
       });
     }
     else {
-      console.log('ddsfdsf');
+
       this.isLoadingResults = true;
       this.filteredOptions = [];
       this.searchGisData()

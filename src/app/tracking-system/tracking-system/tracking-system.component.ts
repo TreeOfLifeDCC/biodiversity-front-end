@@ -219,7 +219,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         }
     }
     onFilterClick(filterName:string, filterValue: string) {
-        console.log('double click');
+
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
 
@@ -260,7 +260,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     changeCurrentClass(filterValue: string) {
-        console.log('single click');
+
         let delay = 200;
         this.preventSimpleClick = false;
         this.timer = setTimeout(() => {
@@ -268,7 +268,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                 this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
                 const index = this.classes.indexOf(this.currentClass) + 1;
                 this.currentClass = this.classes[index];
-                console.log(this.phylogenyFilters);
+
                 this.filterChanged.emit();
             }
         }, delay);
