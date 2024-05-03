@@ -30,12 +30,12 @@
               {
                 "glob": "**/*",
                 "input": "./node_modules/@visual-framework/vf-font-plex-mono/assets/IBM-Plex-Mono",
-                "output": "./biodiversity/assets/fonts/IBM-Plex-Mono"
+                "output": "./assets/fonts/IBM-Plex-Mono"
               },
               {
                 "glob": "**/*",
                 "input": "./node_modules/@visual-framework/vf-font-plex-sans/assets/IBM-Plex-Sans",
-                "output": "./biodiversity/assets/fonts/IBM-Plex-Sans"
+                "output": "./assets/fonts/IBM-Plex-Sans"
               }
             ],
             "styles": [
