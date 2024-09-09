@@ -124,14 +124,14 @@ margin-top: 80px;">Filter by:
                 <br>
                 <label class="vf-page-header__heading"><h1>Sampling Map</h1></label>
                 <br>
-                <mat-chip-list>
+                <mat-chip-set>
                     <div *ngFor="let item of activeFilters" class="item4">
                         <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
                             {{convertProjectNameKey(item)}}
                             <mat-icon>close</mat-icon>
                         </mat-chip>
                     </div>
-                </mat-chip-list>
+                </mat-chip-set>
                 <br>
                 <div class="vf-form__item | vf-search__item">
                     <input type="search" id="searchValue" matInput style="
