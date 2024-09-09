@@ -31,9 +31,9 @@
     "jquery": "^3.6.1",
     "leaflet": "^1.7.1",
     "leaflet.markercluster": "^1.5.3",
-    "mat-table-exporter": "^10.2.4",
-    "ngx-cookieconsent": "^4.0.2",
-    "ngx-spinner": "^14.0.0",
+    "mat-table-exporter": "^15.0.0",
+    "ngx-cookieconsent": "^6.0.0",
+    "ngx-spinner": "^16.0.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
