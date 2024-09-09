@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 // @ts-ignore
 import {ApiService} from "../../api.service";
-import { PageEvent} from "@angular/material/paginator";
+import { LegacyPageEvent as PageEvent} from "@angular/material/legacy-paginator";
 import {MatSort} from "@angular/material/sort";
 import {merge, of as observableOf} from "rxjs";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
