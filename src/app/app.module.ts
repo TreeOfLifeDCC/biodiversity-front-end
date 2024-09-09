@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import {MatListModule as MatListModule} from "@angular/material/list";
 import {MatCardModule as MatCardModule} from "@angular/material/card";
 import {MatChipsModule as MatChipsModule} from "@angular/material/chips";
@@ -83,8 +83,7 @@ const cookieConfig:NgcCookieConsentConfig = {
 
 
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         DataPortalComponent,
         DataPortalDetailsComponent,
@@ -99,13 +98,9 @@ const cookieConfig:NgcCookieConsentConfig = {
         ProjectsComponent,
         GisComponent,
         FooterComponent
-
-
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
         MatCardModule,
         MatChipsModule,
         MatProgressSpinnerModule,
@@ -130,10 +125,6 @@ const cookieConfig:NgcCookieConsentConfig = {
         MatTableExporterModule,
         MatRadioModule,
         MatAutocompleteModule,
-        NgcCookieConsentModule.forRoot(cookieConfig)
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
-})
+        NgcCookieConsentModule.forRoot(cookieConfig)], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
 }
