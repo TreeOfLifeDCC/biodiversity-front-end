@@ -2,23 +2,23 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatButtonModule as MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
-import {MatLegacyTooltipModule as MatTooltipModule} from "@angular/material/legacy-tooltip";
+import {MatTooltipModule as MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatLegacyListModule as MatListModule} from "@angular/material/legacy-list";
-import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatListModule as MatListModule} from "@angular/material/list";
+import {MatCardModule as MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
-import {MatLegacyChipsModule as MatChipsModule} from "@angular/material/legacy-chips";
+import {MatChipsModule as MatChipsModule} from "@angular/material/chips";
 import {MatBadgeModule} from "@angular/material/badge";
-import {MatLegacyProgressSpinnerModule as MatProgressSpinnerModule} from "@angular/material/legacy-progress-spinner";
-import {MatLegacyTableModule as MatTableModule} from "@angular/material/legacy-table";
+import {MatProgressSpinnerModule as MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTableModule as MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
-import {MatLegacyPaginatorModule as MatPaginatorModule} from "@angular/material/legacy-paginator";
-import {MatLegacyFormFieldModule as MatFormFieldModule} from "@angular/material/legacy-form-field";
-import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
-import {MatLegacyTabsModule as MatTabsModule} from "@angular/material/legacy-tabs";
-import {MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
+import {MatPaginatorModule as MatPaginatorModule} from "@angular/material/paginator";
+import {MatFormFieldModule as MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule as MatInputModule} from "@angular/material/input";
+import {MatTabsModule as MatTabsModule} from "@angular/material/tabs";
+import {MatDialogModule as MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({

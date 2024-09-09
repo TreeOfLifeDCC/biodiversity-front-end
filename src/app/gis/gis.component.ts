@@ -8,8 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from "../api.service";
 import {merge, of as observableOf, Subject} from "rxjs";
 import {catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap} from "rxjs/operators";
-import {MatLegacyMenuTrigger as MatMenuTrigger} from "@angular/material/legacy-menu";
-import {LegacyPageEvent as PageEvent} from "@angular/material/legacy-paginator";
+import {MatMenuTrigger as MatMenuTrigger} from "@angular/material/menu";
+import {PageEvent as PageEvent} from "@angular/material/paginator";
 import {Title} from "@angular/platform-browser";
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';

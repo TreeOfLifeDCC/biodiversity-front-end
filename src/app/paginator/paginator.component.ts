@@ -6,7 +6,7 @@ import {
   OnInit,
   Output } from '@angular/core';
 
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import { PageEvent as PageEvent } from '@angular/material/paginator';
 
 
 @Component({
