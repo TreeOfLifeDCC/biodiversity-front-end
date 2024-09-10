@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {Constants} from "../projects";
-import { NgFor, NgIf } from '@angular/common';
+
 import { MatCard } from '@angular/material/card';
 
 @Component({
@@ -9,7 +9,7 @@ import { MatCard } from '@angular/material/card';
     templateUrl: './projects.component.html',
     styleUrls: ['./projects.component.css'],
     standalone: true,
-    imports: [NgFor, MatCard, NgIf]
+    imports: [MatCard]
 })
 export class ProjectsComponent implements OnInit {
   projects:any;

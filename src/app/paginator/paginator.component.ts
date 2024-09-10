@@ -8,7 +8,7 @@ import {
 
 import { PageEvent as PageEvent } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
-import { NgFor, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { NgFor, DecimalPipe } from '@angular/common';
     templateUrl: './paginator.component.html',
     styleUrls: ['./paginator.component.scss'],
     standalone: true,
-    imports: [FormsModule, NgFor, DecimalPipe]
+    imports: [FormsModule, DecimalPipe]
 })
 export class PaginatorComponent implements OnInit {
 

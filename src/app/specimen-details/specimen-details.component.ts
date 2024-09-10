@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ApiService} from "../api.service";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-specimen-details',
     templateUrl: './specimen-details.component.html',
     styleUrls: ['./specimen-details.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, NgIf, NgFor]
+    imports: [MatCard, MatCardTitle, MatCardActions]
 })
 export class SpecimenDetailsComponent implements OnInit {
   data: any;

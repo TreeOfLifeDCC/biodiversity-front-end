@@ -5,7 +5,7 @@ import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHe
 import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {MatPaginator as MatPaginator} from "@angular/material/paginator";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
-import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
@@ -20,7 +20,7 @@ import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/ex
     templateUrl: './data-portal-details.component.html',
     styleUrls: ['./data-portal-details.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, NgIf, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, NgFor, MatExpansionPanel, MatExpansionPanelHeader, NgStyle]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {

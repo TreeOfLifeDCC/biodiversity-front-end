@@ -3,22 +3,24 @@
   <div class="page-size-pane">
     Showing
     <select class="vf-form__select" [ngModel]="pageSize" (change)="changeSize($event)">
-                                            <option *ngFor="let size of pageSizeOptions" [value]="size" [attr.selected]="pageSize === size">{{ size }}</option>
-                                       </select>
-          results of {{length}}
-        </div>
+      @for (size of pageSizeOptions; track size) {
+        <option [value]="size" [attr.selected]="pageSize === size">{{ size }}</option>
+      }
+    </select>
+    results of {{length}}
+  </div>
 
-        <div class="pages-navigation-pane">
-          <button (click)="previousPage()" (mousedown)="$event.stopPropagation()" title="Go to the previous page"
-            rel="nofollow" [disabled]="!previous" class="vf-badge vf-badge--tertiary previous">Previous</button>
+  <div class="pages-navigation-pane">
+    <button (click)="previousPage()" (mousedown)="$event.stopPropagation()" title="Go to the previous page"
+    rel="nofollow" [disabled]="!previous" class="vf-badge vf-badge--tertiary previous">Previous</button>
 
-          <span class="vf-grid">
-            <label for="page-index">Page</label>
-            <input type="text" name="page-index" class="vf-form__input" value="{{ pageIndex + 1 | number }}"
-              (change)="changePageIndex($event)"> of {{ totalPages | number }}
-          </span>
+    <span class="vf-grid">
+      <label for="page-index">Page</label>
+      <input type="text" name="page-index" class="vf-form__input" value="{{ pageIndex + 1 | number }}"
+        (change)="changePageIndex($event)"> of {{ totalPages | number }}
+      </span>
 
-          <button (click)="nextPage()" (mousedown)="$event.stopPropagation()" title="Go to the next page"
-            rel="nofollow" [disabled]="!next" class="vf-badge vf-badge--tertiary next">Next</button>
-        </div>
-      </div>
+      <button (click)="nextPage()" (mousedown)="$event.stopPropagation()" title="Go to the next page"
+      rel="nofollow" [disabled]="!next" class="vf-badge vf-badge--tertiary next">Next</button>
+    </div>
+  </div>

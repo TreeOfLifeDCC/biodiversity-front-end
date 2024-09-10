@@ -3,166 +3,200 @@
 <div class="vf-u-margin__top--800" style="margin: 0 10% 10%" xmlns="http://www.w3.org/1999/html">
 
 
-<section class="embl-grid">
+  <section class="embl-grid">
 
     <div class="vf-content vf-u-grid__col--span-2--lg"  style="margin: -21px;">
 
-        <div class="row column filterList">
+      <div class="row column filterList">
             <legend class="vf-form__legend hide-for-small-only" style="
 margin-top: 80px;">Filter by:
-            </legend>
-            <br>
-<!--            <div class="vf-cluster vf-cluster&#45;&#45;400">-->
-<!--                <div class="vf-cluster__inner">-->
-                    <div class="vf-form__item vf-form__item--radio">
-                        <input type="radio" name="toggleSpecies" value="1" id="species" class="vf-form__radio" (change)="toggleSpecimens()" checked>
-                        <label for="species" class="vf-form__label">Species</label>
-                    </div>
-                    <div class="vf-form__item vf-form__item--radio">
-                        <input type="radio" name="toggleSpecies" value="3" id="speciesandSpecimens" class="vf-form__radio" (change)="toggleSpecimens()">
-                        <label for="speciesandSpecimens" class="vf-form__label">Species and Specimens</label>
-                    </div>
-<!--                </div>-->
-<!--            </div>-->
-<!--                <div class="toggle">-->
-<!--                    <mat-radio-group aria-label="Select an option" [(ngModel)]="this.radioOptions" class="vf-form__item vf-form__item&#45;&#45;radio">-->
-<!--                        <mat-radio-button class="vf-form__radio" id="default"  [value]=1  name="toggleSpecies"   (change)="toggleSpecimens($event)" checked>Species</mat-radio-button><br>-->
-<!--                        <mat-radio-button class="vf-form__radio" id="toggle" name="toggleSpecimen" (change)="toggleSpecimens($event)" [value]=3>Species and Specimens</mat-radio-button>-->
+        </legend>
+        <br>
+          <!--            <div class="vf-cluster vf-cluster&#45;&#45;400">-->
+          <!--                <div class="vf-cluster__inner">-->
+          <div class="vf-form__item vf-form__item--radio">
+            <input type="radio" name="toggleSpecies" value="1" id="species" class="vf-form__radio" (change)="toggleSpecimens()" checked>
+            <label for="species" class="vf-form__label">Species</label>
+          </div>
+          <div class="vf-form__item vf-form__item--radio">
+            <input type="radio" name="toggleSpecies" value="3" id="speciesandSpecimens" class="vf-form__radio" (change)="toggleSpecimens()">
+            <label for="speciesandSpecimens" class="vf-form__label">Species and Specimens</label>
+          </div>
+        <!--                </div>-->
+      <!--            </div>-->
+      <!--                <div class="toggle">-->
+      <!--                    <mat-radio-group aria-label="Select an option" [(ngModel)]="this.radioOptions" class="vf-form__item vf-form__item&#45;&#45;radio">-->
+      <!--                        <mat-radio-button class="vf-form__radio" id="default"  [value]=1  name="toggleSpecies"   (change)="toggleSpecimens($event)" checked>Species</mat-radio-button><br>-->
+      <!--                        <mat-radio-button class="vf-form__radio" id="toggle" name="toggleSpecimen" (change)="toggleSpecimens($event)" [value]=3>Species and Specimens</mat-radio-button>-->
 
-<!--                    </mat-radio-group>-->
-<!--                </div>-->
-                <br>
-                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                    <mat-card-title>Data status</mat-card-title>
-                    <mat-card-actions >
-                        <mat-list role="list">
-                            <mat-divider></mat-divider><mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.biosamples.buckets)"
-                                                                      [style]="checkStyle('BioSamples - Submitted')"
-                                                                      (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;">
-                            <h4 matLine class="ellipsis">BioSamples - Submitted </h4>
-                        </mat-list-item>
-                            <mat-divider></mat-divider> <mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.raw_data.buckets)"
-                                                                       [style]="checkStyle('Raw Data - Submitted')"
-                                                                       (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;">
-                            <h4 matLine class="ellipsis">Raw Data - Submitted </h4>
-                        </mat-list-item>
+    <!--                    </mat-radio-group>-->
+  <!--                </div>-->
+  <br>
+    <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+      <mat-card-title>Data status</mat-card-title>
+      <mat-card-actions >
+        <mat-list role="list">
+          <mat-divider></mat-divider>@if (getStatusCount(aggregations?.biosamples.buckets)) {
+          <mat-list-item role="listbox"
+            [style]="checkStyle('BioSamples - Submitted')"
+            (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;">
+            <h4 matLine class="ellipsis">BioSamples - Submitted </h4>
+          </mat-list-item>
+        }
+        <mat-divider></mat-divider> @if (getStatusCount(aggregations?.raw_data.buckets)) {
+        <mat-list-item role="listbox"
+          [style]="checkStyle('Raw Data - Submitted')"
+          (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;">
+          <h4 matLine class="ellipsis">Raw Data - Submitted </h4>
+        </mat-list-item>
+      }
 
-                            <mat-divider></mat-divider><mat-list-item role="listbox"  *ngIf="getStatusCount(aggregations?.assemblies_status.buckets)"
-                                                                      [style]="checkStyle('Assemblies - Submitted')"
-                                                                      (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
-                            <h4 matLine class="ellipsis">Assemblies - Submitted </h4>
-                        </mat-list-item>
-                            <mat-divider></mat-divider><mat-list-item  role="listbox" *ngIf="getStatusCount(aggregations?.annotation_complete.buckets)"
-                                                                       [style]="checkStyle('Annotation Complete - Done')"
-                                                                       (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
-                            <h4 matLine class="ellipsis">Annotation Complete - Done </h4>
-                        </mat-list-item>
-                        </mat-list>
-                    </mat-card-actions>
-                </mat-card>
+      <mat-divider></mat-divider>@if (getStatusCount(aggregations?.assemblies_status.buckets)) {
+      <mat-list-item role="listbox"
+        [style]="checkStyle('Assemblies - Submitted')"
+        (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
+        <h4 matLine class="ellipsis">Assemblies - Submitted </h4>
+      </mat-list-item>
+    }
+    <mat-divider></mat-divider>@if (getStatusCount(aggregations?.annotation_complete.buckets)) {
+    <mat-list-item  role="listbox"
+      [style]="checkStyle('Annotation Complete - Done')"
+      (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
+      <h4 matLine class="ellipsis">Annotation Complete - Done </h4>
+    </mat-list-item>
+  }
+</mat-list>
+</mat-card-actions>
+</mat-card>
 
 
-                <br>
+<br>
 
-                <mat-card fxFlex class="mat-elevation-z8"  >
-                    <mat-card-title>Projects
-                        <i class="material-icons float-right"  style="cursor: pointer;" *ngIf="(( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)" (click)="toggleCollapse()">add</i>
-                        <i class="material-icons float-right"  style="cursor: pointer;"  *ngIf="( !isCollapsed)" (click)="toggleCollapse()">remove</i>
+  <mat-card fxFlex class="mat-elevation-z8"  >
+    <mat-card-title>Projects
+      @if ((( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)) {
+        <i class="material-icons float-right"  style="cursor: pointer;" (click)="toggleCollapse()">add</i>
+      }
+      @if (( !isCollapsed)) {
+        <i class="material-icons float-right"  style="cursor: pointer;"  (click)="toggleCollapse()">remove</i>
+      }
 
-                    </mat-card-title>
+    </mat-card-title>
 
-                    <mat-card-actions>
-                        <mat-list  role="listbox">
-                            <mat-divider></mat-divider>
-                            <ng-container *ngFor="let project of  aggregations?.project_name.buckets;  let i = index">
-                                <mat-list-item *ngIf="i<itemLimit"
-                                               [style]="checkStyle(project.key)  "
-                                               (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
-                                    <mat-divider></mat-divider><h4 matLine class="ellipsis" style="white-space: normal;">{{convertProjectNameKey(project.key)}}</h4>
-                                </mat-list-item>
-                            </ng-container>
-                        </mat-list>
-                    </mat-card-actions>
-                </mat-card>
+    <mat-card-actions>
+      <mat-list  role="listbox">
+        <mat-divider></mat-divider>
+        @for (project of  aggregations?.project_name.buckets; track project; let i = $index) {
+          @if (i<itemLimit) {
+            <mat-list-item
+              [style]="checkStyle(project.key)  "
+              (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
+              <mat-divider></mat-divider><h4 matLine class="ellipsis" style="white-space: normal;">{{convertProjectNameKey(project.key)}}</h4>
+            </mat-list-item>
+          }
+        }
+      </mat-list>
+    </mat-card-actions>
+  </mat-card>
 
-                <br>
+  <br>
 
-                <mat-card fxFlex class="mat-elevation-z8"  >
-                    <mat-card-title>
-                        Phylogeny/{{currentClass}}
-                        <mat-icon *ngIf="phylogenyFilters.length !== 0" (click)="onRefreshClick()" style="cursor: pointer;">
-                            refresh
-                        </mat-icon>
-                        <mat-icon *ngIf="phylogenyFilters.length !== 0" (click)="onHistoryClick()" style="cursor: pointer">
-                            arrow_circle_left
-                        </mat-icon>
-                    </mat-card-title>
-                    <mat-card-actions>
-                        <mat-list role="list" *ngIf="isFilterSelected" >
-                            <mat-divider></mat-divider><mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                                                                      (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
-                            <h4 matLine class="ellipsis">{{selectedFilterValue}} </h4>
-                        </mat-list-item>
-                        </mat-list>
-                        <div *ngIf="!isFilterSelected">
-                            <mat-list role="list"  *ngFor="let phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets">
-                                <mat-divider></mat-divider> <mat-list-item  role="listbox"
-                                                                            style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
-                                                                            (dblclick)="onFilterClick('phylogeny',phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
-                                <h4 matLine class="ellipsis">{{phylogeny_name.key}}</h4>
-                            </mat-list-item>
-                            </mat-list>
-                        </div>
-                    </mat-card-actions>
-                </mat-card>
+    <mat-card fxFlex class="mat-elevation-z8"  >
+      <mat-card-title>
+        Phylogeny/{{currentClass}}
+        @if (phylogenyFilters.length !== 0) {
+          <mat-icon (click)="onRefreshClick()" style="cursor: pointer;">
+            refresh
+          </mat-icon>
+        }
+        @if (phylogenyFilters.length !== 0) {
+          <mat-icon (click)="onHistoryClick()" style="cursor: pointer">
+            arrow_circle_left
+          </mat-icon>
+        }
+      </mat-card-title>
+      <mat-card-actions>
+        @if (isFilterSelected) {
+          <mat-list role="list" >
+            <mat-divider></mat-divider><mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
+            (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
+            <h4 matLine class="ellipsis">{{selectedFilterValue}} </h4>
+          </mat-list-item>
+        </mat-list>
+      }
+      @if (!isFilterSelected) {
+        <div>
+          @for (phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets; track phylogeny_name) {
+            <mat-list role="list" >
+              <mat-divider></mat-divider> <mat-list-item  role="listbox"
+              style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
+              (dblclick)="onFilterClick('phylogeny',phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
+              <h4 matLine class="ellipsis">{{phylogeny_name.key}}</h4>
+            </mat-list-item>
+          </mat-list>
+        }
+      </div>
+    }
+  </mat-card-actions>
+</mat-card>
 
+</div>
+
+
+</div>
+<div class="vf-content vf-u-grid__col--span-3"  >
+  <br>
+    <label class="vf-page-header__heading"><h1>Sampling Map</h1></label>
+    <br>
+      <mat-chip-set>
+        @for (item of activeFilters; track item) {
+          <div class="item4">
+            <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
+              {{convertProjectNameKey(item)}}
+              <mat-icon>close</mat-icon>
+            </mat-chip>
+          </div>
+        }
+      </mat-chip-set>
+      <br>
+        <div class="vf-form__item | vf-search__item">
+                    <input type="search" id="searchValue" matInput style="
+width: 99%; left:9px"  class="vf-search__input | vf-form__input" #searchInput [(ngModel)]='searchValue'
+            (keyup.enter)="searchGisData()"   (keyup)="filterSearchResults()" placeholder="Search for species"  #matInput [matAutocomplete]="auto">
+
+        </div>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (option of filteredOptions; track option) {
+            <mat-option [value]="option.id" (click)="searchGisData()">
+              {{option.id}}
+            </mat-option>
+          }
+        </mat-autocomplete>
+        <br>
+          @if (isLoadingResults || isRateLimitReached) {
+            <div class="example-loading-shade"
+              >
+              @if (isLoadingResults) {
+                <mat-spinner></mat-spinner>
+              }
+              @if (isRateLimitReached) {
+                <div class="example-rate-limit-reached">
+                  Something went wrong, please try again!
+                </div>
+              }
             </div>
+          }
+
+          <div   class="map-container" style="top: 20px;width: 100%; " >
+            <div class="map-frame">
+              <div id="map"></div>
+            </div>
+          </div>
 
 
         </div>
-            <div class="vf-content vf-u-grid__col--span-3"  >
-                <br>
-                <label class="vf-page-header__heading"><h1>Sampling Map</h1></label>
-                <br>
-                <mat-chip-set>
-                    <div *ngFor="let item of activeFilters" class="item4">
-                        <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
-                            {{convertProjectNameKey(item)}}
-                            <mat-icon>close</mat-icon>
-                        </mat-chip>
-                    </div>
-                </mat-chip-set>
-                <br>
-                <div class="vf-form__item | vf-search__item">
-                    <input type="search" id="searchValue" matInput style="
-width: 99%; left:9px"  class="vf-search__input | vf-form__input" #searchInput [(ngModel)]='searchValue'
-                           (keyup.enter)="searchGisData()"   (keyup)="filterSearchResults()" placeholder="Search for species"  #matInput [matAutocomplete]="auto">
-
-                </div>
-                <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions" [value]="option.id" (click)="searchGisData()">
-                        {{option.id}}
-                    </mat-option>
-                </mat-autocomplete>
-<br>
-               <div class="example-loading-shade"
-                           *ngIf="isLoadingResults || isRateLimitReached">
-                <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-                <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
-                    Something went wrong, please try again!
-                </div>
-            </div>
-
-                    <div   class="map-container" style="top: 20px;width: 100%; " >
-                        <div class="map-frame">
-                            <div id="map"></div>
-                        </div>
-                    </div>
-
-
-            </div>
-</section>
-</div>
+      </section>
+    </div>
 
 
 

@@ -5,7 +5,7 @@ import {MatPaginator as MatPaginator} from "@angular/material/paginator";
 import { MatSort, MatSortHeader } from "@angular/material/sort";
 import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor } from '@angular/material/button';
@@ -15,7 +15,7 @@ import { MatAnchor } from '@angular/material/button';
     templateUrl: './organism-details.component.html',
     styleUrls: ['./organism-details.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, NgIf, NgFor, MatProgressSpinner, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatProgressSpinner, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
 })
 export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   data: any;

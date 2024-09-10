@@ -12,7 +12,7 @@ import {Title} from "@angular/platform-browser";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatLine } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatChipSet, MatChip } from '@angular/material/chips';
@@ -28,7 +28,7 @@ import { PaginatorComponent } from '../../paginator/paginator.component';
     templateUrl: './tracking-system.component.html',
     styleUrls: ['./tracking-system.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',

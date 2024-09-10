@@ -20,7 +20,7 @@ import {Title} from "@angular/platform-browser";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatLine } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatChipSet, MatChip } from '@angular/material/chips';
@@ -37,7 +37,7 @@ import { PaginatorComponent } from '../paginator/paginator.component';
     templateUrl: './data-portal.component.html',
     styleUrls: ['./data-portal.component.scss'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
 })
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {

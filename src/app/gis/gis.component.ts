@@ -14,7 +14,7 @@ import {Title} from "@angular/platform-browser";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatLine, MatOption } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatChipSet, MatChip } from '@angular/material/chips';
@@ -43,7 +43,7 @@ L.Marker.prototype.options.icon = iconDefault;
     templateUrl: './gis.component.html',
     styleUrls: ['./gis.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressSpinner]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressSpinner]
 })
 export class GisComponent implements AfterViewInit {
 // @ts-ignore
