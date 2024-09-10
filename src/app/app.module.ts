@@ -83,22 +83,7 @@ const cookieConfig:NgcCookieConsentConfig = {
 
 
 
-@NgModule({ declarations: [
-        AppComponent,
-        DataPortalComponent,
-        DataPortalDetailsComponent,
-        TrackingSystemComponent,
-        PaginatorComponent,
-        HomeComponent,
-        OrganismDetailsComponent,
-        SpecimenDetailsComponent,
-        ApiDocumentationComponent,
-        HelpComponent,
-        AboutComponent,
-        ProjectsComponent,
-        GisComponent,
-        FooterComponent
-    ],
+@NgModule({ declarations: [AppComponent],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         MatCardModule,
@@ -125,6 +110,18 @@ const cookieConfig:NgcCookieConsentConfig = {
         MatTableExporterModule,
         MatRadioModule,
         MatAutocompleteModule,
-        NgcCookieConsentModule.forRoot(cookieConfig)], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        NgcCookieConsentModule.forRoot(cookieConfig), DataPortalComponent,
+        DataPortalDetailsComponent,
+        TrackingSystemComponent,
+        PaginatorComponent,
+        HomeComponent,
+        OrganismDetailsComponent,
+        SpecimenDetailsComponent,
+        ApiDocumentationComponent,
+        HelpComponent,
+        AboutComponent,
+        ProjectsComponent,
+        GisComponent,
+        FooterComponent], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
 }

@@ -1,11 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterLink } from "@angular/router";
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [NgFor, RouterLink]
 })
 export class HomeComponent implements OnInit {
   public categories = [

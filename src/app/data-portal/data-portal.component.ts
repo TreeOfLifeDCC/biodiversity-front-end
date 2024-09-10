@@ -8,20 +8,36 @@ import {
     Output
 } from '@angular/core';
 import {ApiService} from "../api.service";
-import {MatSort} from "@angular/material/sort";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {merge, of as observableOf} from "rxjs";
 import {MatMenuTrigger as MatMenuTrigger} from "@angular/material/menu";
 import { PageEvent as PageEvent } from '@angular/material/paginator';
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLine } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatAnchor } from '@angular/material/button';
+import { PaginatorComponent } from '../paginator/paginator.component';
 
 @Component({
     selector: 'app-data-portal',
     templateUrl: './data-portal.component.html',
-    styleUrls: ['./data-portal.component.scss']
+    styleUrls: ['./data-portal.component.scss'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
 })
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {

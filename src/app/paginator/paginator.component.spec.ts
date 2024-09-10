@@ -27,13 +27,13 @@ describe('PaginationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaginatorComponent ],
-      imports: [
+    imports: [
         CommonModule,
         FormsModule,
         MatSelectModule,
-      ]
-    })
+        PaginatorComponent,
+    ]
+})
     .compileComponents();
   }));
 

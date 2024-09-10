@@ -8,8 +8,8 @@ describe('TrackingSystemComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TrackingSystemComponent]
-        })
+    imports: [TrackingSystemComponent]
+})
             .compileComponents();
     }));
 

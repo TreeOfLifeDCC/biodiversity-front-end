@@ -3,7 +3,7 @@ import * as L from 'leaflet';
 import 'leaflet.markercluster';
 
 import { NgxSpinnerService } from 'ngx-spinner';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ApiService} from "../api.service";
 import {merge, of as observableOf, Subject} from "rxjs";
@@ -11,6 +11,16 @@ import {catchError, debounceTime, distinctUntilChanged, map, startWith, switchMa
 import {MatMenuTrigger as MatMenuTrigger} from "@angular/material/menu";
 import {PageEvent as PageEvent} from "@angular/material/paginator";
 import {Title} from "@angular/platform-browser";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLine, MatOption } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import { MatInput } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -29,9 +39,11 @@ L.Marker.prototype.options.icon = iconDefault;
 
 
 @Component({
-  selector: 'app-gis',
-  templateUrl: './gis.component.html',
-  styleUrls: ['./gis.component.css']
+    selector: 'app-gis',
+    templateUrl: './gis.component.html',
+    styleUrls: ['./gis.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressSpinner]
 })
 export class GisComponent implements AfterViewInit {
 // @ts-ignore

@@ -1,15 +1,26 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../../api.service";
-import {MatTableDataSource as MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
+import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {MatPaginator as MatPaginator} from "@angular/material/paginator";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { NgIf, NgFor, NgStyle } from '@angular/common';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatInput } from '@angular/material/input';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatAnchor } from '@angular/material/button';
+import { MatChip } from '@angular/material/chips';
+import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 
 
 @Component({
     selector: 'app-data-portal-details',
     templateUrl: './data-portal-details.component.html',
-    styleUrls: ['./data-portal-details.component.css']
+    styleUrls: ['./data-portal-details.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, NgIf, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, NgFor, MatExpansionPanel, MatExpansionPanelHeader, NgStyle]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {

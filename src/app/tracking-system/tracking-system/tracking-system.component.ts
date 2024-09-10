@@ -2,17 +2,33 @@ import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild
 // @ts-ignore
 import {ApiService} from "../../api.service";
 import { PageEvent as PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {merge, of as observableOf} from "rxjs";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
+import { NgIf, NgFor } from '@angular/common';
+import { MatLine } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatAnchor } from '@angular/material/button';
+import { PaginatorComponent } from '../../paginator/paginator.component';
 @Component({
     selector: 'app-status-tracking',
     templateUrl: './tracking-system.component.html',
-    styleUrls: ['./tracking-system.component.css']
+    styleUrls: ['./tracking-system.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, NgIf, MatListItem, MatLine, NgFor, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',
