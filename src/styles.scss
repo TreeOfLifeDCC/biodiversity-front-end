@@ -1,5 +1,6 @@
 
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 html, body { height: 100%; }
 body { margin: 0}
@@ -24,13 +25,13 @@ body { margin: 0}
 
 }
 
-td.mat-cell, td.mat-footer-cell {
+td.mat-mdc-cell, td.mat-mdc-footer-cell {
   border-bottom: none !important;
   white-space: nowrap !important;
 
 }
 
-.mat-header-cell {
+.mat-mdc-header-cell {
   border: 0.1em solid white;
   text-align: left;
   white-space: nowrap;
@@ -40,23 +41,21 @@ td.mat-cell, td.mat-footer-cell {
   padding: 8px 16px;
 }
 
-.mat-cell {
+.mat-mdc-cell {
   border: 0.1em solid white;
   text-align: left;
   white-space: nowrap;
   font-family: IBM Plex Sans, Helvetica, Arial, sans-serif;
   line-height: -1.5;
   margin: 0;
-
 }
 
-.mat-header-cell {
+.mat-mdc-header-cell {
   background-color: #d0d0ce;
   white-space: nowrap;
-
 }
 
-tr.mat-header-row {
+tr.mat-mdc-header-row {
   height: 40px;
   white-space: nowrap;
 }
@@ -79,8 +78,8 @@ tr.mat-header-row {
   color: #3b6fb6 !important;
 }
 
-td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
-  padding-left: 10px
+td.mat-mdc-cell:first-of-type, td.mat-mdc-footer-cell:first-of-type {
+  padding-left: 10px;
 }
 
 
@@ -92,7 +91,7 @@ td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
 }
 
 
-table.mat-table {
+table.mat-mdc-table {
   border-spacing: 0;
   font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
 }
@@ -190,11 +189,11 @@ body::-webkit-scrollbar{
   font-weight: 400;
   line-height: 1.71;
 }
-.mat-expansion-panel {
+.mat-mdc-expansion-panel {
   overflow: scroll;
 
 }
-.mat-button, .mat-icon-button, .mat-stroked-button {
+.mat-mdc-button, .mat-mdc-icon-button, .mat-mdc-stroked-button {
   font-family: IBM Plex Sans,Helvetica,Arial,sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -220,7 +219,7 @@ body::-webkit-scrollbar{
   }
 }
 @media(max-width:1900px){
-  .mat-table{
+  .mat-mdc-table{
     overflow: auto hidden;
     display: block;
   }
@@ -265,3 +264,25 @@ body::-webkit-scrollbar{
   position: absolute;
   top: 0;
 }
+
+
+/* added by Koosum */
+.mat-card-title{
+  background-color: red;
+}
+.mat-mdc-card-title {
+  color: green;
+  margin-right: 80px;
+  position: relative;
+
+
+  font-size: 24px;
+  font-weight: 500;
+}
+
+h4 {
+  color: pink;
+}
+
+
+
