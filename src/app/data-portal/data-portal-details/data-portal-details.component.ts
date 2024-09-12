@@ -13,6 +13,7 @@ import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
 import { MatChip } from '@angular/material/chips';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
 
 
 @Component({
@@ -20,7 +21,7 @@ import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/ex
     templateUrl: './data-portal-details.component.html',
     styleUrls: ['./data-portal-details.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {
@@ -96,6 +97,11 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showGenomeNote = false;
 
 
+    geoLocation: boolean = false;
+    orgGeoList: any;
+    specGeoList: any;
+    @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
+
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
 
     @ViewChild('metadataSort') metadataSort: MatSort | undefined;
@@ -147,6 +153,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        this.geoLocation = false;
     }
 
     ngAfterViewInit() {
@@ -157,7 +164,27 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
                 this.organismData = data.results[0]['_source'];
+
+                // added by Koosum
+                this.orgGeoList = this.organismData.orgGeoList;
+                this.specGeoList = this.organismData.specGeoList;
+                if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
+                    this.geoLocation = true;
+                    console.log(this.orgGeoList)
+                    setTimeout(() => {
+                        const tabGroup = this.tabgroup;
+                        const selected = this.tabgroup.selectedIndex;
+                        tabGroup.selectedIndex = 4;
+                        setTimeout(() => {
+                            if (selected != null) {
+                                this.tabgroup.selectedIndex = selected;
+                            }
+                        }, 1);
+                    }, 400);
+                }
+
                 this.metadataData = new MatTableDataSource(data.results[0]['_source']['records']);
+                console.log(this.metadataData)
                 this.metadataDataLength = data.results[0]['_source']['records'] ? data.results[0]['_source']['records'].length : 0;
 
                 this.annotationData = new MatTableDataSource(data.results[0]['_source']['annotation']);
@@ -243,6 +270,11 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
             }
 
         );
+
+        // select first tab by default
+        setTimeout(() => {
+            this.tabgroup.selectedIndex = 0;
+        }, 400);
     }
 
     applyFilter(event: Event, dataSource: string) {
