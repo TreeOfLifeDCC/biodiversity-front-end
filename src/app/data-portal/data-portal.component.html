@@ -177,6 +177,15 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 
           <div style="float: right;font-size: 14px; font-weight: 400;">
 
+              <!-- && (this.AnnotationFilters.length > 0 || filterService.AnnotationCompleteFilters.length > 0 || filterService.AssembliesFilters.length > 0 || filterService.RawDataFilters.length > 0) -->
+              @if (this.activeFilters.length > 0) {
+                  <button (click)="openDownloadDialog(this.activeFilters[0])" style="float: left;margin-top: 10px;"
+                          class="vf-button vf-button--primary vf-button--outline vf-button--sm">
+                      Download
+                  </button>
+              }
+
+              {{activeFilters}}
             <button style="float: left;margin-top: 10px;" type="submit"
               class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="exporter.exportTable('csv', {fileName: 'data_portal'})" >Download metadata
             </button>
@@ -206,45 +215,9 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                 </div>
               }
             </div>
-            <!--                        <mat-checkbox *ngFor="let data of dataColumnsDefination" class="vf-form__item vf-form__item&#45;&#45;checkbox" color="primary"-->
-            <!--                                              (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()"-->
-            <!--                                              [checked]="data.selected" (change)="showSelectedColumn(data, $event.checked)">-->
-            <!--                                    {{data.name}}-->
-          <!--                        </mat-checkbox>-->
         </mat-expansion-panel>
 
         <br>
-          <!--            <div>-->
-          <!--                <div class="column-actions">-->
-          <!--                    <div *ngIf="true" class="column-actions__scroller">-->
-          <!--                        <button  class="table-scroll table-scroll&#45;&#45;left">-->
-          <!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">-->
-          <!--                                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />-->
-        <!--                            </svg>-->
-      <!--                        </button>-->
-
-      <!--                        <div>-->
-      <!--                            <circle cx="10" cy="10" r="10"/>-->
-      <!--                            <svg-->
-      <!--                                    *ngFor="let column of dataColumnsDefination | async"-->
-      <!--                                    viewBox="0 0 20 20"-->
-      <!--                                    xmlns="http://www.w3.org/2000/svg"-->
-      <!--                                    fill="currentColor"-->
-      <!--                                    class="column-indicator"-->
-      <!--                                                                [class.column-indicator&#45;&#45;visible]="column.visible"-->
-      <!--                            >-->
-
-    <!--                            </svg>-->
-  <!--                        </div>-->
-
-  <!--                        <button  class="table-scroll table-scroll&#45;&#45;right">-->
-  <!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">-->
-  <!--                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />-->
-<!--                            </svg>-->
-<!--                        </button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
 <br>
   <div style=" display: flex;">
     <table mat-table
@@ -382,3 +355,27 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 
 <br>
 
+
+
+<ng-template let-data #subscriptionTemplate>
+    <div mat-dialog-content class="centerContents">
+        <p class="mat-dialog-title-font">{{subscriptionDialogTitle}}</p>
+        <form [formGroup]="subscriptionForm" novalidate>
+            <p>
+                <mat-radio-group aria-label="Select an option" formControlName="downloadOption">
+                    <div><mat-radio-button value="assemblies" color="primary">All Assemblies</mat-radio-button></div>
+                    <div><mat-radio-button value="annotation" color="primary" class="radio">Annotation</mat-radio-button></div>
+                </mat-radio-group>
+            </p>
+
+            <div>
+                To download data outside of the web interface, please see Bulk Downloads
+            </div>
+        </form>
+        <div mat-dialog-actions class="flexbox">
+            <button mat-button (click)="onCancelDialog('form')" class="flex-item">Cancel</button>
+            <button mat-button (click)="onDownload(data)" cdkFocusInitial class="flex-item">Download</button>
+        </div>
+
+    </div>
+</ng-template>

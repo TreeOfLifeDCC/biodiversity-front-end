@@ -195,3 +195,42 @@ div.pages-navigation-pane span {
 .testkoosum {
   color: green;
 }
+
+.subscription-icon {
+  color: steelblue;
+}
+
+.mat-dialog-title-font {
+  /*color: steelblue;*/
+}
+
+div.mat-dialog-actions mat-button {
+  margin:0 auto;
+  display:block;
+  color: red;
+}
+
+#cancel-btn , #register-btn {
+  padding: 5px 5px;
+}
+
+.dialog-btn-section{
+  background-color: #8FBC45;
+  text-align: center;
+}
+
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
+}
+
+.flexbox {
+  display: flex;
+  justify-content:  space-between;
+  flex-wrap: wrap;
+}
+.flex-item {
+  margin: 10px auto;
+  padding: 5px;
+}

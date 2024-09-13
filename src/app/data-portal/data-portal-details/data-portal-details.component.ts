@@ -108,9 +108,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     nbnatlas: any = [];
     nbnatlasMapUrl: string = '';
     url: SafeResourceUrl = '';
-    @Input() height = 200;
-    @Input() width = 200;
-    @Input() loader = '../../assets/200.gif';
+    height = 200;
+    width = 200;
+    loader = '../../assets/200.gif';
     isLoading: boolean = true;
     @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
 

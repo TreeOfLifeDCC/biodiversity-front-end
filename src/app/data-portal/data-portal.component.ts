@@ -5,7 +5,7 @@ import {
     ViewChild,
     EventEmitter,
     Input,
-    Output
+    Output, TemplateRef
 } from '@angular/core';
 import {ApiService} from "../api.service";
 import { MatSort, MatSortHeader } from "@angular/material/sort";
@@ -24,20 +24,27 @@ import { MatDivider } from '@angular/material/divider';
 import { MatLine } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatChipSet, MatChip } from '@angular/material/chips';
-import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import {MatDialog} from "@angular/material/dialog";
+import {FloatLabelType} from "@angular/material/form-field";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
 @Component({
     selector: 'app-data-portal',
     templateUrl: './data-portal.component.html',
     styleUrls: ['./data-portal.component.scss'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet, MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet,
+        MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
+        MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
+        MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
+        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton]
 })
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {
@@ -89,6 +96,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             selected: false
         },
         {name: 'Annotation submitted to ENA', label: 'annotation_status', selected: false}]
+
+    subscriptionDialogTitle = '';
+    dialogRef: any;
+    public subscriptionForm!: FormGroup;
+    @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
+    readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
+    radioOptions: string = '';
 
     data: any;
     isCollapsed = true;
@@ -142,7 +156,8 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
 
 
-    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,private titleService: Title ) {
+    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,
+                private titleService: Title, private dialog: MatDialog ) {
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -156,6 +171,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isOpen = false;
 
     ngOnInit(): void {
+        this.subscriptionForm = new FormGroup({
+            downloadOption: new FormControl('', [Validators.required]),
+        });
+
         this.titleService.setTitle('Data portal');
         const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
         // @ts-ignore
@@ -596,8 +615,54 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 this.router.navigate([currentUrl.split('?')[0]] );
             });
         }
+    }
+
+    openDownloadDialog(value: string) {
+        this.subscriptionDialogTitle = `Download data`;
+        // this.subscriber['filters'][this.indexDetails['indexKey']] = [value];
+        this.dialogRef = this.dialog.open(this.subscriptionTemplate,
+            { data: value, height: '260px', width: '400px' });
+    }
+
+    public displayError = (controlName: string, errorName: string) => {
+        return this.subscriptionForm?.controls[controlName].hasError(errorName);
+    }
+
+    onDownload(data: { email: any; filters: any; }) {
+        console.log(this.subscriptionForm.value)
+        // if (this.subscriptionForm?.valid && this.subscriptionForm?.touched) {
+        //     this.dataService.subscribeUser(this.indexDetails['index'], this.indexDetails['indexKey'], data.email, data.filters)
+        //         .subscribe({
+        //             next: () => {
+        //                 this.dialogRef.close();
+        //             },
+        //             error: (error: any) => {
+        //                 console.log(error);
+        //                 this.dialogRef.close();
+        //             }
+        //         });
+        // }
+    }
+
+    getEmail(event: Event) {
+        // this.subscriber['email'] = (<HTMLInputElement>event.target).value;
+    }
+
+    onCancelDialog(dialogType: string) {
+        this.dialogRef.close();
+    }
 
 
+    onRadioButtonChange(event: any) {
+        console.log("onRadioButtonChange()");
+        console.log("event.source=" + event.source.id);
+        console.log("event.value=" + event.value);
+    }
+
+    onSubmitRadioGroup() {
+        console.log("onSubmitRadioGroup()");
+        console.log("radios=" + this.radioOptions);
+        // console.log("this.surveyPlusPlans.selected=" + this.surveyPlusPlans.value);
     }
 
 }
