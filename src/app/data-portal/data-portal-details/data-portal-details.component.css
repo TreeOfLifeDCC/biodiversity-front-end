@@ -242,3 +242,29 @@ element.style {
     padding-left: 2px;
     padding-bottom: 2px;
 }
+
+.center-align {
+    text-align: center;
+}
+
+.image-nbnatlas {
+    margin-bottom: 20px;
+}
+
+.btn-open {
+
+}
+
+.btn {
+    color: #fff;
+    background-color: #8FBC45;
+    border-color: #28a745;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+}
