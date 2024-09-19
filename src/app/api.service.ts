@@ -113,4 +113,51 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
+
+    downloadData(downloadOption: string, pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
+                 filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
+
+        let url = `http://127.0.0.1:8000/data-download`;
+
+        // phylogeny
+        let phylogenyStr = phylogeny_filters.length ? phylogeny_filters.join('-') : '';
+
+        // filter string
+        let filterStr = '';
+        if (filterValue.length !== 0) {
+            const allowedProjects = ['DToL', 'ASG', 'ERGA', 'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
+
+            filterStr = filterValue.map((filterItem) => {
+                if (Constants.projects.some(el => el.title === filterItem) || allowedProjects.includes(filterItem)) {
+                    return `project_name:${filterItem}`;
+                } else if (filterItem.includes('-')) {
+                    if (filterItem.startsWith('symbionts_') || filterItem.startsWith('metagenomes_')) {
+                        return filterItem.replace('-', ':');
+                    } else {
+                        let formattedFilter = filterItem.split(' - ')[0].toLowerCase().split(' ').join('_');
+                        return formattedFilter === 'assemblies' ? 'assemblies_status:Done' : `${formattedFilter}:Done`;
+                    }
+                } else {
+                    return `${currentClass}:${filterItem}`;
+                }
+            }).join(',');
+        }
+
+        console.log("filterStr: ", filterStr)
+
+
+        const payload = {
+            pageIndex,
+            pageSize,
+            searchValue,
+            sortValue: `${sortActive}:${sortDirection}`,
+            filterValue: filterStr,
+            currentClass,
+            phylogeny_filters: phylogenyStr,
+            index_name,
+            downloadOption
+        };
+        return this.http.post(url, payload, { responseType: 'blob' });
+    }
+
 }

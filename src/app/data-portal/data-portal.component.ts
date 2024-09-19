@@ -27,7 +27,19 @@ import { MatChipSet, MatChip } from '@angular/material/chips';
 import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import {
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatTableDataSource
+} from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
 import { PaginatorComponent } from '../paginator/paginator.component';
@@ -103,6 +115,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
     readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
     radioOptions: string = '';
+    displayErrorMsg: boolean = false;
 
     data: any;
     isCollapsed = true;
@@ -619,7 +632,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     openDownloadDialog(value: string) {
         this.subscriptionDialogTitle = `Download data`;
-        // this.subscriber['filters'][this.indexDetails['indexKey']] = [value];
         this.dialogRef = this.dialog.open(this.subscriptionTemplate,
             { data: value, height: '260px', width: '400px' });
     }
@@ -628,41 +640,39 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         return this.subscriptionForm?.controls[controlName].hasError(errorName);
     }
 
-    onDownload(data: { email: any; filters: any; }) {
-        console.log(this.subscriptionForm.value)
-        // if (this.subscriptionForm?.valid && this.subscriptionForm?.touched) {
-        //     this.dataService.subscribeUser(this.indexDetails['index'], this.indexDetails['indexKey'], data.email, data.filters)
-        //         .subscribe({
-        //             next: () => {
-        //                 this.dialogRef.close();
-        //             },
-        //             error: (error: any) => {
-        //                 console.log(error);
-        //                 this.dialogRef.close();
-        //             }
-        //         });
-        // }
+    onDownload() {
+        if (this.subscriptionForm?.valid && this.subscriptionForm?.touched) {
+            const downloadOption = this.subscriptionForm.value['downloadOption']
+            console.log("downloadOption: ", downloadOption)
+            this._apiService.downloadData(downloadOption, this.pageIndex,
+                this.pageSize, this.searchValue || "", this.sort.active, this.sort.direction, this.activeFilters,
+                this.currentClass, this.phylogenyFilters, 'data_portal').subscribe({
+                next: (response: Blob) => {
+                    // Create a link element, set the download attribute with a filename, and trigger the download
+                    const blobUrl = window.URL.createObjectURL(response);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = 'download.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    // close dialog box
+                    setTimeout(() => {
+                        this.dialogRef.close();
+                    }, 500)
+
+                },
+                error: error => {
+                    console.error('Error downloading the CSV file:', error);
+                }
+            });
+        }
+        this.displayErrorMsg = true;
+
     }
 
-    getEmail(event: Event) {
-        // this.subscriber['email'] = (<HTMLInputElement>event.target).value;
-    }
-
-    onCancelDialog(dialogType: string) {
+    onCancelDialog() {
         this.dialogRef.close();
-    }
-
-
-    onRadioButtonChange(event: any) {
-        console.log("onRadioButtonChange()");
-        console.log("event.source=" + event.source.id);
-        console.log("event.value=" + event.value);
-    }
-
-    onSubmitRadioGroup() {
-        console.log("onSubmitRadioGroup()");
-        console.log("radios=" + this.radioOptions);
-        // console.log("this.surveyPlusPlans.selected=" + this.surveyPlusPlans.value);
     }
 
 }

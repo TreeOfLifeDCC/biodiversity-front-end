@@ -366,15 +366,19 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                     <div><mat-radio-button value="assemblies" color="primary">All Assemblies</mat-radio-button></div>
                     <div><mat-radio-button value="annotation" color="primary" class="radio">Annotation</mat-radio-button></div>
                 </mat-radio-group>
+                @if (displayError('downloadOption', 'required') && displayErrorMsg) {
+                    <mat-error>
+                        Please select an option
+                    </mat-error>
+                }
             </p>
-
             <div>
                 To download data outside of the web interface, please see Bulk Downloads
             </div>
         </form>
         <div mat-dialog-actions class="flexbox">
-            <button mat-button (click)="onCancelDialog('form')" class="flex-item">Cancel</button>
-            <button mat-button (click)="onDownload(data)" cdkFocusInitial class="flex-item">Download</button>
+            <button mat-button (click)="onCancelDialog()" class="flex-item">Cancel</button>
+            <button mat-button (click)="onDownload()" cdkFocusInitial class="flex-item">Download</button>
         </div>
 
     </div>
