@@ -201,7 +201,8 @@ div.pages-navigation-pane span {
 }
 
 .mat-dialog-title-font {
-  /*color: steelblue;*/
+  font-size: larger;
+  font-weight: bold;
 }
 
 div.mat-dialog-actions mat-button {
@@ -233,4 +234,17 @@ div.mat-dialog-actions mat-button {
 .flex-item {
   margin: 10px auto;
   padding: 5px;
+}
+// mat-error css
+.errorMsg {
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.centerContents {
+  text-align: left;
+  padding: 10px;
 }

@@ -11,7 +11,7 @@
           <mat-card fxFlex class="mat-elevation-z8" layout-margin >
             <mat-card-title>Data status</mat-card-title>
             <mat-card-actions >
-              <mat-list role="list" class="testkoosum">
+              <mat-list role="list">
                 <mat-divider></mat-divider>@if (getStatusCount(aggregations?.biosamples.buckets)) {
                 <mat-list-item role="listbox"
                   [style]="checkStyle('BioSamples - Submitted')"
@@ -367,13 +367,16 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                     <div><mat-radio-button value="annotation" color="primary" class="radio">Annotation</mat-radio-button></div>
                 </mat-radio-group>
                 @if (displayError('downloadOption', 'required') && displayErrorMsg) {
-                    <mat-error>
-                        Please select an option
+                    <mat-error class="errorMsg">
+                        <div>
+                            Please select an option!
+                        </div>
                     </mat-error>
                 }
             </p>
             <div>
-                To download data outside of the web interface, please see Bulk Downloads
+                To download data outside of the web interface, please see
+                <a target="_blank" [routerLink]="['/bulk-downloads/']">Bulk Downloads</a>
             </div>
         </form>
         <div mat-dialog-actions class="flexbox">
