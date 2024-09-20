@@ -429,7 +429,7 @@
                     </mat-tab>
                 }
 
-                <!-- added by koosum -->
+                <!-- Geo Location Map -->
                 @if (geoLocation) {
                     <mat-tab label="Geo Location Maps">
                         <ng-container *ngTemplateOutlet="mapTemplate; context: { orgGeoList: orgGeoList, specGeoList: specGeoList }"></ng-container>
@@ -479,7 +479,7 @@
                         </ng-template>
                     </mat-tab>
                 }
-                <!-- added by koosum end -->
+
                 @if (organismData?.symbionts_records && organismData?.symbionts_records.length) {
                     <mat-tab label="Symbionts"
                              class=tab-width>

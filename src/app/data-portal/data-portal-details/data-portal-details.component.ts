@@ -178,7 +178,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.isRateLimitReached = data === null;
                 this.organismData = data.results[0]['_source'];
 
-                // added by Koosum
+                // Geo Location maps
                 this.orgGeoList = this.organismData.orgGeoList;
                 this.specGeoList = this.organismData.specGeoList;
                 if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
@@ -194,8 +194,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     }, 400);
                 }
 
+                // NBN Atlas
                 this.nbnatlas = this.organismData?.nbnatlas;
-
                 if (this.nbnatlas != null) {
                     const imgUrl = 'https://easymap.nbnatlas.org/Image?tvk=' + this.nbnatlas.split('/')[4] +
                         '&ref=0&w=400&h=600&b0fill=6ecc39&title=0' ;
