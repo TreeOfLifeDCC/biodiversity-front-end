@@ -177,18 +177,16 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 
           <div style="float: right;font-size: 14px; font-weight: 400;">
 
-              <!-- && (this.AnnotationFilters.length > 0 || filterService.AnnotationCompleteFilters.length > 0 || filterService.AssembliesFilters.length > 0 || filterService.RawDataFilters.length > 0) -->
               @if (this.activeFilters.length > 0) {
                   <button (click)="openDownloadDialog(this.activeFilters[0])" style="float: left;margin-top: 10px;"
                           class="vf-button vf-button--primary vf-button--outline vf-button--sm">
                       Download
                   </button>
               }
-
-              {{activeFilters}}
             <button style="float: left;margin-top: 10px;" type="submit"
               class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="exporter.exportTable('csv', {fileName: 'data_portal'})" >Download metadata
             </button>
+
 
             @if (isLoadingResults || isRateLimitReached) {
               <div  >
@@ -353,10 +351,8 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 </section>
 </div>
 
-<br>
 
-
-
+<!-- Download Dialog Box -->
 <ng-template let-data #subscriptionTemplate>
     <div mat-dialog-content class="centerContents">
         <p class="mat-dialog-title-font">{{subscriptionDialogTitle}}</p>
@@ -379,9 +375,15 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                 <a target="_blank" [routerLink]="['/bulk-downloads/']">Bulk Downloads</a>
             </div>
         </form>
-        <div mat-dialog-actions class="flexbox">
-            <button mat-button (click)="onCancelDialog()" class="flex-item">Cancel</button>
-            <button mat-button (click)="onDownload()" cdkFocusInitial class="flex-item">Download</button>
+
+        <div mat-dialog-actions class="buttonContainer">
+            <button mat-button (click)="onCancelDialog()" class="flex-item cancel-button">Cancel</button>
+            <button mat-button (click)="onDownload()"
+                    [disabled]="subscriptionForm.get('downloadOption')?.invalid"
+                    cdkFocusInitial
+                    class="flex-item download-button">
+                Download
+            </button>
         </div>
 
     </div>
