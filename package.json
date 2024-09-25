@@ -8,6 +8,14 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
+  "overrides": {
+    "mat-table-exporter": {
+      "@angular/cdk": ">=15.2.3",
+      "@angular/material": ">=15.2.3",
+      "@angular/common": ">=15.2.3",
+      "@angular/core": ">=15.2.3"
+    }
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^18.2.3",

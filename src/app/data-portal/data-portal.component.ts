@@ -644,28 +644,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         if (this.subscriptionForm?.valid && this.subscriptionForm?.touched) {
             const downloadOption = this.subscriptionForm.value['downloadOption']
             console.log("downloadOption: ", downloadOption)
-            this._apiService.downloadData(downloadOption, this.pageIndex,
-                this.pageSize, this.searchValue || "", this.sort.active, this.sort.direction, this.activeFilters,
-                this.currentClass, this.phylogenyFilters, 'data_portal').subscribe({
-                next: (response: Blob) => {
-                    // Create a link element, set the download attribute with a filename, and trigger the download
-                    const blobUrl = window.URL.createObjectURL(response);
-                    const a = document.createElement('a');
-                    a.href = blobUrl;
-                    a.download = 'download.csv';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    // close dialog box
-                    setTimeout(() => {
-                        this.dialogRef.close();
-                    }, 500)
-
-                },
-                error: error => {
-                    console.error('Error downloading the CSV file:', error);
-                }
-            });
+            this.downloadFile(downloadOption, true);
         }
         this.displayErrorMsg = true;
 
@@ -673,6 +652,31 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     onCancelDialog() {
         this.dialogRef.close();
+    }
+
+    downloadFile(downloadOption: string, dialog: boolean) {
+        this._apiService.downloadData(downloadOption, this.pageIndex,
+            this.pageSize, this.searchValue || "", this.sort.active, this.sort.direction, this.activeFilters,
+            this.currentClass, this.phylogenyFilters, 'data_portal').subscribe({
+            next: (response: Blob) => {
+                const blobUrl = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = 'download.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                if (dialog) {
+                    // close dialog box
+                    setTimeout(() => {
+                        this.dialogRef.close();
+                    }, 500)
+                }
+            },
+            error: error => {
+                console.error('Error downloading the CSV file:', error);
+            }
+        });
     }
 
 }

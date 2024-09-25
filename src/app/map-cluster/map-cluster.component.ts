@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, Input } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {MatProgressBar} from "@angular/material/progress-bar";
 
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
@@ -20,7 +22,10 @@ L.Marker.prototype.options.icon = iconDefault;
 @Component({
   selector: 'app-map-cluster',
   standalone: true,
-  imports: [],
+  imports: [
+    MatProgressSpinner,
+    MatProgressBar
+  ],
   templateUrl: './map-cluster.component.html',
   styleUrl: './map-cluster.component.css'
 })
@@ -28,6 +33,7 @@ export class MapClusterComponent implements AfterViewInit {
   private map: any;
   private tiles: any;
   private markers: any;
+  displayProgressBar: boolean = true
 
   @Input('orgGeoList') orgGeoList: any;
   @Input('specGeoList') specGeoList: any;
@@ -38,9 +44,18 @@ export class MapClusterComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    console.log(this.orgGeoList)
+    console.log(this.specGeoList)
+    // to deal with issue of map container not found for larger dataset set
+    let mapTimeout = 2000
+    if (this.orgGeoList.length > 2 || this.specGeoList.length > 2 ) {
+      mapTimeout = 8000
+    }
+
     setTimeout(() => {
+      this.displayProgressBar = false;
       this.initMap();
-    }, 400);
+    }, mapTimeout);
   }
   private initMap(): void {
     this.tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

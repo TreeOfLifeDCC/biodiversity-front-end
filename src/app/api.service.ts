@@ -159,5 +159,4 @@ export class ApiService {
         };
         return this.http.post(url, payload, { responseType: 'blob' });
     }
-
 }
