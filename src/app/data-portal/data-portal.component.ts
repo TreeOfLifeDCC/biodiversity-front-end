@@ -109,10 +109,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         },
         {name: 'Annotation submitted to ENA', label: 'annotation_status', selected: false}]
 
-    subscriptionDialogTitle = '';
+    downloadDialogTitle = '';
     dialogRef: any;
-    public subscriptionForm!: FormGroup;
-    @ViewChild('subscriptionTemplate') subscriptionTemplate = {} as TemplateRef<any>;
+    public downloadForm!: FormGroup;
+    @ViewChild('downloadTemplate') downloadTemplate = {} as TemplateRef<any>;
     readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
     radioOptions: string = '';
     displayErrorMsg: boolean = false;
@@ -184,7 +184,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isOpen = false;
 
     ngOnInit(): void {
-        this.subscriptionForm = new FormGroup({
+        this.downloadForm = new FormGroup({
             downloadOption: new FormControl('', [Validators.required]),
         });
 
@@ -631,19 +631,18 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
     openDownloadDialog(value: string) {
-        this.subscriptionDialogTitle = `Download data`;
-        this.dialogRef = this.dialog.open(this.subscriptionTemplate,
+        this.downloadDialogTitle = `Download data`;
+        this.dialogRef = this.dialog.open(this.downloadTemplate,
             { data: value, height: '260px', width: '400px' });
     }
 
     public displayError = (controlName: string, errorName: string) => {
-        return this.subscriptionForm?.controls[controlName].hasError(errorName);
+        return this.downloadForm?.controls[controlName].hasError(errorName);
     }
 
     onDownload() {
-        if (this.subscriptionForm?.valid && this.subscriptionForm?.touched) {
-            const downloadOption = this.subscriptionForm.value['downloadOption']
-            console.log("downloadOption: ", downloadOption)
+        if (this.downloadForm?.valid && this.downloadForm?.touched) {
+            const downloadOption = this.downloadForm.value['downloadOption']
             this.downloadFile(downloadOption, true);
         }
         this.displayErrorMsg = true;

@@ -33,7 +33,7 @@ export class MapClusterComponent implements AfterViewInit {
   private map: any;
   private tiles: any;
   private markers: any;
-  displayProgressBar: boolean = true
+  displayProgressBar: boolean = true;
 
   @Input('orgGeoList') orgGeoList: any;
   @Input('specGeoList') specGeoList: any;

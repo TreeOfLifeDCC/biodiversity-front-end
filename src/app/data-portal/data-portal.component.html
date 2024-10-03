@@ -353,10 +353,10 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 
 
 <!-- Download Dialog Box -->
-<ng-template let-data #subscriptionTemplate>
+<ng-template let-data #downloadTemplate>
     <div mat-dialog-content class="centerContents">
-        <p class="mat-dialog-title-font">{{subscriptionDialogTitle}}</p>
-        <form [formGroup]="subscriptionForm" novalidate>
+        <p class="mat-dialog-title-font">{{downloadDialogTitle}}</p>
+        <form [formGroup]="downloadForm" novalidate>
             <p>
                 <mat-radio-group aria-label="Select an option" formControlName="downloadOption">
                     <div><mat-radio-button value="assemblies" color="primary">All Assemblies</mat-radio-button></div>
@@ -379,8 +379,7 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
         <div mat-dialog-actions class="buttonContainer">
             <button mat-button (click)="onCancelDialog()" class="flex-item cancel-button">Cancel</button>
             <button mat-button (click)="onDownload()"
-                    [disabled]="subscriptionForm.get('downloadOption')?.invalid"
-                    cdkFocusInitial
+                    [disabled]="downloadForm.get('downloadOption')?.invalid"
                     class="flex-item download-button">
                 Download
             </button>
