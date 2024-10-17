@@ -5,7 +5,30 @@
   color: #000;
   line-height: 24px;
 }
+.mat-mdc-chip {
+  font-size: 14px;
+  font-weight: 500;
+}
+.mat-mdc-card-title {
+  font-size: 24px;
+  font-weight: 500;
+}
 
+.mat-mdc-card-title {
+  display: block;
+  margin-bottom: 8px;
+}
+.mat-mdc-card-header .mat-mdc-card-title {
+  font-size: 20px
+}
+
+.mat-mdc-card-subtitle,.mat-mdc-card-content {
+  font-size: 14px
+}
+
+//.mat-elevation-z8{
+//  box-shadow: 0 5px 5px -3px #0003, 0 8px 10px 1px #00000024, 0 3px 14px 2px #0000001f;
+//}
 //.mat-list-item  {
 //  padding: 15px !important;
 //}
@@ -168,14 +191,13 @@ div.pages-navigation-pane span {
 //.mat-card:not([class*=mat-elevation-z]) {
 //  /* box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%); */
 //  .
-//  .mat-card {
-//    box-shadow: 0px;
-//    display: flex;
-//    border-radius: 0px !important;
-/////* position: relative; */
-/////* padding: 16px; */
-/////* border-radius: 4px;
-//}
+  .mat-card {
+    display: flex;
+    border-radius: 0 !important;
+///* position: relative; */
+///* padding: 16px; */
+///* border-radius: 4px;
+}
 //}
 //mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
 //  display: flex;
@@ -188,106 +210,3 @@ div.pages-navigation-pane span {
 //  padding: 0.25rem;
 //}
 
-.mat-card-actions.mat-mdc-card-actions.mdc-card__actions {
-  background-color: blue;
-}
-
-.mat-dialog-title-font {
-  font-size: larger;
-  font-weight: bold;
-}
-
-div.mat-dialog-actions mat-button {
-  margin:0 auto;
-  display:block;
-  color: red;
-}
-
-#cancel-btn , #register-btn {
-  padding: 5px 5px;
-}
-
-.dialog-btn-section{
-  background-color: #8FBC45;
-  text-align: center;
-}
-
-.divider{
-  width:5px;
-  height:auto;
-  display:inline-block;
-}
-
-.buttonContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-top: 20px;
-}
-.flex-item {
-  margin: 10px auto;
-  padding: 5px;
-}
-// mat-error css
-.errorMsg {
-  color: #d32f2f;
-  font-size: 14px;
-  font-weight: bold;
-  margin-top: 5px;
-  text-align: center;
-}
-
-.centerContents {
-  text-align: left;
-  padding: 10px;
-}
-
-// mat-dialog buttons css
-.flex-item {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Cancel Button Styles */
-.cancel-button {
-  background-color: #f5f5f5;  /* Neutral background */
-  color: #333;  /* Dark text */
-  border: 1px solid #ddd;  /* Light border */
-}
-
-.cancel-button:hover {
-  background-color: #e0e0e0;  /* Slightly darker on hover */
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-}
-
-.cancel-button:active {
-  background-color: #d6d6d6;  /* Darker on click */
-}
-
-/* Download Button Styles */
-.download-button {
-  background-color: #4caf50;  /* Green primary button */
-  color: white;  /* White text */
-  border: none;
-}
-
-.download-button:hover {
-  background-color: #45a049;  /* Darker green on hover */
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);  /* Soft shadow */
-}
-
-.download-button:active {
-  background-color: #388e3c;  /* Darkest green on click */
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
-}
-
-.download-button:disabled {
-  background-color: #cccccc;
-  color: #777777;
-  box-shadow: none;
-  cursor: not-allowed;  /* Change cursor to not-allowed */
-}

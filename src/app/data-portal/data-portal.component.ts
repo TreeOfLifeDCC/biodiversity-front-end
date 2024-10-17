@@ -41,9 +41,9 @@ import {
     MatTableDataSource
 } from '@angular/material/table';
 import { MatTableExporterModule } from 'mat-table-exporter';
-import { MatAnchor } from '@angular/material/button';
+import {MatAnchor, MatButton} from '@angular/material/button';
 import { PaginatorComponent } from '../paginator/paginator.component';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {FloatLabelType} from "@angular/material/form-field";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 
@@ -56,7 +56,7 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
         MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
         MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
-        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton]
+        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton, MatButton, MatDialogActions, MatDialogContent]
 })
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {
@@ -511,7 +511,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             }
         } else {
             if (filterValue.length > 50) {
-                return 'cursor: pointer;height: 80px;';
+                return 'cursor: pointer;height: 60px;';
             } else {
                 return 'cursor: pointer;'
             }
@@ -616,8 +616,14 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         const paramArray = this.urlAppendFilterArray.map(x => Object.assign({}, x));
         if (paramArray.length != 0) {
             for (let i = 0; i < paramArray.length; i++) {
-                // @ts-ignore
-                params[paramArray[i].name] = paramArray[i].value;
+                // if('project_name'==paramArray[i].name && params.hasOwnProperty(paramArray[i].name)){
+                //     let stringArray = [];
+                //     stringArray.push(paramArray[i].valueOf());
+                //
+                // }else {
+                    // @ts-ignore
+                    params[paramArray[i].name] = paramArray[i].value;
+                // }
             }
             this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
                 this.router.navigate([currentUrl.split('?')[0]], { queryParams: params } );
@@ -633,7 +639,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     openDownloadDialog(value: string) {
         this.downloadDialogTitle = `Download data`;
         this.dialogRef = this.dialog.open(this.downloadTemplate,
-            { data: value, height: '260px', width: '400px' });
+            { data: value, height: '300px', width: '550px' });
     }
 
     public displayError = (controlName: string, errorName: string) => {

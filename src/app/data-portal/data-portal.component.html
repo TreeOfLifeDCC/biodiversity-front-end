@@ -91,9 +91,10 @@
 
           <mat-card-actions>
             <mat-list  role="listbox">
-              <mat-divider></mat-divider>
+
               @for (project of  aggregations?.project_name.buckets; track project; let i = $index) {
                 @if (i<itemLimit) {
+                    <mat-divider></mat-divider>
                   <mat-list-item
                     [style]="checkStyle(project.key)  "
                     (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
@@ -124,7 +125,8 @@
             <mat-card-actions>
               @if (isFilterSelected) {
                 <mat-list role="list" >
-                  <mat-divider></mat-divider><mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
+                  <mat-divider></mat-divider>
+                    <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
                   (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
                   <h4 matLine class="ellipsis">{{selectedFilterValue}} (
                   {{resultsLength}})</h4>
@@ -160,7 +162,7 @@
         <mat-chip-set>
           @for (item of activeFilters; track item) {
             <div class="item4">
-              <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
+              <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black;">
                 {{convertProjectNameKey(item)}}
                 <mat-icon>close</mat-icon>
               </mat-chip>
@@ -355,12 +357,12 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 <!-- Download Dialog Box -->
 <ng-template let-data #downloadTemplate>
     <div mat-dialog-content class="centerContents">
-        <p class="mat-dialog-title-font">{{downloadDialogTitle}}</p>
+        <h1 class="vf-form__legend hide-for-small-only">{{downloadDialogTitle}}</h1>
         <form [formGroup]="downloadForm" novalidate>
             <p>
                 <mat-radio-group aria-label="Select an option" formControlName="downloadOption">
-                    <div><mat-radio-button value="assemblies" color="primary">All Assemblies</mat-radio-button></div>
-                    <div><mat-radio-button value="annotation" color="primary" class="radio">Annotation</mat-radio-button></div>
+                    <div><mat-radio-button value="assemblies" color="primary" class="vf-text-body vf-text-body--2">All Assemblies</mat-radio-button></div>
+                    <div ><mat-radio-button value="annotation" color="primary" class="radio vf-text-body vf-text-body--2">Annotation</mat-radio-button></div>
                 </mat-radio-group>
                 @if (displayError('downloadOption', 'required') && displayErrorMsg) {
                     <mat-error class="errorMsg">
@@ -370,17 +372,17 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                     </mat-error>
                 }
             </p>
-            <div>
+            <div class="vf-text-body vf-text-body--3">
                 To download data outside of the web interface, please see
                 <a target="_blank" [routerLink]="['/bulk-downloads/']">Bulk Downloads</a>
             </div>
         </form>
 
-        <div mat-dialog-actions class="buttonContainer">
-            <button mat-button (click)="onCancelDialog()" class="flex-item cancel-button">Cancel</button>
-            <button mat-button (click)="onDownload()"
+        <div  class="buttonContainer">
+            <button   class="vf-button vf-button--primary vf-button--outline vf-button--sm" (click)="onCancelDialog()" >Cancel</button>
+            <button class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="onDownload()"
                     [disabled]="downloadForm.get('downloadOption')?.invalid"
-                    class="flex-item download-button">
+                    >
                 Download
             </button>
         </div>
