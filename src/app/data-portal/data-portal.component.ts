@@ -46,6 +46,7 @@ import { PaginatorComponent } from '../paginator/paginator.component';
 import {MatDialog, MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {FloatLabelType} from "@angular/material/form-field";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
     selector: 'app-data-portal',
@@ -56,7 +57,7 @@ import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
         MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
         MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
-        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton, MatButton, MatDialogActions, MatDialogContent]
+        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton, MatButton, MatDialogActions, MatDialogContent, MatProgressBar]
 })
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {
@@ -146,6 +147,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     lastPhylogenyVal = '';
     preventSimpleClick = false;
     searchUpdate = new Subject<string>();
+    displayProgressBar = false;
     // @ts-ignore
     @ViewChild(MatSort) sort: MatSort;
 
@@ -405,7 +407,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
     onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
-
+        // phylogeney filter selection
         if (phylogenyFilter) {
             if (this.isPhylogenyFilterProcessing) {
                 return;
@@ -657,114 +659,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     }
 
-    updateDomForRemovedFilter = (filter: string) => {
-        // tslint:disable-next-line:triple-equals
-        if (this.urlAppendFilterArray.length != 0) {
-            let inactiveClassName: string;
-            this.urlAppendFilterArray.filter(obj => {
-                // @ts-ignore
-                if(obj.value === filter && obj.name === 'phylogeny'){
-                        this.isFilterSelected = false;
-                        this.selectedFilterValue = '';
-                        // @ts-ignore
-                    const filterIndex1 = this.urlAppendFilterArray.findIndex(a => a.name === 'currentClass');
-                        this.urlAppendFilterArray.splice(filterIndex1, 1);
-                    // @ts-ignore
-                        const filterIndex2 = this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny_filters')
-                        this.urlAppendFilterArray.splice(filterIndex2, 1);
-                    // @ts-ignore
-                        const filterIndex3 =  this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny');
-                        this.urlAppendFilterArray.splice(filterIndex3, 1);
-                    // @ts-ignore
-                    }else if(obj.value === filter && obj.name !== 'phylogeny'){
-                        const filterIndex = this.urlAppendFilterArray.indexOf(obj);
-                        this.urlAppendFilterArray.splice(filterIndex, 1);
-                    }
-
-
-            });
-        }
-    }
-    selectedFilterArray(key: string, value: string) {
-        let jsonObj: {};
-        if (key.toLowerCase() == 'biosamples') {
-            jsonObj = { "name": "biosamples", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "raw_data") {
-            jsonObj = { "name": "raw_data", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }else if (key.toLowerCase() == "mapped_reads") {
-            jsonObj = { "name": "mapped_reads", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }   else if (key.toLowerCase() == "assemblies") {
-            jsonObj = { "name": "assemblies", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation_complete") {
-            jsonObj = { "name": "annotation_complete", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation") {
-            jsonObj = { "name": "annotation", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "project_name") {
-            jsonObj = { "name": "project_name", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase().startsWith('symbionts_') ||
-            key.toLowerCase().startsWith('metagenomes_')) {
-            jsonObj = {"name": key.toLowerCase(), "value": value};
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if(key.toLowerCase() == 'phylogeny'){
-            jsonObj = { "name": "phylogeny_filters", "value": this.phylogenyFilters };
-            let jsonObj1 = { "name": "phylogeny", "value": value };
-            let jsonObj21 ={"name":"currentClass","value":this.currentClass}
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj1);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj21);
-        }
-
-    }
-
-    updateActiveRouteParams = () => {
-        const params = {};
-        const currentUrl = this.router.url;
-        const paramArray = this.urlAppendFilterArray.map(x => Object.assign({}, x));
-        if (paramArray.length != 0) {
-            for (let i = 0; i < paramArray.length; i++) {
-                // if('project_name'==paramArray[i].name && params.hasOwnProperty(paramArray[i].name)){
-                //     let stringArray = [];
-                //     stringArray.push(paramArray[i].valueOf());
-                //
-                // }else {
-                    // @ts-ignore
-                    params[paramArray[i].name] = paramArray[i].value;
-                // }
-            }
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]], { queryParams: params } );
-            });
-        }
-        else {
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]] );
-            });
-        }
-    }
 
     openDownloadDialog(value: string) {
         this.downloadDialogTitle = `Download data`;
@@ -778,6 +672,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     onDownload() {
         if (this.downloadForm?.valid && this.downloadForm?.touched) {
+            this.displayProgressBar = true;
             const downloadOption = this.downloadForm.value['downloadOption']
             this.downloadFile(downloadOption, true);
         }
@@ -801,6 +696,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                this.displayProgressBar = false;
                 if (dialog) {
                     // close dialog box
                     setTimeout(() => {

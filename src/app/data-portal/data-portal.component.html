@@ -402,10 +402,16 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
             </div>
         </form>
 
-        <div  class="buttonContainer">
+        @if (displayProgressBar) {
+            <div style="padding: 15px">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        }
+
+        <div class="buttonContainer">
             <button   class="vf-button vf-button--primary vf-button--outline vf-button--sm" (click)="onCancelDialog()" >Cancel</button>
             <button class="vf-button vf-button--primary vf-button--outline vf-button--sm"  (click)="onDownload()"
-                    [disabled]="downloadForm.get('downloadOption')?.invalid"
+                    [disabled]="downloadForm.get('downloadOption')?.invalid || displayProgressBar"
                     >
                 Download
             </button>

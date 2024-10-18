@@ -210,3 +210,10 @@ div.pages-navigation-pane span {
 //  padding: 0.25rem;
 //}
 
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
