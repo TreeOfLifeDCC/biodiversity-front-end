@@ -13,10 +13,12 @@ export class ApiService {
     }
 
     getData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
-            filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
+            filterValue: string[], currentClass: string, phylogenyFilters: string[], indexName: string) {
 
-       const offset = pageIndex * pageSize;
-       let url = `https://www.ebi.ac.uk/biodiversity/api/${index_name}?limit=${pageSize}&offset=${offset}`;
+        const projectNames = ['DToL', 'ASG', 'ERGA',
+            'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
+        const offset = pageIndex * pageSize;
+       let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -30,10 +32,10 @@ export class ApiService {
                 const isPresent = Constants.projects.some(function (el) {
                     return el.title === filterValue[i]
                 });
-                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
+                if (isPresent || projectNames.indexOf(filterValue[i]) !== -1) {
                    filterItem = `project_name:${filterValue[i]}`;
                 } else if (filterValue[i].includes('-')) {
-                    if (filterValue[i].startsWith('symbionts_') || filterValue[i].startsWith('metagenomes_')){
+                    if (filterValue[i].startsWith('symbionts') || filterValue[i].startsWith('metagenomes')){
                         filterItem = filterValue[i].replace('-', ':');
                     } else {
                         filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
@@ -50,14 +52,15 @@ export class ApiService {
             }
             url += filterStr;
         }
-        if (phylogeny_filters.length !== 0) {
+        if (phylogenyFilters.length !== 0) {
             let filterStr = '&phylogeny_filters=';
-            for (let i = 0; i < phylogeny_filters.length; i++) {
-                filterStr === '&phylogeny_filters=' ? filterStr += `${phylogeny_filters[i]}` : filterStr += `-${phylogeny_filters[i]}`;
+            for (let i = 0; i < phylogenyFilters.length; i++) {
+                filterStr === '&phylogeny_filters=' ? filterStr += `${phylogenyFilters[i]}` : filterStr += `-${phylogenyFilters[i]}`;
             }
 
             url += filterStr;
         }
+
         url += `&current_class=${currentClass}`;
 
         return this.http.get<any>(url);

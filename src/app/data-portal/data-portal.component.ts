@@ -141,7 +141,9 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         "species_group", "species_subgroup", "species", "subspecies", "varietas", "forma"];
     timer: any;
     phylogenyFilters: string[] = [];
-
+    isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
+    queryParams: any = {};
+    lastPhylogenyVal = '';
     preventSimpleClick = false;
     searchUpdate = new Subject<string>();
     // @ts-ignore
@@ -189,40 +191,29 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         });
 
         this.titleService.setTitle('Data portal');
-        const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
-        // @ts-ignore
+
+        // get url parameters
+        const queryParamMap: any = this.activatedRoute.snapshot['queryParamMap'];
         const params = queryParamMap['params'];
-        if (Object.keys(params).length != 0) {
-            for (let key in params) {
-            if (key === 'phylogeny_filters') {
-                this.phylogenyFilters = params[key];
-                this.appendActiveFilters(key, params);
-            }else if(key === 'currentClass'){
-                this.currentClass = params[key];
-                this.appendActiveFilters(key, params);
-            }else if (key === 'phylogeny') {
-                    this.isFilterSelected = true;
-                    this.selectedFilterValue = params[key];
-                    this.appendActiveFilters(key, params);
-            }else {
-                this.appendActiveFilters(key, params);
-            }
+        if (Object.keys(params).length !== 0) {
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    if (params[key].includes('phylogenyFilters - ')) {
+                        const phylogenyFilters = params[key].split('phylogenyFilters - ')[1];
+                        // Remove square brackets and split by comma
+                        this.phylogenyFilters = phylogenyFilters.slice(1, -1).split(',');
+                    } else if (params[key].includes('phylogenyCurrentClass - ')) {
+                        const phylogenyCurrentClass = params[key].split('phylogenyCurrentClass - ')[1];
+                        this.currentClass = phylogenyCurrentClass;
+                    } else {
+                        this.activeFilters.push(params[key]);
+                    }
 
-
+                }
             }
         }
     }
-    // @ts-ignore
-    appendActiveFilters(key, params) {
-        // @ts-ignore
-        this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
-        if(!(key === 'phylogeny_filters' || key === 'currentClass' )){
 
-            this.activeFilters.push(params[key]);
-        }
-
-
-    }
     ngAfterViewInit() {
         // If the user changes the metadataSort order, reset back to the first page.
         this.sort.sortChange.subscribe(() => (this.pageIndex = 0));
@@ -291,12 +282,49 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             'metagenomes_assemblies_status');
                     }
 
+                    console.log(this.phylogenyFilters)
+
+                    // get last phylogeny element for filter button
+                    this.lastPhylogenyVal = this.phylogenyFilters.slice(-1)[0];
+
+                    this.queryParams = [...this.activeFilters];
+                    if (this.phylogenyFilters && this.phylogenyFilters.length) {
+                        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+                        if (index > -1) {
+                            this.queryParams[index] = `phylogenyFilters - [${this.phylogenyFilters}]`;
+                        } else {
+                            this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
+                        }
+                    }
+
+                    this.replaceUrlQueryParams();
+
                     return data.results;
                 }),
             )
             .subscribe(data => {
             this.data = data;
         });
+    }
+
+
+    replaceUrlQueryParams() {
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: this.queryParams,
+            replaceUrl: true,
+            skipLocationChange: false
+        });
+    }
+
+    displayActiveFilterName(filterName: string) {
+        if (filterName && filterName.startsWith('symbionts_')) {
+            return 'Symbionts-' + filterName.split('-')[1];
+        }
+        if (filterName && filterName.startsWith('experimentType_')) {
+            return  filterName.split('_')[1];
+        }
+        return filterName;
     }
 
     merge = (first: any[], second: any[], filterLabel: string) => {
@@ -324,7 +352,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         item.selected = checked.currentTarget.checked;
         this.dataColumnsDefination[index] = item;
         this.getDisplayedColumns();
-        // this.updateActiveRouteParams();
         this.filterChanged.emit();
     }
 
@@ -376,30 +403,124 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             return data;
         }
     }
-    onFilterClick(filterName:String , filterValue: string) {
 
+    onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
 
-        this.preventSimpleClick = true;
-        clearTimeout(this.timer);
-
-        if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
-            filterValue = `${filterName}-${filterValue}`;
-        }
-        const index = this.activeFilters.indexOf(filterValue);
-        if (index !== -1) {
-            this.removeFilter(filterValue);
-        } else {
-            this.activeFilters.push(filterValue);
-
-            if (filterName === 'phylogeny') {
-                this.isFilterSelected = true;
-                this.selectedFilterValue = filterValue;
+        if (phylogenyFilter) {
+            if (this.isPhylogenyFilterProcessing) {
+                return;
             }
-            // @ts-ignore
-            this.selectedFilterArray(filterName, filterValue);
-            this.updateActiveRouteParams();
+            // Set flag to prevent further clicks
+            this.isPhylogenyFilterProcessing = true;
+
+            this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
+            const index = this.classes.indexOf(this.currentClass) + 1;
+            this.currentClass = this.classes[index];
+
+            // update url with the value of the phylogeny current class
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
+            }
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+            this.filterChanged.emit();
+
+            // Reset isPhylogenyFilterProcessing flag
+            setTimeout(() => {
+                this.isPhylogenyFilterProcessing = false;
+            }, 500);
+        } else{
+            clearTimeout(this.timer);
+            if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
+                filterValue = `${filterName}-${filterValue}`;
+            }
+            const index = this.activeFilters.indexOf(filterValue);
+            console.log(index)
+
+            index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
+            console.log(this.activeFilters)
+            this.filterChanged.emit();
         }
-        // this.filterChanged.emit();
+
+        // clearTimeout(this.timer);
+
+        // if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
+        //     filterValue = `${filterName}-${filterValue}`;
+        // }
+        // const index = this.activeFilters.indexOf(filterValue);
+        // if (index !== -1) {
+        //     this.removeFilter(filterValue);
+        // } else {
+        //     this.activeFilters.push(filterValue);
+        //
+        //     if (filterName === 'phylogeny') {
+        //         this.isFilterSelected = true;
+        //         this.selectedFilterValue = filterValue;
+        //     }
+        //     // @ts-ignore
+        //     this.selectedFilterArray(filterName, filterValue);
+        //     this.updateActiveRouteParams();
+        // }
+
+    }
+
+
+
+    onFilterClickNew(filterValue: string, phylogenyFilter: boolean = false) {
+        if (phylogenyFilter) {
+            if (this.isPhylogenyFilterProcessing) {
+                return;
+            }
+            // Set flag to prevent further clicks
+            this.isPhylogenyFilterProcessing = true;
+
+            this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
+            const index = this.classes.indexOf(this.currentClass) + 1;
+            this.currentClass = this.classes[index];
+
+            // update url with the value of the phylogeny current class
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
+            }
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+            this.filterChanged.emit();
+
+            // Reset isPhylogenyFilterProcessing flag
+            setTimeout(() => {
+                this.isPhylogenyFilterProcessing = false;
+            }, 500);
+        } else{
+            clearTimeout(this.timer);
+            const index = this.activeFilters.indexOf(filterValue);
+            index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
+            this.filterChanged.emit();
+        }
+    }
+
+    removePhylogenyFilters() {
+        // update url with the value of the phylogeny current class
+        const queryParamPhyloIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (queryParamPhyloIndex > -1) {
+            this.queryParams.splice(queryParamPhyloIndex, 1);
+        }
+
+        const queryParamCurrentClassIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+        if (queryParamCurrentClassIndex > -1) {
+            this.queryParams.splice(queryParamCurrentClassIndex, 1);
+        }
+        // Replace current url parameters with new parameters.
+        this.replaceUrlQueryParams();
+        // reset phylogeny variables
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.filterChanged.emit();
     }
 
     changeCurrentClass(filterValue: string) {
@@ -427,6 +548,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     onRefreshClick() {
         this.phylogenyFilters = [];
         this.currentClass = 'kingdom';
+        // remove phylogenyFilters param from url
+        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (index > -1) {
+            this.queryParams.splice(index, 1);
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+        }
         this.filterChanged.emit();
     }
 
@@ -502,6 +630,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                     length: this.resultsLength
                 });
     }
+
     checkStyle(filterValue: string) {
         if (this.activeFilters.includes(filterValue)) {
             if(filterValue.length > 50){
@@ -518,15 +647,16 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
 
+    removeFilter() {
+        clearTimeout(this.timer);
+        this.activeFilters = [];
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.filterChanged.emit();
+        this.router.navigate([]);
 
-    removeFilter(filter: string) {
-        if (filter !== undefined) {
-            const filterIndex = this.activeFilters.indexOf(filter);
-            this.activeFilters.splice(filterIndex, 1);
-            this.updateDomForRemovedFilter(filter);
-            this.updateActiveRouteParams();
-        }
     }
+
     updateDomForRemovedFilter = (filter: string) => {
         // tslint:disable-next-line:triple-equals
         if (this.urlAppendFilterArray.length != 0) {
