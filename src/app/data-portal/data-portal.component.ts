@@ -446,27 +446,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             console.log(this.activeFilters)
             this.filterChanged.emit();
         }
-
-        // clearTimeout(this.timer);
-
-        // if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
-        //     filterValue = `${filterName}-${filterValue}`;
-        // }
-        // const index = this.activeFilters.indexOf(filterValue);
-        // if (index !== -1) {
-        //     this.removeFilter(filterValue);
-        // } else {
-        //     this.activeFilters.push(filterValue);
-        //
-        //     if (filterName === 'phylogeny') {
-        //         this.isFilterSelected = true;
-        //         this.selectedFilterValue = filterValue;
-        //     }
-        //     // @ts-ignore
-        //     this.selectedFilterArray(filterName, filterValue);
-        //     this.updateActiveRouteParams();
-        // }
-
     }
 
 
