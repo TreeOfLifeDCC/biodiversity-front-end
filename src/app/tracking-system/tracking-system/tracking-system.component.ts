@@ -23,7 +23,6 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
 import { PaginatorComponent } from '../../paginator/paginator.component';
-import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
     selector: 'app-status-tracking',
@@ -33,7 +32,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
     imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet,
         MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef,
         MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef,
-        MatHeaderRow, MatRowDef, MatRow, PaginatorComponent, MatProgressBar]
+        MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',
@@ -65,8 +64,6 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
     queryParams: any = {};
     lastPhylogenyVal = '';
-    displayProgressBar = false;
-    preventSimpleClick = false;
 
     // @ts-ignore
     @ViewChild(MatSort) sort: MatSort;
@@ -120,34 +117,8 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                 }
             }
         }
-
-        // const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
-        // // @ts-ignore
-        // const params = queryParamMap['params'];
-        // if (Object.keys(params).length != 0) {
-        //     for (let key in params) {
-        //         if (key === 'phylogeny_filters') {
-        //             this.phylogenyFilters = params[key];
-        //         }else if(key === 'currentClass'){
-        //             this.currentClass = params[key];
-        //         }else if (key === 'phylogeny') {
-        //             this.isFilterSelected = true;
-        //             this.selectedFilterValue = params[key];
-        //             this.appendActiveFilters(key, params);
-        //         }else {
-        //             this.appendActiveFilters(key, params);
-        //         }
-        //
-        //     }
-        // }
     }
-    // @ts-ignore
-    appendActiveFilters(key, params) {
-        // @ts-ignore
-        this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
-        this.activeFilters.push(params[key]);
 
-    }
     ngAfterViewInit() {
         // If the user changes the metadataSort order, reset back to the first page.
         this.sort.sortChange.subscribe(() => (this.pageIndex = 0));

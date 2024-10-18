@@ -115,7 +115,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     public downloadForm!: FormGroup;
     @ViewChild('downloadTemplate') downloadTemplate = {} as TemplateRef<any>;
     readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
-    radioOptions: string = '';
     displayErrorMsg: boolean = false;
 
     data: any;
@@ -134,7 +133,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     symbiontsFilters : any[] = [];
     metagenomesFilters : any[] = [];
     activeFilters = new Array<string>();
-    urlAppendFilterArray = new Array<string>();
     currentClass = 'kingdom';
     classes = ["superkingdom", "kingdom", "subkingdom", "superphylum", "phylum", "subphylum", "superclass", "class",
         "subclass", "infraclass", "cohort", "subcohort", "superorder", "order", "suborder", "infraorder", "parvorder",
@@ -145,7 +143,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
     queryParams: any = {};
     lastPhylogenyVal = '';
-    preventSimpleClick = false;
     searchUpdate = new Subject<string>();
     displayProgressBar = false;
     // @ts-ignore
@@ -465,21 +462,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         this.phylogenyFilters = [];
         this.currentClass = 'kingdom';
         this.filterChanged.emit();
-    }
-
-    changeCurrentClass(filterValue: string) {
-
-        let delay = 200;
-        this.preventSimpleClick = false;
-        this.timer = setTimeout(() => {
-            if (!this.preventSimpleClick) {
-                this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
-                const index = this.classes.indexOf(this.currentClass) + 1;
-                this.currentClass = this.classes[index];
-
-                this.filterChanged.emit();
-            }
-        }, delay);
     }
 
     onHistoryClick() {

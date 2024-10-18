@@ -130,7 +130,7 @@
                 <mat-list role="list" >
                   <mat-divider></mat-divider>
                     <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                  (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
+                  (click)="onFilterClick('phylogeny',selectedFilterValue, true)" >
                   <h4 matLine class="ellipsis">{{selectedFilterValue}} (
                   {{resultsLength}})</h4>
                 </mat-list-item>
