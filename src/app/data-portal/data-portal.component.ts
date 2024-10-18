@@ -448,43 +448,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
 
-
-
-    onFilterClickNew(filterValue: string, phylogenyFilter: boolean = false) {
-        if (phylogenyFilter) {
-            if (this.isPhylogenyFilterProcessing) {
-                return;
-            }
-            // Set flag to prevent further clicks
-            this.isPhylogenyFilterProcessing = true;
-
-            this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
-            const index = this.classes.indexOf(this.currentClass) + 1;
-            this.currentClass = this.classes[index];
-
-            // update url with the value of the phylogeny current class
-            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
-            if (queryParamIndex > -1) {
-                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
-            } else {
-                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
-            }
-            // Replace current parameters with new parameters.
-            this.replaceUrlQueryParams();
-            this.filterChanged.emit();
-
-            // Reset isPhylogenyFilterProcessing flag
-            setTimeout(() => {
-                this.isPhylogenyFilterProcessing = false;
-            }, 500);
-        } else{
-            clearTimeout(this.timer);
-            const index = this.activeFilters.indexOf(filterValue);
-            index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
-            this.filterChanged.emit();
-        }
-    }
-
     removePhylogenyFilters() {
         // update url with the value of the phylogeny current class
         const queryParamPhyloIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));

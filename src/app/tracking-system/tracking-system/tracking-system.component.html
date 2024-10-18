@@ -98,7 +98,10 @@ margin-top: 165px;">Filter by:
                   <mat-list-item
                     [style]="checkStyle(project.key)  "
                     (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
-                    <mat-divider></mat-divider><h4 matLine class="ellipsis" style="white-space: normal;">{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>
+                    <mat-divider></mat-divider>
+                      <h4 matLine class="ellipsis" style="white-space: normal;">
+                          {{displayActiveFilterName(project.key)}} ({{project.doc_count}})
+                      </h4>
                   </mat-list-item>
                 }
               }
@@ -125,8 +128,9 @@ margin-top: 165px;">Filter by:
             <mat-card-actions>
               @if (isFilterSelected) {
                 <mat-list role="list" >
-                  <mat-divider></mat-divider><mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                  (dblclick)="onFilterClick('phylogeny',selectedFilterValue)" (click)="changeCurrentClass(selectedFilterValue)"   >
+                  <mat-divider></mat-divider>
+                    <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
+                  (click)="onFilterClick('phylogeny',selectedFilterValue, true)">
                   <h4 matLine class="ellipsis">{{selectedFilterValue}} (
                   {{resultsLength}})</h4>
                 </mat-list-item>
@@ -138,7 +142,7 @@ margin-top: 165px;">Filter by:
                   <mat-list role="list" >
                     <mat-divider></mat-divider> <mat-list-item  role="listbox"
                     style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
-                    (dblclick)="onFilterClick('phylogeny',phylogeny_name.key)" (click)="changeCurrentClass(phylogeny_name.key)">
+                    (click)="onFilterClick('phylogeny',phylogeny_name.key, true)">
                     <h4 matLine class="ellipsis">{{phylogeny_name.key}} ({{phylogeny_name.doc_count}})</h4>
                   </mat-list-item>
                 </mat-list>
@@ -155,14 +159,30 @@ margin-top: 165px;">Filter by:
     <label class="vf-page-header__heading"><h1>Tracking System</h1></label>
     <br>
       <mat-chip-set>
-        @for (item of activeFilters; track item) {
+        @for (field of activeFilters; track field) {
           <div class="item4">
-            <mat-chip  selected (click)="removeFilter(item)" style="cursor: pointer; background-color: limegreen; color: black; ">
-              {{convertProjectNameKey(item)}}
-              <mat-icon>close</mat-icon>
-            </mat-chip>
+              <mat-chip selected (click)="onFilterClick('removeFilter',field)"
+                        style="cursor: pointer; background-color: limegreen; color: black;">
+                  {{ displayActiveFilterName(field) }}
+                  <mat-icon>close</mat-icon>
+              </mat-chip>
           </div>
         }
+          @if (phylogenyFilters.length > 0) {
+              <mat-chip selected (click)="removePhylogenyFilters()"
+                        style="cursor: pointer; background-color: limegreen; color: black;">
+                  {{ displayActiveFilterName(lastPhylogenyVal) }}
+                  <mat-icon>close</mat-icon>
+              </mat-chip>
+          }
+          @if(activeFilters.length > 0 || phylogenyFilters.length > 0){
+              <mat-chip selected (click)="removeFilter()"
+                        style="cursor: pointer; background-color: limegreen; color: black;">
+                  Remove all filters
+                  <mat-icon>close</mat-icon>
+              </mat-chip>
+          }
+
       </mat-chip-set>
       <br>
         <div class="vf-form__item | vf-search__item">
