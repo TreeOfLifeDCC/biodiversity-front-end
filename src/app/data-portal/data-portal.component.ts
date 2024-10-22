@@ -355,8 +355,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
 
-
-
     getDisplayedColumns() {
         this.displayedColumns = [];
         this.dataColumnsDefination.forEach(obj => {
@@ -366,8 +364,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
-
 
     getStatusCount(data: any) {
         if (data) {
