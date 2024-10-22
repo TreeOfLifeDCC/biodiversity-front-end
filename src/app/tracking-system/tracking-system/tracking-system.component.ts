@@ -23,6 +23,7 @@ import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, Ma
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
 import { PaginatorComponent } from '../../paginator/paginator.component';
+import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
     selector: 'app-status-tracking',
@@ -32,7 +33,7 @@ import { PaginatorComponent } from '../../paginator/paginator.component';
     imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet,
         MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef,
         MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef,
-        MatHeaderRow, MatRowDef, MatRow, PaginatorComponent]
+        MatHeaderRow, MatRowDef, MatRow, PaginatorComponent, MatProgressBar]
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',
@@ -64,6 +65,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
     queryParams: any = {};
     lastPhylogenyVal = '';
+    displayProgressBar = false;
 
     // @ts-ignore
     @ViewChild(MatSort) sort: MatSort;
@@ -410,96 +412,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         });
     }
 
-    updateDomForRemovedFilter = (filter: string) => {
-        // tslint:disable-next-line:triple-equals
-        if (this.urlAppendFilterArray.length != 0) {
-            let inactiveClassName: string;
-            this.urlAppendFilterArray.filter(obj => {
-                // @ts-ignore
-                if(obj.value === filter){
-                    const filterIndex = this.urlAppendFilterArray.indexOf(obj);
-                    this.urlAppendFilterArray.splice(filterIndex, 1);
-                }
-            });
-        }
-    }
-    selectedFilterArray(key: string, value: string) {
-        let jsonObj: {};
-        if (key.toLowerCase() == 'biosamples') {
-            jsonObj = { "name": "biosamples", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
 
-        } else if (key.toLowerCase() == "raw_data") {
-            jsonObj = { "name": "raw_data", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }else if (key.toLowerCase() == "mapped_reads") {
-            jsonObj = { "name": "mapped_reads", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }   else if (key.toLowerCase() == "assemblies") {
-            jsonObj = { "name": "assemblies", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation_complete") {
-            jsonObj = { "name": "annotation_complete", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation") {
-            jsonObj = { "name": "annotation", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        }
-        else if (key.toLowerCase() == "project_name") {
-            jsonObj = { "name": "project_name", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase().startsWith('symbionts_') ||
-            key.toLowerCase().startsWith('metagenomes_')) {
-            jsonObj = {"name": key.toLowerCase(), "value": value};
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if(key.toLowerCase() == 'phylogeny'){
-            jsonObj = { "name": "phylogeny_filters", "value": this.phylogenyFilters };
-            let jsonObj1 = { "name": "phylogeny", "value": value };
-            let jsonObj21 ={"name":"currentClass","value":this.currentClass}
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj1);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj21);
-        }
-
-    }
-
-    updateActiveRouteParams = () => {
-        const params = {};
-        const currentUrl = this.router.url;
-        const paramArray = this.urlAppendFilterArray.map(x => Object.assign({}, x));
-        if (paramArray.length != 0) {
-            for (let i = 0; i < paramArray.length; i++) {
-                // @ts-ignore
-                params[paramArray[i].name] = paramArray[i].value;
-            }
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]], { queryParams: params } );
-            });
-        }
-        else {
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]] );
-            });
-        }
-
-
-    }
     toggleCollapse = () => {
         if (this.isCollapsed) {
             this.itemLimit = 10000;
@@ -508,5 +421,27 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             this.itemLimit = this.filterSize;
             this.isCollapsed = true;
         }
+    }
+
+    downloadFile(downloadOption: string) {
+        this.displayProgressBar = true;
+        this._apiService.downloadData(downloadOption, this.pageIndex,
+            this.pageSize, this.searchValue || '', this.sort.active, this.sort.direction, this.activeFilters,
+            this.currentClass, this.phylogenyFilters, 'tracking_status_index').subscribe({
+            next: (response: Blob) => {
+                const blobUrl = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = 'download.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                this.displayProgressBar = false;
+            },
+            error: error => {
+                console.error('Error downloading the CSV file:', error);
+                this.displayProgressBar = false;
+            }
+        });
     }
 }

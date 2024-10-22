@@ -400,7 +400,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
 
     onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
-        // phylogeney filter selection
+        // phylogeny filter selection
         if (phylogenyFilter) {
             if (this.isPhylogenyFilterProcessing) {
                 return;

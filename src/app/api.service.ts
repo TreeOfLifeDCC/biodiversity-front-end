@@ -145,10 +145,9 @@ export class ApiService {
                 }
             }).join(',');
         }
-
-        console.log("filterStr: ", filterStr)
-
-
+        if (!sortActive) {
+            sortActive= `rank`;
+        }
         const payload = {
             pageIndex,
             pageSize,

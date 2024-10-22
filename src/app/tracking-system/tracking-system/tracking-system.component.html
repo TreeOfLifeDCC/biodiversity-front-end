@@ -192,10 +192,17 @@ margin-top: 165px;">Filter by:
         </div>
 
         <div style="float: right;font-size: 14px; font-weight: 400;">
-
-          <button style="float: left;margin-top: 10px;" type="submit"
-            class="vf-button vf-button--primary vf-button--outline vf-button--sm" (click)="exporter.exportTable('csv', {fileName: 'tracking_system'})">Download metadata
-          </button>
+            <button  style="float: left;margin-top: 10px;" type="submit"
+                     class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                     (click)="downloadFile('metadata')"
+                     [disabled]="displayProgressBar">
+                Download metadata
+            </button>
+            @if (displayProgressBar) {
+                <div style="padding: 15px">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+            }
         </div>
 
         <br>
