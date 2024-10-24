@@ -190,8 +190,6 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                             'metagenomes_assemblies_status');
                     }
 
-                    console.log(this.phylogenyFilters)
-
                     // get last phylogeny element for filter button
                     this.lastPhylogenyVal = this.phylogenyFilters.slice(-1)[0];
 
@@ -204,6 +202,9 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                             this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
                         }
                     }
+
+                    // update url with the value of the phylogeny current class
+                    this.updateQueryParams('phylogenyCurrentClass');
 
                     this.replaceUrlQueryParams();
                     return data.results;
@@ -263,6 +264,16 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         }
     }
 
+    updateQueryParams(urlParam: string){
+        if (urlParam === 'phylogenyCurrentClass'){
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
+            }
+        }
+    }
 
     onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
         // phylogeney filter selection
@@ -278,12 +289,8 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             this.currentClass = this.classes[index];
 
             // update url with the value of the phylogeny current class
-            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
-            if (queryParamIndex > -1) {
-                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
-            } else {
-                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
-            }
+            this.updateQueryParams('phylogenyCurrentClass');
+
             // Replace current parameters with new parameters.
             this.replaceUrlQueryParams();
             this.filterChanged.emit();

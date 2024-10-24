@@ -126,17 +126,6 @@
               }
             </mat-card-title>
             <mat-card-actions>
-              @if (isFilterSelected) {
-                <mat-list role="list" >
-                  <mat-divider></mat-divider>
-                    <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                  (click)="onFilterClick('phylogeny',selectedFilterValue, true)" >
-                  <h4 matLine class="ellipsis">{{selectedFilterValue}} (
-                  {{resultsLength}})</h4>
-                </mat-list-item>
-              </mat-list>
-            }
-            @if (!isFilterSelected) {
                 <div>
                     @for (phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets; track phylogeny_name) {
                         <mat-list role="list">
@@ -150,7 +139,6 @@
                         </mat-list>
                     }
                 </div>
-          }
         </mat-card-actions>
       </mat-card>
 
@@ -164,7 +152,6 @@
     <br>
       <label class="vf-page-header__heading"><h1>Data Portal</h1></label>
       <br>
-      test: {{activeFilters}}
       <mat-chip-set>
           @for (field of activeFilters; track field) {
               <div class="item4">
@@ -186,7 +173,7 @@
 
           @if(activeFilters.length > 0 || phylogenyFilters.length > 0){
               <mat-chip selected (click)="removeFilter()"
-                        style="cursor: pointer; background-color: limegreen; color: black;">
+                        style="cursor: pointer; background-color: #EE4B2B; color: white;">
                   Remove all filters
                   <mat-icon>close</mat-icon>
               </mat-chip>

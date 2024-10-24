@@ -162,8 +162,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     @Input()
         // @ts-ignore
     pageSize: number = 15;
-
-    isFilterSelected = false;
     selectedFilterValue = '';
     @Output()
     // @ts-ignore
@@ -295,9 +293,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
                         }
                     }
+                    // update url with the value of the phylogeny current class
+                    this.updateQueryParams('phylogenyCurrentClass')
 
                     this.replaceUrlQueryParams();
-
                     return data.results;
                 }),
             )
@@ -399,6 +398,17 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
 
+    updateQueryParams(urlParam: string){
+        if (urlParam === 'phylogenyCurrentClass'){
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
+            }
+        }
+    }
+
     onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
         // phylogeny filter selection
         if (phylogenyFilter) {
@@ -413,12 +423,8 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             this.currentClass = this.classes[index];
 
             // update url with the value of the phylogeny current class
-            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
-            if (queryParamIndex > -1) {
-                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
-            } else {
-                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
-            }
+            this.updateQueryParams('phylogenyCurrentClass')
+
             // Replace current parameters with new parameters.
             this.replaceUrlQueryParams();
             this.filterChanged.emit();
