@@ -42,6 +42,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {FooterComponent} from "./footer/footer.component";
 import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
+import { TolQcLinksComponent } from './data-portal/tol-qc-links/tol-qc-links.component';
 
 const cookieConfig:NgcCookieConsentConfig = {
     "cookie": {
@@ -98,7 +99,8 @@ const cookieConfig:NgcCookieConsentConfig = {
         AboutComponent,
         ProjectsComponent,
         GisComponent,
-        FooterComponent
+        FooterComponent,
+        TolQcLinksComponent
 
 
     ],

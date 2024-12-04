@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Observable, throwError} from 'rxjs';
-import {catchError, retry} from 'rxjs/operators';
 import {Constants} from "./projects";
 
 @Injectable({
@@ -30,7 +28,9 @@ export class ApiService {
                 const isPresent = Constants.projects.some(function (el) {
                     return el.title === filterValue[i]
                 });
-                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
+                if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA'
+                    || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' ||
+                    filterValue[i] === 'DNA Zoo')) {
                    filterItem = `project_name:${filterValue[i]}`;
                 } else if (filterValue[i].includes('-')) {
                     if (filterValue[i].startsWith('symbionts_') || filterValue[i].startsWith('metagenomes_')){
@@ -63,7 +63,7 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
-    getDetailsData(organismName: any, indexName = 'data_portal') {
+    getDetailsData(organismName: any, indexName = 'data_portal_test') {
         let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }

@@ -17,6 +17,8 @@ import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import {TolQcLinksComponent} from "./tol-qc-links/tol-qc-links.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-data-portal',
@@ -126,7 +128,11 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
 
 
-    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,private titleService: Title ) {
+    constructor(private _apiService: ApiService,
+                private activatedRoute: ActivatedRoute,
+                private router: Router,
+                private titleService: Title,
+                private dialog: MatDialog) {
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -189,7 +195,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                     return this._apiService.getData(this.pageIndex,
                         // @ts-ignore
                         this.pageSize, this.searchValue, this.sort.active, this.sort.direction, this.activeFilters,
-                        this.currentClass, this.phylogenyFilters, 'data_portal'
+                        this.currentClass, this.phylogenyFilters, 'data_portal_test'
                     ).pipe(catchError(() => observableOf(null)));
                 }),
                 map(data => {
@@ -456,12 +462,18 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     }
     checkStyle(filterValue: string) {
         if (this.activeFilters.includes(filterValue)) {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'background-color: cornflowerblue; color: white;width: 290px;';
+            }
             if(filterValue.length > 50){
                 return 'background-color: cornflowerblue; color: white;height: 80px;';
             }else {
                 return 'background-color: cornflowerblue; color: white;'
             }
         } else {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'cursor: pointer;width: 290px;';
+            }
             if (filterValue.length > 50) {
                 return 'cursor: pointer;height: 80px;';
             } else {
@@ -582,6 +594,23 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
 
 
+    }
+
+    checkShowTolQc(data: any): boolean {
+        if (data.hasOwnProperty("tolqc_links")) {
+            return data.tolqc_links.length > 0;
+        }
+        return false;
+    }
+
+    openToLQCDialog(data: any) {
+        const dialogRef = this.dialog.open(TolQcLinksComponent, {
+            width: '1000px',
+            autoFocus: false,
+            data: {
+                tolqcLinks: data.tolqc_links
+            }
+        });
     }
 
 }

@@ -6,9 +6,8 @@ export class Constants {
 
         {
             "accession": "PRJEB40665",
-            "title": "DToL",
+            "title": "DTOL",
             "name":"Darwin Tree of Life Data Portal",
-            "description": "The Darwin Tree of Life Project (darwintreeoflife.org) generates high quality genome assemblies for the approximately 60,000 species of eukaryotic organisms found in Britain and Ireland to contribute towards providing reference genome sequences for all life. It is a collaboration between biodiversity, genomics and analysis partners that hopes to transform the way we do biology, conservation and biotechnology. The project partners are the Natural History Museum London, the Royal Botanic Gardens Kew, the Royal Botanic Gardens Edinburgh, the Marine Biological Association, the Earlham Institute, the University of Oxford and its Wytham Woods field station, the University of Edinburgh, the University of Cambridge, EMBL-EBI and others, led by the Wellcome Sanger Institute, UK",
             "url": "https://www.darwintreeoflife.org/",
             "image":"assets/projects-logo-images/dtol-logo.png",
             "data_portal_url": "https://portal.darwintreeoflife.org/data"
@@ -17,7 +16,14 @@ export class Constants {
             "accession": "PRJEB43743",
             "title": "ASG",
             "name":"The Aquatic Symbiosis Project",
-            "description": "The Aquatic Symbiosis Genomics (ASG) project (https://www.sanger.ac.uk/collaboration/aquatic-symbiosis-genomics-project/) uses high quality references of symbiotic species to probe and understand the close association between eukaryotic macrosymbionts and their microsymbionts in freshwater and marine ecosystems. Using genome assemblies of both the eukaryotic \"hosts\" and their eukaryotic and prokaryotic microsymbionts, the project is exploring the origins, ongoing evolution and future environmental resilience of symbionts such as photosymbiotic corals, protists and molluscs, nutritional symbioses between deep sea vent animals and sulphur bacteria and within lichens, and defensive symbioses between photoluminescent microorganisms and their animal partners. The project is a collaboration between the Tree of Life programme at the Wellcome Sanger Institute, the European Bioinformatics Institute and a ten international Hubs who coordinate with partners across the biological sciences (led by researchers at Dalhousie University, University of Rhode Island, University of California, GEOMAR Helmholtz Centre for Ocean Research, University of British Columbia, Nova Southeastern University, Queen Mary University of London, Senckenberg Research Institute, University of Vienna, University of Oregon, University of Derby, The Sainsbury Laboratory, and Portland State University). The Aquatic Symbiosis Genomics project is funded by the Gordon and Betty Moore Foundation and the Wellcome Sanger institute.",
+            "description": "The Aquatic Symbiosis Genomics (ASG) project " +
+                "(https://www.sanger.ac.uk/collaboration/aquatic-symbiosis-genomics-project/) uses high quality " +
+                "references of symbiotic species to probe and understand the close association between eukaryotic " +
+                "macrosymbionts and their microsymbionts in freshwater and marine ecosystems. Using genome assemblies " +
+                "of both the eukaryotic \"hosts\" and their eukaryotic and prokaryotic microsymbionts, the project " +
+                "is exploring the origins, ongoing evolution and future environmental resilience of symbionts such as " +
+                "photosymbiotic corals, protists and molluscs, nutritional symbioses between deep sea vent animals and " +
+                "sulphur bacteria and within lichens, and defensive symbioses between photoluminescent microorganisms and their animal partners. The project is a collaboration between the Tree of Life programme at the Wellcome Sanger Institute, the European Bioinformatics Institute and a ten international Hubs who coordinate with partners across the biological sciences (led by researchers at Dalhousie University, University of Rhode Island, University of California, GEOMAR Helmholtz Centre for Ocean Research, University of British Columbia, Nova Southeastern University, Queen Mary University of London, Senckenberg Research Institute, University of Vienna, University of Oregon, University of Derby, The Sainsbury Laboratory, and Portland State University). The Aquatic Symbiosis Genomics project is funded by the Gordon and Betty Moore Foundation and the Wellcome Sanger institute.",
             "url": "https://www.aquaticsymbiosisgenomics.org/",
             "image":"assets/projects-logo-images/asg-logo.png",
             "data_portal_url": "https://portal.aquaticsymbiosisgenomics.org/data"
