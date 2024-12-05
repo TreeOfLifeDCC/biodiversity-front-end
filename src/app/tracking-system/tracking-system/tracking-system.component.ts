@@ -243,14 +243,19 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     checkStyle(filterValue: string) {
-
         if (this.activeFilters.includes(filterValue)) {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'background-color: cornflowerblue; color: white;width: 290px;';
+            }
             if(filterValue.length > 50){
                 return 'background-color: cornflowerblue; color: white;height: 80px;';
             }else {
                 return 'background-color: cornflowerblue; color: white;'
             }
         } else {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'cursor: pointer;width: 290px;';
+            }
             if (filterValue.length > 50) {
                 return 'cursor: pointer;height: 80px;';
             } else {
