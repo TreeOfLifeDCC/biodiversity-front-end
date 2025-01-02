@@ -172,7 +172,7 @@
           }
 
           @if(activeFilters.length > 0 || phylogenyFilters.length > 0){
-              <mat-chip selected (click)="removeFilter()"
+              <mat-chip selected (click)="refreshPage()"
                         style="cursor: pointer; background-color: #EE4B2B; color: white;">
                   Remove all filters
                   <mat-icon>close</mat-icon>

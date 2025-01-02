@@ -7,7 +7,7 @@ import {merge, of as observableOf} from "rxjs";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
@@ -98,6 +98,15 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        // reload page if user clicks on menu link
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                if (event.urlAfterRedirects === '/tracking') {
+                    this.refreshPage();
+                }
+            }
+        });
+
         this.titleService.setTitle('Status tracking');
         // get url parameters
         const queryParamMap: any = this.activatedRoute.snapshot['queryParamMap'];
@@ -372,7 +381,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         this.filterChanged.emit();
     }
 
-    removeFilter() {
+    refreshPage() {
         clearTimeout(this.timer);
         this.activeFilters = [];
         this.phylogenyFilters = [];

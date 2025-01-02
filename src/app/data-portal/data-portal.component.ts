@@ -15,7 +15,7 @@ import {MatMenuTrigger as MatMenuTrigger} from "@angular/material/menu";
 import { PageEvent as PageEvent } from '@angular/material/paginator';
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
 import {Title} from "@angular/platform-browser";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
@@ -183,6 +183,15 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isOpen = false;
 
     ngOnInit(): void {
+        // reload page if user clicks on menu link
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                if (event.urlAfterRedirects === '/data_portal') {
+                    this.refreshPage();
+                }
+            }
+        });
+
         this.downloadForm = new FormGroup({
             downloadOption: new FormControl('', [Validators.required]),
         });
@@ -575,14 +584,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     }
 
-    removeFilter() {
+    refreshPage() {
         clearTimeout(this.timer);
         this.activeFilters = [];
         this.phylogenyFilters = [];
         this.currentClass = 'kingdom';
         this.filterChanged.emit();
         this.router.navigate([]);
-
     }
 
 
