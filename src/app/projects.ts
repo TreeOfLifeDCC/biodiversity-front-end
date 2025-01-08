@@ -163,6 +163,7 @@ export class Constants {
             "name": "Amphibalanus amphitrite (Genome Sequencing and assembly)",
             "description": "The objective of this project is to sequence, assemble, and accurately annotate the genome Acorn Barnacle, Amphibalanus amphitrite.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA734913",
+            "image":"assets/projects-logo-images/earth-project.png"
         },
         {
             "accession": "PRJEB33226",
@@ -207,7 +208,7 @@ export class Constants {
             "description": "The USDA Agricultural Research Service’s Ag100Pest Initiative will produce annotated, high quality genome assemblies for 100 US agricultural pest arthropods. The Ag100Pest Initiative is a component of both the i5k Initiative and Earth BioGenome Project. Species are being chosen across arthropod pests of US field crops, livestock, bees, trees, and stored products as well as foreign pest species considered potential invasive threats to US agriculture.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA555319",
             "url": "",
-            "image": "",
+            "image":"assets/projects-logo-images/earth-project.png",
             "data_portal_url": ""
         },
         {
