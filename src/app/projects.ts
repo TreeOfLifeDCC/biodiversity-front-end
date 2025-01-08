@@ -42,7 +42,6 @@ export class Constants {
             "description": "The i5k initiative plans to sequence the genomes of 5,000 insect and related arthropod species. This project will be transformative because it aims to sequence the genomes of all insect species known to be important to worldwide agriculture, food safety, medicine, and energy production; all those used as models in biology; the most abundant in world ecosystems; and representatives in every branch of insect phylogeny so as to achieve a deep understanding of arthropod evolution and phylogeny.",
             "url": "http://i5k.github.io/",
             "image": "assets/projects-logo-images/I5klogo4.jpg",
-
             "data_portal_url": ""
         },
         {
@@ -82,7 +81,6 @@ export class Constants {
             "data_portal_url": ""
         },
         {
-
             "accession": "PRJEB51690",
             "title": "Anopheles Reference Genomes Project (Data and assemblies)",
             "name": "Anopheles Reference Genomes Project (Data and assemblies)",
@@ -178,7 +176,6 @@ export class Constants {
             "data_portal_url": ""
         },
         {
-
             "accession": "PRJNA712951",
             "title": "ENDEMIXIT",
             "name": "ENDEMIXIT",
