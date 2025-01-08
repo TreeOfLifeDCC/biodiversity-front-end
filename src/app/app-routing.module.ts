@@ -17,7 +17,7 @@ const routes: Routes = [
     {
         path: 'tracking', component: TrackingSystemComponent
     },
-    {   path: '',
+    {    path: '',
         component: HomeComponent,
         pathMatch: 'full'
     },
