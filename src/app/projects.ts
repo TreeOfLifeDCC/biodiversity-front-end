@@ -141,7 +141,7 @@ export class Constants {
             "accession": "PRJNA293101",
             "title": "Orestias ascotanensis Genome sequencing and assembly",
             "name": "Orestias ascotanensis Genome sequencing and assembly",
-            "description": "Orestias ascotanensis is a fish specie that inhabit the tributaries of the Salar de Ascotan, in northern Chile. This and other species of the genus, which also inhabit salars and lakes of andean altiplane, are the result of a rapid speciation process caused by a geographic isolation (allopatric speciation).</p><p>Describing the genome of O. ascotanensis is a first approach for understanding its speciation process, and how this fish has been genetically adapted to extreme enviromental conditions.",
+            "description": "Orestias ascotanensis is a fish specie that inhabit the tributaries of the Salar de Ascotan, in northern Chile.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA293101",
             "image":"",
             "url":"",
@@ -289,7 +289,8 @@ export class Constants {
             "title": "Illinois EBP Pilot",
             "description": "During this pilot phase, agriculturally relevant insects for which little or no genomic data are available will serve as the focal taxa with which to demonstrate project scalability, communicate scientific discovery, and inspire potential economic and societal benefits.",
             "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA844590",
-            "image":"../assets/projects-logo-images/Illinois-EBP-Pilot.jpeg"
+            "image":"assets/projects-logo-images/Illinois-EBP-Pilot.jpeg"
+
         },
         {
             "accession": "PRJNA1180976",
@@ -328,7 +329,6 @@ export class Constants {
             "data_portal_url": ""
         },
         {
-
             "accession": "PRJNA1120070",
             "title": "Lepus timidus genome sequencing",
             "name": "Lepus timidus genome sequencing",
