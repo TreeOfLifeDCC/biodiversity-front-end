@@ -77,7 +77,7 @@ export class Constants {
             "description": "The chromosome-level genome assembly of Monomorium pharaonis",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA634441",
             "url": "",
-            "image": "",
+            "image":"assets/projects-logo-images/earth-project.png",
             "data_portal_url": ""
         },
         {
