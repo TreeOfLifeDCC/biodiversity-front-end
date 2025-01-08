@@ -278,8 +278,6 @@ export class Constants {
             "image":"assets/projects-logo-images/psyche_logo.png",
             "data_portal_url": ""
         },
-
-
         {
             "accession": "PRJNA1020146",
             "title": "Cetacean Genomes Project",
