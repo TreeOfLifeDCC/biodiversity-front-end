@@ -339,21 +339,35 @@ export class Constants {
             "url": "https://www.ebpnor.org/english/",
             "image":"assets/projects-logo-images/ebp_nor-orig.png",
             "data_portal_url": ""
-        },
-        {
-            "accession": "PRJNA1112568",
-            "title": "Lepus timidus alternate haplotype genome sequencing",
-            "name": "Lepus timidus alternate haplotype genome sequencing",
-            "description": "This is the alternate haplotype of the Lepus timidus isolate LT1 genome that we sequenced.",
-            "url": "",
-            "image":"",
-            "data_portal_url": ""
-        },
-        { // No data available
-            "accession": "PRJNA707235",
-            "title": "University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
-            "description": "Read data and genome assemblies produced by the University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
-            "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA707235"
         }
+        // {  No data available
+        //     "accession": "PRJNA1112568",
+        //     "title": "Lepus timidus alternate haplotype genome sequencing",
+        //     "name": "Lepus timidus alternate haplotype genome sequencing",
+        //     "description": "This is the alternate haplotype of the Lepus timidus isolate LT1 genome that we sequenced.",
+        //     "url": "",
+        //     "image":"",
+        //     "data_portal_url": ""
+        // },
+        // {  No data available
+        //     "accession": "PRJNA707235",
+        //     "title": "University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
+        //     "description": "Read data and genome assemblies produced by the University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
+        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA707235"
+        // },
+
+        // {  No data available
+        //     "accession": "PRJNA714837",
+        //     "title": "Lilioid monocots core group genome sequencing and assembly",
+        //     "description": "Monocots are one of the most important plant lineages and contribute to the majority of agricultural biomass on earth. Phylogenetically, monocots can be divided into three groups; the basal (alismatid), lilioid, and commelinid monocots, the latter two form a monophyletic lineage called the \"core monocots\".",
+        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA714837"
+        // },
+
+        // {  No data available
+        //     "accession": "PRJNA1157211",
+        //     "title": "B10K Consortium",
+        //     "description": "Genome sequences and bird genomes assemblies for the Danish Bird Genome (DBG) project under the B10K consortium Genome sequencing and assembly",
+        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA714837"
+        // }
     ]
 }
