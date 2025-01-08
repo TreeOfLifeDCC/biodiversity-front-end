@@ -2,8 +2,6 @@
 
 export class Constants {
     public static  projects = [
-
-
         {
             "accession": "PRJEB40665",
             "title": "DTOL",
@@ -119,7 +117,6 @@ export class Constants {
             "image":"",
             "data_portal_url": ""
         },
-
 
         {
             "accession": "PRJNA312960",
@@ -297,6 +294,68 @@ export class Constants {
             "description": "Project Psyche - Lepidopteran Genomes for Europe",
             "url": "https://www.projectpsyche.org/",
             "image":"assets/projects-logo-images/psyche_logo.png",
+            "data_portal_url": ""
+
+        },
+        {
+            "accession": "PRJNA1020146",
+            "title": "Cetacean Genomes Project",
+            "name": "Cetacean Genomes Project",
+            "description": "Our primary goal is to coordinate or facilitate generation of high-quality, nearly complete reference genomes for all cetacean species, to maximize the utility of cetacean genomic data for research and conservation. To meet this goal, we have adopted the Vertebrate Genome Project's (VGP) minimum genome quality metrics, but also support draft genome sequencing for species for which high-quality samples or sequencing resources are not available.",
+            "url": "",
+            "image":"",
+            "data_portal_url": ""
+        },
+        {   //No Public data available
+            "accession": "PRJNA844590",
+            "title": "Illinois EBP Pilot",
+            "description": "During this pilot phase, agriculturally relevant insects for which little or no genomic data are available will serve as the focal taxa with which to demonstrate project scalability, communicate scientific discovery, and inspire potential economic and societal benefits.",
+            "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA844590",
+            "image":"assets/projects-logo-images/Illinois-EBP-Pilot.jpeg"
+        },
+        {
+            "accession": "PRJNA1180976",
+            "title": "GBB Consortium",
+            "name": "GBB Consortium",
+            "description": "The GBB is a Consortium funded by Vale and is under the coordination of both Vale Institute of Technology and ICMBio.",
+            "url": "https://www.itv.org/en/genomics-of-the-brazilian-biodiversity-gbb/",
+            "image":"",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA1046164",
+            "title": "Ocean Genomes (Minderoo OceanOmics Centre at University of the Western Australia)",
+            "name": "Ocean Genomes (Minderoo OceanOmics Centre at University of the Western Australia)",
+            "description": "Ocean Genomes is an an initiative enabled by Minderoo Foundation (Perth, Australia) OceanOmics Division and delivered in collaboration with the University of Western Australia (Perth, Australia) via the Minderoo OceanOmics Centre at UWA. Ocean Genomes works to accelerate and scale the production of openly accessible reference genome assemblies for marine vertebrates.",
+            "url": "https://www.uwa.edu.au/oceans-institute/partnerships/minderoo-oceanomics-centre-at-uwa",
+            "image":"",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJEB80366",
+            "title": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability)",
+            "name": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability)",
+            "description": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability) is a multi-centre project, funded by the NovoNordisk Foundation (Denmark) and the Wellcome Trust (UK). The overarching aims of AEGIS are to develop the essential science and methodology to use ancient eDNA – coupled with other ancient and modern biomolecule-based approaches – to identify important organismal associations and genetic adaptations in natural and agroecosystems that will improve future food security under climate change.",
+            "url": "https://globe.ku.dk/research/ancient-environmental-genomics-initiative-for-sustainability/",
+            "image":"",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA911016",
+            "title": "Cephalopachus bancanus breed (not provided Genome sequencing and assembly)",
+            "name": "Cephalopachus bancanus breed (not provided Genome sequencing and assembly)",
+            "description": "Phylogenomic analyses provide insights into primate genomic and phenotypic evolution.",
+            "url": "",
+            "image":"",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA1120070",
+            "title": "Lepus timidus genome sequencing",
+            "name": "Lepus timidus genome sequencing",
+            "description": "Repository for data generated from EBP-Nor, the Norwegian initiative for the Earth Biogenome Project, which aims to generate a detailed catalogue of the genomes of eukaryotic species in Norway.",
+            "url": "https://www.ebpnor.org/english/",
+            "image":"assets/projects-logo-images/ebp_nor-orig.png",
             "data_portal_url": ""
         }
         // { No data available
