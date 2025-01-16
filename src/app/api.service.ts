@@ -14,7 +14,7 @@ export class ApiService {
             filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
 
        const offset = pageIndex * pageSize;
-       let url = `https://www.ebi.ac.uk/biodiversity/api/${index_name}?limit=${pageSize}&offset=${offset}`;
+       let url = `http://localhost:8000/${index_name}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -32,16 +32,21 @@ export class ApiService {
                     || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' ||
                     filterValue[i] === 'DNA Zoo')) {
                    filterItem = `project_name:${filterValue[i]}`;
-                } else if (filterValue[i].includes('-')) {
-                    if (filterValue[i].startsWith('symbionts_') || filterValue[i].startsWith('metagenomes_')){
+                } else if (filterValue[i].includes('-') && !filterValue[i].startsWith('experiment')) {
+                    if (filterValue[i].startsWith('symbionts_') || filterValue[i].startsWith('metagenomes_') ){
                         filterItem = filterValue[i].replace('-', ':');
                     } else {
                         filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
                         if (filterItem === 'assemblies') {
                             filterItem = 'assemblies_status:Done';
+                        }else if (filterItem === 'genome_notes') {
+                            filterItem = 'genome_notes:Submitted';
                         } else
                             filterItem = `${filterItem}:Done`;
                     }
+                }else if (filterValue[i].includes('_') && filterValue[i].startsWith('experiment')) {
+                    filterItem = filterValue[i].replace('_', ':');
+
                 } else {
                     filterItem = `${currentClass}:${filterValue[i]}`;
                 }

@@ -34,6 +34,11 @@ margin-top: 165px;">Filter by:
                                            (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
                                 <h4 matLine class="ellipsis">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
                             </mat-list-item>
+                           <mat-divider></mat-divider><mat-list-item  role="listbox"
+                                                                      [style]="checkStyle('Genome Notes - Submitted')"
+                                                                      (click)="onFilterClick('genome_notes','Genome Notes - Submitted')" style="cursor: pointer;">
+                            <h4 matLine class="ellipsis">Genome Notes - Submitted ({{aggregations?.genome.doc_count}})</h4>
+                           </mat-list-item>
                         </mat-list>
                     </mat-card-actions>
                 </mat-card>
@@ -73,8 +78,12 @@ margin-top: 165px;">Filter by:
 
                 <mat-card fxFlex class="mat-elevation-z8"  >
                     <mat-card-title>Projects
-                        <i class="material-icons float-right"  style="cursor: pointer;" *ngIf="(( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)" (click)="toggleCollapse()">add</i>
-                        <i class="material-icons float-right"  style="cursor: pointer;"  *ngIf="( !isCollapsed)" (click)="toggleCollapse()">remove</i>
+                        <mat-icon *ngIf="aggregations?.project_name.buckets?.length > filterGroups.projects.defaultItemLimit"
+                                (click)="toggleCollapse('projects')"
+                                style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                        {{ filterGroups.projects.isCollapsed ? 'add' : 'remove' }}
+                        </mat-icon>
+
 
                     </mat-card-title>
 
@@ -82,7 +91,7 @@ margin-top: 165px;">Filter by:
                         <mat-list  role="listbox">
                             <mat-divider></mat-divider>
                             <ng-container *ngFor="let project of  aggregations?.project_name.buckets;  let i = index">
-                                 <mat-list-item *ngIf="i<itemLimit"
+                                 <mat-list-item *ngIf="i<this.filterGroups.projects.itemLimit"
                                     [style]="checkStyle(project.key)  "
                                       (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
                                      <mat-divider></mat-divider><h4 matLine class="ellipsis" style="white-space: normal;">{{convertProjectNameKey(project.key)}} ({{project.doc_count}})</h4>
@@ -123,7 +132,29 @@ margin-top: 165px;">Filter by:
                         </div>
                     </mat-card-actions>
                 </mat-card>
-
+                <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                    <mat-card-title>Experiment
+                        Type
+                        <mat-icon *ngIf="aggregations?.experiment.library_construction_protocol.buckets?.length > filterGroups.experimentTypes.defaultItemLimit"
+                                  (click)="toggleCollapse('experimentTypes')"
+                                  style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                            {{ filterGroups.experimentTypes.isCollapsed ? 'add' : 'remove' }}
+                        </mat-icon>
+                    </mat-card-title>
+                    <mat-card-actions >
+                        <mat-list role="list">
+                            <ng-container *ngFor="let filter of experimentTypeFilters; let i = index">
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox" *ngIf ="filter.key !== '' && i<this.filterGroups.experimentTypes.itemLimit"
+                                               [style]="checkStyle(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick(filter.label,  filter.key)" style="cursor: pointer;">
+                                    <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                </mat-list-item>
+                            </ng-container>
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
             </div>
         </div>
 
@@ -228,6 +259,14 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                             <a mat-button [routerLink]="['/data_portal', row._source.tax_id]">
                                 {{row._source.organism}}
                             </a>
+                            <mat-chip
+                                    style="margin-bottom: 5px; background-color: yellow; color: black"
+                            *ngIf="checkNagoyaProtocol(row._source)" >
+                                <a mat-button
+                                   href="https://drive.google.com/file/d/1tkTdo-dI30YFokE2YpwmzP9onhrrEyhD/view?usp=drive_link">
+                                    Ethics and law</a>
+                            </mat-chip>
+
                         </td>
                     </ng-container>
 

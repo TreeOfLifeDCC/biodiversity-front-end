@@ -341,7 +341,7 @@
                 </ng-container>
 
             </mat-tab>
-            <mat-tab label="Genome Note" *ngIf="showGenomeNote">
+            <mat-tab label="Publications" *ngIf="showGenomeNote">
                 <hr>
                 <div
                      *ngIf="isLoadingResults || isRateLimitReached">
@@ -369,11 +369,10 @@
                                     <div class="col-md-10">
                                         <!-- <h1>Abstract</h1> -->
                                         <p>{{gen.abstract}}</p>
-                                        <a href="{{gen.url}}" class="btn btn-success" target="_blank">Read the Genome
-                                            Note
-                                            in
-                                            full
-                                            here</a>
+                                        <a mat-button href="{{gen.url}}"
+                                           style="background-color: limegreen; color: black; margin-top: 5px">
+                                            Read the Genome Note in full here</a>
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -386,15 +385,20 @@
                                 <div class="col-md-12">
                                     <h5 class="card-title rounded mx-auto d-block">{{gen.citeURL}}</h5>
                                 </div>
+
+
                             </div>
                         </div>
                     </mat-expansion-panel>
                 </div>
 
             </mat-tab>
-            <mat-tab label="GoaT" *ngIf="goatDataLength !== 0">
+            <mat-tab label="Genome Stats (GoaT)" *ngIf="goatDataLength !== 0">
                     <br>
-
+                <mat-expansion-panel [expanded]="true" *ngIf="organismData?.goat_info?.attributes.length">
+                    <mat-expansion-panel-header class="page-header">
+                        <h3>Goat Info</h3>
+                    </mat-expansion-panel-header>
                     <table mat-table [dataSource]="goatData" matTableExporter>
 
                       <ng-container matColumnDef="name">
@@ -434,6 +438,8 @@
                     <a mat-button href="{{goatDataLink}}"
                        style="background-color: limegreen; color: black; margin-top: 5px">
                       Read the GoaT info in full here</a>
+
+                </mat-expansion-panel>
                   </mat-tab>
             <mat-tab label="Symbionts"  *ngIf="organismData?.symbionts_records && organismData?.symbionts_records.length"
                      class=tab-width>
@@ -634,6 +640,7 @@
                 <hr>
             </mat-tab>
         </mat-tab-group>
+
     </div>
     <div></div>
 </div>

@@ -20,6 +20,19 @@ import {Title} from "@angular/platform-browser";
 import {TolQcLinksComponent} from "./tol-qc-links/tol-qc-links.component";
 import {MatDialog} from "@angular/material/dialog";
 
+
+interface FilterGroup {
+    itemLimit: number;
+    defaultItemLimit: number;
+    isCollapsed: boolean;
+    filters: any[];
+}
+
+interface FilterGroups {
+    projects: FilterGroup;
+    experimentTypes: FilterGroup;
+}
+
 @Component({
     selector: 'app-data-portal',
     templateUrl: './data-portal.component.html',
@@ -91,6 +104,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     aggregations: any;
     symbiontsFilters : any[] = [];
     metagenomesFilters : any[] = [];
+    experimentTypeFilters : any[] = [];
     activeFilters = new Array<string>();
     urlAppendFilterArray = new Array<string>();
     currentClass = 'kingdom';
@@ -115,17 +129,32 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     @Input()
         // @ts-ignore
-    pageSizeOptions: number[] = [15,30,50,100];
+    pageSizeOptions: number[] = [20,30,50,100];
 
     @Input()
         // @ts-ignore
-    pageSize: number = 15;
+    pageSize: number = 20;
 
     isFilterSelected = false;
     selectedFilterValue = '';
     @Output()
     // @ts-ignore
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+    genomeNotes: any[] = []
+    filterGroups = {
+        projects: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        },
+        experimentTypes: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        }
+    };
 
 
     constructor(private _apiService: ApiService,
@@ -169,7 +198,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
             }
         }
-    }
+     }
     // @ts-ignore
     appendActiveFilters(key, params) {
         // @ts-ignore
@@ -220,6 +249,16 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             this.aggregations.symbionts_biosamples_status.buckets,
                             'symbionts_biosamples_status');
                     }
+                    if(this.aggregations.experiment.library_construction_protocol.buckets.length > 0){
+                        this.experimentTypeFilters = this.merge(this.experimentTypeFilters,
+                            this.aggregations.experiment.library_construction_protocol.buckets,
+                            'experiment_type');
+                    }
+                    if(this.aggregations.genome.doc_count.length > 0){
+                        this.genomeNotes = this.merge(this.genomeNotes,
+                            this.aggregations.genome.doc_count,
+                            'genome_notes');
+                    }
                     if (this.aggregations.symbionts_raw_data_status.buckets.length > 0) {
                         this.symbiontsFilters = this.merge(this.symbiontsFilters,
                             this.aggregations.symbionts_raw_data_status.buckets,
@@ -248,7 +287,8 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             this.aggregations.metagenomes_assemblies_status.buckets,
                             'metagenomes_assemblies_status');
                     }
-
+                    this.filterGroups.projects.filters = this.aggregations.project_name.buckets;
+                    this.filterGroups.experimentTypes.filters = this.aggregations.experiment.library_construction_protocol.buckets;
                     return data.results;
                 }),
             )
@@ -267,15 +307,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     expanded() {
     }
-    toggleCollapse = () => {
-        if (this.isCollapsed) {
-            this.itemLimit = 10000;
-            this.isCollapsed = false;
-        } else {
-            this.itemLimit = this.filterSize;
-            this.isCollapsed = true;
-        }
-    }
+
     showSelectedColumn(selectedColumn: any, checked: any) {
         let index = this.dataColumnsDefination.indexOf(selectedColumn);
         let item = this.dataColumnsDefination[index];
@@ -288,6 +320,9 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
 
 
+    checkNagoyaProtocol(data: any): boolean {
+        return data.hasOwnProperty('nagoya_protocol');
+    }
 
     getDisplayedColumns() {
         this.displayedColumns = [];
@@ -340,23 +375,33 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         this.preventSimpleClick = true;
         clearTimeout(this.timer);
 
-        if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
+        if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')) {
             filterValue = `${filterName}-${filterValue}`;
         }
+        if (filterName.startsWith('experiment') ) {
+            filterValue = `experimentType_${filterValue}`;
+        }
+
+
         const index = this.activeFilters.indexOf(filterValue);
         if (index !== -1) {
             this.removeFilter(filterValue);
         } else {
+
+
             this.activeFilters.push(filterValue);
 
             if (filterName === 'phylogeny') {
                 this.isFilterSelected = true;
                 this.selectedFilterValue = filterValue;
             }
+
             // @ts-ignore
             this.selectedFilterArray(filterName, filterValue);
             this.updateActiveRouteParams();
+
         }
+
         // this.filterChanged.emit();
     }
 
@@ -549,6 +594,11 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             // @ts-ignore
             this.urlAppendFilterArray.push(jsonObj);
 
+        }else if (key.toLowerCase() == "genome_notes") {
+            jsonObj = { "name": "genome_notes", "value": value };
+            // @ts-ignore
+            this.urlAppendFilterArray.push(jsonObj);
+
         } else if (key.toLowerCase() == "project_name") {
             jsonObj = { "name": "project_name", "value": value };
             // @ts-ignore
@@ -557,6 +607,11 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         } else if (key.toLowerCase().startsWith('symbionts_') ||
             key.toLowerCase().startsWith('metagenomes_')) {
             jsonObj = {"name": key.toLowerCase(), "value": value};
+            // @ts-ignore
+            this.urlAppendFilterArray.push(jsonObj);
+
+        } else if (key.toLowerCase() == "experiment_type") {
+            jsonObj = { "name": key.toLowerCase(), "value": value };
             // @ts-ignore
             this.urlAppendFilterArray.push(jsonObj);
 
@@ -612,5 +667,9 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
+    toggleCollapse(filterGroupName: keyof FilterGroups) {
+        const group = this.filterGroups[filterGroupName];
+        group.isCollapsed = !group.isCollapsed;
+        group.itemLimit = group.isCollapsed ? group.defaultItemLimit : group.filters.length;
+    }
 }
