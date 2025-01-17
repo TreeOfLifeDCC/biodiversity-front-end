@@ -38,16 +38,26 @@ import {
     MatHeaderRow,
     MatRowDef,
     MatRow,
-    MatTableDataSource
+
 } from '@angular/material/table';
-import { MatTableExporterModule } from 'mat-table-exporter';
 import {MatAnchor, MatButton} from '@angular/material/button';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import {MatDialog, MatDialogActions, MatDialogContent} from "@angular/material/dialog";
 import {FloatLabelType} from "@angular/material/form-field";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {MatProgressBar} from "@angular/material/progress-bar";
+import {MatTableExporterModule} from "mat-table-exporter";
+interface FilterGroup {
+    itemLimit: number;
+    defaultItemLimit: number;
+    isCollapsed: boolean;
+    filters: any[];
+}
 
+interface FilterGroups {
+    projects: FilterGroup;
+    experimentTypes: FilterGroup;
+}
 @Component({
     selector: 'app-data-portal',
     templateUrl: './data-portal.component.html',
@@ -59,6 +69,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
         ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton, MatButton, MatDialogActions, MatDialogContent, MatProgressBar]
 })
+
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {
         m: 'mammals',
@@ -166,7 +177,22 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     @Output()
     // @ts-ignore
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-
+    genomeNotes: any[] = [];
+    experimentTypeFilters: any[] = [];
+    filterGroups = {
+        projects: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        },
+        experimentTypes: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        }
+    };
 
     constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,
                 private titleService: Title, private dialog: MatDialog ) {
@@ -236,7 +262,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                     return this._apiService.getData(this.pageIndex,
                         // @ts-ignore
                         this.pageSize, this.searchValue, this.sort.active, this.sort.direction, this.activeFilters,
-                        this.currentClass, this.phylogenyFilters, 'data_portal'
+                        this.currentClass, this.phylogenyFilters, 'data_portal_test'
                     ).pipe(catchError(() => observableOf(null)));
                 }),
                 map(data => {
@@ -290,6 +316,16 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             'metagenomes_assemblies_status');
                     }
 
+                    if(this.aggregations.experiment.library_construction_protocol.buckets.length > 0){
+                        this.experimentTypeFilters = this.merge(this.experimentTypeFilters,
+                            this.aggregations.experiment.library_construction_protocol.buckets,
+                            'experimentType');
+                    }
+                    if(this.aggregations.genome && this.aggregations.genome.doc_count.length > 0){
+                        this.genomeNotes = this.merge(this.genomeNotes,
+                            this.aggregations.genome.doc_count,
+                            'genome_notes');
+                    }
                     console.log(this.phylogenyFilters)
 
                     // get last phylogeny element for filter button
@@ -310,6 +346,8 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
                         }
                     }
+                    this.filterGroups.projects.filters = this.aggregations.project_name.buckets;
+                    this.filterGroups.experimentTypes.filters = this.aggregations.experiment.library_construction_protocol.buckets;
                     // update url with the value of the phylogeny current class
                     this.updateQueryParams('phylogenyCurrentClass')
 
@@ -352,15 +390,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     expanded() {
     }
-    toggleCollapse = () => {
-        if (this.isCollapsed) {
-            this.itemLimit = 10000;
-            this.isCollapsed = false;
-        } else {
-            this.itemLimit = this.filterSize;
-            this.isCollapsed = true;
-        }
-    }
+
     showSelectedColumn(selectedColumn: any, checked: any) {
         let index = this.dataColumnsDefination.indexOf(selectedColumn);
         let item = this.dataColumnsDefination[index];
@@ -369,7 +399,9 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         this.getDisplayedColumns();
         this.filterChanged.emit();
     }
-
+    checkNagoyaProtocol(data: any): boolean {
+        return data.hasOwnProperty('nagoya_protocol');
+    }
 
     getDisplayedColumns() {
         this.displayedColumns = [];
@@ -651,6 +683,12 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 console.error('Error downloading the CSV file:', error);
             }
         });
+    }
+
+    toggleCollapse(filterGroupName: keyof FilterGroups) {
+        const group = this.filterGroups[filterGroupName];
+        group.isCollapsed = !group.isCollapsed;
+        group.itemLimit = group.isCollapsed ? group.defaultItemLimit : group.filters.length;
     }
 
 }

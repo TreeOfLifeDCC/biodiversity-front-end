@@ -18,7 +18,7 @@ export class ApiService {
         const projectNames = ['DToL', 'ASG', 'ERGA',
             'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
         const offset = pageIndex * pageSize;
-       let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
+       let url = `http://localhost:8000/${indexName}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -34,7 +34,7 @@ export class ApiService {
                 });
                 if (isPresent || projectNames.indexOf(filterValue[i]) !== -1) {
                    filterItem = `project_name:${filterValue[i]}`;
-                } else if (filterValue[i].includes('-')) {
+                } else if (filterValue[i].includes('-') && !filterValue[i].startsWith('experimentType')) {
                     if (filterValue[i].startsWith('symbionts') || filterValue[i].startsWith('metagenomes')){
                         filterItem = filterValue[i].replace('-', ':');
                     } else {
@@ -44,6 +44,9 @@ export class ApiService {
                         } else
                             filterItem = `${filterItem}:Done`;
                     }
+                } else if (filterValue[i].includes('_') && filterValue[i].startsWith('experimentType')) {
+                    filterItem = filterValue[i].replace('_', ':');
+
                 } else {
                     filterItem = `${currentClass}:${filterValue[i]}`;
                 }
@@ -89,13 +92,17 @@ export class ApiService {
                 });
                 if (isPresent || (filterValue[i] === 'DToL' || filterValue[i] === 'ASG' || filterValue[i] === 'ERGA' || filterValue[i] ==='Anopheles Reference Genomes Project (Data and assemblies)' || filterValue[i] === 'DNA Zoo')) {
                     filterItem = `project_name:${filterValue[i]}`;
-                } else if (filterValue[i].includes('-')) {
+                } else if (filterValue[i].includes('-') && !filterValue[i].startsWith('experimentType')) {
                     filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
                     if (filterItem === 'assemblies') {
                         filterItem = 'assemblies_status:Done';
                     } else
                         filterItem = `${filterItem}:Done`;
-                } else {
+                }
+                else if (filterValue[i].includes('_') && filterValue[i].startsWith('experimentType')) {
+                    filterItem = filterValue[i].replace('_', ':');
+
+                }else {
                     filterItem = `${currentClass}:${filterValue[i]}`;
                 }
                 filterStr === '&filter=' ? filterStr += `${filterItem}` : filterStr += `,${filterItem}`;

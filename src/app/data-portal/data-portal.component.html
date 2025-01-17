@@ -41,6 +41,13 @@
             <h4 matLine class="ellipsis">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
           </mat-list-item>
         }
+          @if(aggregations?.genome != undefined && aggregations?.genome.doc_count){
+              <mat-divider></mat-divider><mat-list-item  role="listbox"
+                                                         [style]="checkStyle('Genome Notes - Submitted')"
+                                                         (click)="onFilterClick('genome_notes','Genome Notes - Submitted')" style="cursor: pointer;">
+              <h4 matLine class="ellipsis">Genome Notes - Submitted ({{aggregations?.genome.doc_count}})</h4>
+                </mat-list-item>
+          }
       </mat-list>
     </mat-card-actions>
   </mat-card>
@@ -80,12 +87,12 @@
 
         <mat-card fxFlex class="mat-elevation-z8"  >
           <mat-card-title>Projects
-            @if ((( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)) {
-              <i class="material-icons float-right"  style="cursor: pointer;" (click)="toggleCollapse()">add</i>
-            }
-            @if (( !isCollapsed)) {
-              <i class="material-icons float-right"  style="cursor: pointer;"  (click)="toggleCollapse()">remove</i>
-            }
+              @if(aggregations?.project_name.buckets?.length > filterGroups.projects.defaultItemLimit){
+                  <mat-icon (click)="toggleCollapse('projects')"
+                            style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                      {{ filterGroups.projects.isCollapsed ? 'add' : 'remove' }}
+                  </mat-icon>
+              }
 
           </mat-card-title>
 
@@ -93,7 +100,7 @@
             <mat-list  role="listbox">
 
               @for (project of  aggregations?.project_name.buckets; track project; let i = $index) {
-                @if (i<itemLimit) {
+                @if (i<this.filterGroups.projects.itemLimit) {
                     <mat-divider></mat-divider>
                   <mat-list-item
                     [style]="checkStyle(project.key)  "
@@ -133,7 +140,7 @@
                             <mat-list-item role="listbox"
                                            style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
                                            (click)="onFilterClick('phylogeny',phylogeny_name.key, true)">
-                                <h4 matLine class="ellipsis">{{ phylogeny_name.key }} ({{ phylogeny_name.doc_count }}
+                                <h4 matLine class="ellipsis" style="white-space: normal;">{{ phylogeny_name.key }} ({{ phylogeny_name.doc_count }}
                                     )</h4>
                             </mat-list-item>
                         </mat-list>
@@ -141,6 +148,37 @@
                 </div>
         </mat-card-actions>
       </mat-card>
+          <br>
+          <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+              <mat-card-title>Experiment
+                  Type
+                  @if(aggregations?.experiment.library_construction_protocol.buckets?.length > filterGroups.experimentTypes.defaultItemLimit){
+                      <mat-icon
+                              (click)="toggleCollapse('experimentTypes')"
+                              style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                          {{ filterGroups.experimentTypes.isCollapsed ? 'add' : 'remove' }}
+                      </mat-icon>
+                  }
+
+              </mat-card-title>
+              <mat-card-actions >
+
+                      @for( filter of experimentTypeFilters; track filter; let i = $index) {
+                          <mat-list role="list">
+                              @if(filter.key !== '' && i<this.filterGroups.experimentTypes.itemLimit){
+                                  <mat-divider></mat-divider>
+                                  <mat-list-item role="listbox"
+                                                 [style]="checkStyle(filter.label + '_' + filter.key)"
+                                                 (click)="onFilterClick('experimentType',filter.label + '_' + filter.key, false)"
+                                                 style="cursor: pointer;">
+                                      <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                  </mat-list-item>
+                              }
+                          </mat-list>
+                      }
+
+              </mat-card-actions>
+          </mat-card>
 
     </div>
   </div>
@@ -165,7 +203,7 @@
 
           @if (phylogenyFilters.length > 0) {
               <mat-chip selected (click)="removePhylogenyFilters()"
-                        style="cursor: pointer; background-color: limegreen; color: black;">
+                        style=" cursor: pointer;background-color: limegreen;color: black">
                   {{ displayActiveFilterName(lastPhylogenyVal) }}
                   <mat-icon>close</mat-icon>
               </mat-chip>
@@ -243,6 +281,14 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
           <a mat-button [routerLink]="['/data_portal', row._source.organism]">
             {{row._source.organism}}
           </a>
+            @if(checkNagoyaProtocol(row._source)){
+                <mat-chip
+                        style="margin-bottom: 5px; background-color: yellow; color: black">
+                    <a mat-button
+                       href="https://drive.google.com/file/d/1tkTdo-dI30YFokE2YpwmzP9onhrrEyhD/view?usp=drive_link">
+                        Ethics and law</a>
+                </mat-chip>
+            }
         </td>
       </ng-container>
 
