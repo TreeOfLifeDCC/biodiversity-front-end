@@ -16,14 +16,14 @@
                 <mat-list-item role="listbox"
                   [style]="checkStyle('BioSamples - Submitted')"
                   (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;">
-                  <h4 matLine class="ellipsis">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
+                  <h4 matLine class="ellipsis" style="white-space: normal;">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
                 </mat-list-item>
               }
               <mat-divider></mat-divider> @if (getStatusCount(aggregations?.raw_data.buckets)) {
               <mat-list-item role="listbox"
                 [style]="checkStyle('Raw Data - Submitted')"
                 (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;">
-                <h4 matLine class="ellipsis">Raw Data - Submitted (
+                <h4 matLine class="ellipsis" style="white-space: normal;">Raw Data - Submitted (
                 {{getStatusCount(aggregations?.raw_data.buckets)}})</h4>
               </mat-list-item>
             }
@@ -31,42 +31,28 @@
             <mat-list-item role="listbox"
               [style]="checkStyle('Assemblies - Submitted')"
               (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
-              <h4 matLine class="ellipsis">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
+              <h4 matLine class="ellipsis" style="white-space: normal;">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
             </mat-list-item>
           }
           <mat-divider></mat-divider>@if (getStatusCount(aggregations?.annotation_complete.buckets)) {
           <mat-list-item  role="listbox"
             [style]="checkStyle('Annotation Complete - Done')"
             (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
-            <h4 matLine class="ellipsis">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
+            <h4 matLine class="ellipsis" style="white-space: normal;">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
           </mat-list-item>
         }
           @if(aggregations?.genome != undefined && aggregations?.genome.doc_count){
               <mat-divider></mat-divider><mat-list-item  role="listbox"
                                                          [style]="checkStyle('Genome Notes - Submitted')"
                                                          (click)="onFilterClick('genome_notes','Genome Notes - Submitted')" style="cursor: pointer;">
-              <h4 matLine class="ellipsis">Genome Notes - Submitted ({{aggregations?.genome.doc_count}})</h4>
+              <h4 matLine class="ellipsis" style="white-space: normal;">Genome Notes - Submitted ({{aggregations?.genome.doc_count}})</h4>
                 </mat-list-item>
           }
       </mat-list>
     </mat-card-actions>
   </mat-card>
   <br>
-    <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-      <mat-card-title>Symbionts</mat-card-title>
-      <mat-card-actions >
-        <mat-list role="list">
-          @for (filter of symbiontsFilters; track filter; let i = $index) {
-            <mat-divider></mat-divider>
-            <mat-list-item role="listbox"
-              [style]="checkStyle(filter.label + '-' + filter.key)"
-              (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;">
-              <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
-            </mat-list-item>
-          }
-        </mat-list>
-      </mat-card-actions>
-    </mat-card>
+   m
     <br>
       <mat-card fxFlex class="mat-elevation-z8" layout-margin >
         <mat-card-title>Metagenomes</mat-card-title>
@@ -185,35 +171,33 @@
 
   <div class="vf-content vf-u-grid__col--span-3">
 
-
-
     <br>
       <label class="vf-page-header__heading"><h1>Data Portal</h1></label>
       <br>
       <mat-chip-set>
           @for (field of activeFilters; track field) {
               <div class="item4">
-                  <mat-chip selected (click)="onFilterClick('removeFilter',field)"
+                  <mat-chip  (click)="onFilterClick('removeFilter',field)"
                             style="cursor: pointer; background-color: limegreen; color: black;">
                       {{ displayActiveFilterName(field) }}
-                      <mat-icon>close</mat-icon>
+                      <mat-icon style="margin: -7px;">close</mat-icon>
                   </mat-chip>
               </div>
           }
 
           @if (phylogenyFilters.length > 0) {
-              <mat-chip selected (click)="removePhylogenyFilters()"
+              <mat-chip  (click)="removePhylogenyFilters()"
                         style=" cursor: pointer;background-color: limegreen;color: black">
                   {{ displayActiveFilterName(lastPhylogenyVal) }}
-                  <mat-icon>close</mat-icon>
+                  <mat-icon style="margin: -7px;">close</mat-icon>
               </mat-chip>
           }
 
           @if(activeFilters.length > 0 || phylogenyFilters.length > 0){
-              <mat-chip selected (click)="refreshPage()"
+              <mat-chip  (click)="refreshPage()"
                         style="cursor: pointer; background-color: #EE4B2B; color: white;">
                   Remove all filters
-                  <mat-icon>close</mat-icon>
+                  <mat-icon style="margin: -7px;">close</mat-icon>
               </mat-chip>
           }
 

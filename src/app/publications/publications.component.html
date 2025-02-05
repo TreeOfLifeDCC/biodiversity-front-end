@@ -1,0 +1,134 @@
+<div class="vf-u-margin__top--800" style="margin: 0 10% 10%" xmlns="http://www.w3.org/1999/html">
+
+    <section class="embl-grid">
+
+        <div class="vf-content vf-u-grid__col--span-2--lg"  style="margin: -21px;">
+
+            <div class="row column filterList">
+                <legend class="vf-form__legend hide-for-small-only" style="margin-top: 165px;">Filter by:
+                </legend>
+                <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                    <mat-card-title>Article Type</mat-card-title>
+                    <mat-card-actions >
+                        <mat-list role="list">
+                            @for (filter of articleTypeFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkFilterIsActive(filter.key)"
+                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
+                                    <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+                <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                    <mat-card-title>Journal</mat-card-title>
+                    <mat-card-actions >
+                        <mat-list role="list">
+                            @for (filter of journalNameFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkFilterIsActive(filter.key)"
+                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
+                                    <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+                <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                    <mat-card-title>Publication Year</mat-card-title>
+                    <mat-card-actions >
+                        <mat-list role="list">
+                            @for (filter of publicationYearFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkFilterIsActive(filter.key)"
+                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
+                                    <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+        </div>
+            <div class="vf-content vf-u-grid__col--span-3">
+                <br>
+                <label class="vf-page-header__heading"><h1>Publications</h1></label>
+                <br>
+                <mat-chip-set>
+                    @if(activeFilters.length > 0){
+                        <h1 >Filters: </h1>
+                    }
+                    @if((activeFilters.length > 0)){
+                        @for(field of activeFilters;track $index){
+
+                        <div class="item4">
+                            <mat-chip  (click)="onFilterClick(field)"
+                                       style="cursor: pointer; background-color: limegreen; color: black;">
+                                {{field}}
+                                <mat-icon style="margin: -7px;">close</mat-icon>
+                            </mat-chip>
+                        </div>
+                        }
+                    }
+
+                </mat-chip-set>
+
+                <div style=" display: flex;">
+
+                <table mat-table
+                       [dataSource]="dataSource" matSort style="overflow: auto hidden; min-width: 100% ; "
+                       matSortActive="currentStatus"
+                       matSortDisableClear
+                       matSortDirection="asc"  >
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Title</th>
+                        <td mat-cell *matCellDef="let element" class="wrap-text">
+                            <mat-chip style="align-content: center" selected >
+                                <a href="{{element['_source']['url']}}">{{element['_source']['title']}}</a>
+                            </mat-chip>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="journal_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Journal</th>
+                        <td mat-cell *matCellDef="let element">
+                         {{getJournalName(element['_source'])}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Publication Year</th>
+                        <td mat-cell *matCellDef="let element">
+                            {{getYear(element['_source'])}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="study_id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Study ID</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a href="https://www.ebi.ac.uk/ena/browser/view/{{element['_source']['study_id']}}">
+                                {{element['_source']['study_id']}}
+                            </a>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="organism_name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Organism Name</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a [routerLink]="['/data/root/organism-details/', element['_source']['organism_name']]">
+                                {{element['_source']['organism_name']}}</a>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                </table>
+                </div>
+                <mat-paginator [pageSizeOptions]="[20, 40, 60, 100]" showFirstLastButtons
+                               [length]="dataCount" ></mat-paginator>
+                </div>
+    </section>
+</div>

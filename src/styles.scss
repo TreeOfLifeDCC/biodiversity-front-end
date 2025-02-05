@@ -3,6 +3,26 @@
 @import "@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 html, body { height: 100%; }
+
+.mat-body-strong,.mat-body-2,.mat-typography .mat-body-strong,.mat-typography .mat-body-2 {
+  font: 500 14px/24px Roboto,Helvetica Neue,sans-serif;
+  letter-spacing: normal
+}
+
+.mat-body,.mat-body-1,.mat-typography .mat-body,.mat-typography .mat-body-1,.mat-typography {
+  font: 400 14px/20px Roboto,Helvetica Neue,sans-serif;
+  letter-spacing: normal
+}
+
+.mat-mdc-chip {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mat-mdc-chip .mat-mdc-chip-trailing-icon.mat-icon,.mat-mdc-chip .mat-mdc-chip-remove.mat-icon {
+  font-size: 18px
+}
+
 body { margin: 0}
 .vf-content table td {
   font-size: 16px !important;
@@ -55,7 +75,9 @@ td.mat-mdc-cell, td.mat-mdc-footer-cell {
   white-space: nowrap !important;
 
 }
-
+.mdc-list-item__content {
+  align-self: auto !important; /* Forces the override */
+}
 .mat-mdc-card>.mat-mdc-card-actions:last-child {
   margin-bottom: -18px;
   padding-bottom: 0;
@@ -354,23 +376,25 @@ body::-webkit-scrollbar{
 .mat-mdc-standard-chip {
   transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
-  padding: 7px 12px;
   border-radius: 16px;
   align-items: center;
   cursor: default;
   min-height: 32px;
   height: 1px;
+  --mdc-chip-label-text-font: Roboto, sans-serif;
+  --mdc-chip-label-text-line-height: 20px;
+  --mdc-chip-label-text-size: 15px;
+  --mdc-chip-label-text-tracking: 0.0178571429em;
+  --mdc-chip-label-text-weight: 502;
 }
 
- .mat-mdc-chip {
-   position: relative;
-   box-sizing: border-box;
-   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-   border: none;
-   -webkit-appearance: none;
-   -moz-appearance: none;
- }
-
+.mat-mdc-chip-list-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: -4px;
+}
 //.mat-mdc-standard-chip {
 //  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
 //  display: inline-flex;
@@ -441,3 +465,12 @@ body::-webkit-scrollbar{
   margin: 0 0 17px;
 }
 
+.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 16px;
+  position: relative;
+  height: inherit;
+}

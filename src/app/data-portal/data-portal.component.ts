@@ -562,7 +562,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         if (source === 'UKSI') {
             return 'background-color: yellow; color: black';
         } else {
-            return 'background-color: cornflowerblue; color: white';
+            return 'color: white; background-color: cornflowerblue; ';
         }
     }
 

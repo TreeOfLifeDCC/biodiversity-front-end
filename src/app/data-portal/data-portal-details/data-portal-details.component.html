@@ -390,7 +390,8 @@
                 @if (goatDataLength !== 0) {
                     <mat-tab label="Genome Stats (GoaT)">
                         <br>
-                        <mat-expansion-panel [expanded]="true" *ngIf="organismData?.goat_info?.attributes.length">
+                        @if(organismData?.goat_info?.attributes.length){
+                            <mat-expansion-panel [expanded]="true" >
                             <mat-expansion-panel-header class="page-header">
                                 <h3>Goat Info</h3>
                             </mat-expansion-panel-header>
@@ -429,6 +430,7 @@
                            style="background-color: limegreen; color: black; margin-top: 5px">
                             Read the GoaT info in full here</a>
                         </mat-expansion-panel>
+                        }
                     </mat-tab>
                 }
 
