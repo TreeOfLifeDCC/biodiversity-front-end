@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {Title} from '@angular/platform-browser';
 import {NgxSpinnerService} from 'ngx-spinner';
@@ -21,6 +21,7 @@ import {MatChip, MatChipSet} from "@angular/material/chips";
 import {MatIcon} from "@angular/material/icon";
 import {MatInput} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
+import {PaginatorComponent} from "../paginator/paginator.component";
 
 @Component({
   selector: 'app-publications',
@@ -42,14 +43,10 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatRow,
     MatHeaderRowDef,
     MatRowDef,
-
     MatCellDef,
-
     MatSortHeader,
-
     MatExpansionModule,
     MatCheckboxModule,
-    NgClass,
     MatTableExporterModule,
     MatCard,
     MatCardActions,
@@ -59,10 +56,10 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatList,
     MatListItem,
     MatChip,
-    MatChipSet,
     MatIcon,
-    MatInput,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatChipSet,
+    PaginatorComponent
   ]
 })
 export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -73,8 +70,18 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   filterChanged = new EventEmitter<any>();
   data: any;
   dataCount = 0;
+  @Input()
+  pageIndex: number = 0;
+  @Input()
+      // @ts-ignore
+  pageSizeOptions: number[] = [15,30,50,100];
 
-  pagesize = 20;
+  @Input()
+      // @ts-ignore
+  pageSize: number = 15;
+  @Output()
+  // @ts-ignore
+  readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   urlAppendFilterArray:any[] = []
   activeFilters = new Array<string>();
   columns = ['title', 'journal_name', 'year', 'organism_name', 'study_id'];
@@ -111,16 +118,15 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // If the user changes the metadataSort order, reset back to the first page.
     // @ts-ignore
-      this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.sort.sortChange.subscribe(() => (this.pageIndex = 0));
+    this.filterChanged.subscribe(() => (this.pageIndex = 0));
     // @ts-ignore
-      this.filterChanged.subscribe(() => (this.paginator.pageIndex = 0));
-    // @ts-ignore
-      merge(this.paginator.page, this.sort.sortChange,this.filterChanged)
+      merge(this.page, this.sort.sortChange,this.filterChanged)
         .pipe(
             startWith({}),
             switchMap(() => {
               this.isLoadingResults = true;
-              return  this._apiService.getAllPublications(0, this.pagesize, this.activeFilters)
+              return  this._apiService.getAllPublications(this.pageIndex, this.pageSize, this.activeFilters)
               .pipe(catchError(() => observableOf(null)));
             }),
             map(data => {
@@ -186,9 +192,6 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.getAllPublications(offset, event.pageSize);
   // }
 
-  customSort(event: any): void {
-    console.log(event);
-  }
 
   hasActiveFilters(): boolean {
     if (typeof this.activeFilters === 'undefined') {
@@ -203,12 +206,20 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
     return false;
   }
   // @ts-ignore
-    checkFilterIsActive = (filter: string) => {
-    // console.log(this.filterService.activeFilters);
-    if (this.activeFilters.indexOf(filter) !== -1) {
-      return 'active-filter';
-    }
-
+    checkFilterIsActive = (filterValue: string) => {
+      if (this.activeFilters.includes(filterValue)) {
+        if(filterValue.length > 50){
+          return 'background-color: cornflowerblue; color: white;height: 80px;';
+        }else {
+          return 'background-color: cornflowerblue; color: white;'
+        }
+      } else {
+        if (filterValue.length > 50) {
+          return 'cursor: pointer;height: 60px;';
+        } else {
+          return 'cursor: pointer;'
+        }
+      }
   }
   onFilterClick(filterValue: string) {
     clearTimeout(this.timer);
@@ -244,7 +255,33 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resetFilter();
   }
 
+  refreshPage() {
+
+    this.activeFilters = [];
+    this.filterChanged.emit();
+    this.router.navigate([]);
+  }
+
+  public changePage(pageEvent: PageEvent): void {
+    const previousPageIndex = this.pageIndex;
+    if (this.pageSize !== pageEvent.pageSize) {
+      this.pageIndex = 0;
+      this.pageSize = pageEvent.pageSize;
+    } else {
+      this.pageIndex = pageEvent.pageIndex;
+    }
+    this.page.emit({
+      previousPageIndex,
+      pageIndex: this.pageIndex,
+      pageSize: this.pageSize,
+      length: this.resultsLength
+    });
+  }
+
+
 }
+
+
 
 function observableOf(arg0: null): any {
   throw new Error('Function not implemented.');

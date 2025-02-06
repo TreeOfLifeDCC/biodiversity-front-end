@@ -268,8 +268,4 @@ element.style {
     line-height: 1.5;
     border-radius: 0.25rem;
 }
-.wrap-text {
-    white-space: normal;
-    word-wrap: break-word;
-    max-width: 250px; /* Adjust width to fit your layout */
-}
+

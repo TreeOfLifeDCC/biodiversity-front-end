@@ -52,7 +52,6 @@
     </mat-card-actions>
   </mat-card>
   <br>
-   m
     <br>
       <mat-card fxFlex class="mat-elevation-z8" layout-margin >
         <mat-card-title>Metagenomes</mat-card-title>
@@ -141,7 +140,7 @@
                   @if(aggregations?.experiment.library_construction_protocol.buckets?.length > filterGroups.experimentTypes.defaultItemLimit){
                       <mat-icon
                               (click)="toggleCollapse('experimentTypes')"
-                              style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                              style="cursor: pointer; margin-left: auto;">
                           {{ filterGroups.experimentTypes.isCollapsed ? 'add' : 'remove' }}
                       </mat-icon>
                   }
