@@ -144,7 +144,7 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
               this.dataSource = data.results;
               this.dataCount = data.count;
               this.publicationYearFilters = data.aggregations.pubYear?.buckets;
-              console.log(this.publicationYearFilters)
+
               this.journalNameFilters = data.aggregations.journalTitle?.buckets;
               this.articleTypeFilters = data.aggregations.articleType?.buckets;
 

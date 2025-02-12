@@ -183,7 +183,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.specGeoList = this.organismData.specGeoList;
                 if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
                     this.geoLocation = true;
-                    console.log(this.orgGeoList)
+
                     setTimeout(() => {
                         const tabGroup = this.tabgroup;
                         const selected = this.tabgroup.selectedIndex || 0;
@@ -206,7 +206,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 }
 
                 this.metadataData = new MatTableDataSource(data.results[0]['_source']['records']);
-                console.log(this.metadataData)
+
                 this.metadataDataLength = data.results[0]['_source']['records'] ? data.results[0]['_source']['records'].length : 0;
 
                 this.annotationData = new MatTableDataSource(data.results[0]['_source']['annotation']);

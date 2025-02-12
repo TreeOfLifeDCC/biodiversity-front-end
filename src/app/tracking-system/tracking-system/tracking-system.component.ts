@@ -322,10 +322,10 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                 filterValue = `${filterName}-${filterValue}`;
             }
             const index = this.activeFilters.indexOf(filterValue);
-            console.log(index)
+
 
             index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
-            console.log(this.activeFilters)
+
             this.filterChanged.emit();
         }
     }

@@ -44,8 +44,7 @@ export class MapClusterComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.orgGeoList)
-    console.log(this.specGeoList)
+
     // to deal with issue of map container not found for larger dataset set
     let mapTimeout = 2000
     if (this.orgGeoList.length > 2 || this.specGeoList.length > 2 ) {

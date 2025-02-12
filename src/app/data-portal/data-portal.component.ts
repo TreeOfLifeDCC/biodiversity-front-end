@@ -334,7 +334,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             this.aggregations.genome.doc_count,
                             'genome_notes');
                     }
-                    console.log(this.phylogenyFilters)
+
 
                     // get last phylogeny element for filter button
                     this.lastPhylogenyVal = this.phylogenyFilters.slice(-1)[0];
@@ -496,10 +496,10 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 filterValue = `${filterName}-${filterValue}`;
             }
             const index = this.activeFilters.indexOf(filterValue);
-            console.log(index)
+
 
             index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
-            console.log(this.activeFilters)
+
             this.filterChanged.emit();
         }
     }

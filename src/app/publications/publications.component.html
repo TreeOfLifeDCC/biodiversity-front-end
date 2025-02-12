@@ -92,26 +92,26 @@
                        matSortDisableClear
                        matSortDirection="asc"  >
                     <ng-container matColumnDef="title">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Title</th>
+                        <th mat-header-cell *matHeaderCellDef  >Title</th>
                         <td mat-cell *matCellDef="let element" style="max-width: 285px !important;">
                             <a style="white-space: normal" href="{{element['_source']['url']}}">
                                 {{element['_source']['title']}}</a>
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="journal_name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Journal</th>
+                        <th mat-header-cell *matHeaderCellDef  >Journal</th>
                         <td mat-cell *matCellDef="let element">
                          {{getJournalName(element['_source'])}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="year">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Publication Year</th>
+                        <th mat-header-cell *matHeaderCellDef  >Publication Year</th>
                         <td mat-cell *matCellDef="let element">
                             {{getYear(element['_source'])}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="study_id">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Study ID</th>
+                        <th mat-header-cell *matHeaderCellDef  >Study ID</th>
                         <td mat-cell *matCellDef="let element">
                             <a href="https://www.ebi.ac.uk/ena/browser/view/{{element['_source']['study_id']}}">
                                 {{element['_source']['study_id']}}
@@ -119,7 +119,7 @@
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="organism_name">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Organism Name</th>
+                        <th mat-header-cell *matHeaderCellDef >Organism Name</th>
                         <td mat-cell *matCellDef="let element">
                             <a [routerLink]="['/data/root/organism-details/', element['_source']['organism_name']]">
                                 {{element['_source']['organism_name']}}</a>
