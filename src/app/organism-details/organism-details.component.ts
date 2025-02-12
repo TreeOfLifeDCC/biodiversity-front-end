@@ -1,14 +1,21 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../api.service";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {MatTableDataSource} from "@angular/material/table";
+import {MatPaginator as MatPaginator} from "@angular/material/paginator";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
+import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatInput } from '@angular/material/input';
+import { MatAnchor } from '@angular/material/button';
 
 @Component({
-  selector: 'app-organism-details',
-  templateUrl: './organism-details.component.html',
-  styleUrls: ['./organism-details.component.css']
+    selector: 'app-organism-details',
+    templateUrl: './organism-details.component.html',
+    styleUrls: ['./organism-details.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatProgressSpinner, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
 })
 export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   data: any;

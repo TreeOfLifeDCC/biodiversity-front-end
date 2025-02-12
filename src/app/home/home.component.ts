@@ -1,11 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Title} from "@angular/platform-browser";
-import {NavigationEnd, Router} from "@angular/router";
+import { NavigationEnd, Router, RouterLink } from "@angular/router";
+
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    standalone: true,
+    imports: [RouterLink]
 })
 export class HomeComponent implements OnInit {
   public categories = [

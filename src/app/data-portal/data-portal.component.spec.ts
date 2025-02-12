@@ -8,8 +8,8 @@ describe('DataPortalComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [DataPortalComponent]
-        })
+    imports: [DataPortalComponent]
+})
             .compileComponents();
     });
 

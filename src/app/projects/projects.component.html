@@ -1,43 +1,49 @@
 <br>
-<div style="text-align: center">
+  <div style="text-align: center">
 
     <h2>The Biodiversity Projects</h2>
-  <hr>
-<br>
+    <hr>
+      <br>
 
-    <div class="vf-grid vf-grid__col-3">
+        <div class="vf-grid vf-grid__col-3">
 
-        <div *ngFor="let project of projects" >
-            <mat-card  class="z-depth card" style="height: 280px;">
+          @for (project of projects; track project) {
+            <div >
+              <mat-card  class="z-depth card" style="height: 280px;">
                 <h5 > {{project.name}}</h5>
-                   <img *ngIf="project.image"  class="vf-logo__image" src="{{project.image}}" style="height:120px;cursor: pointer;" alt="{{project.title}}"  loading="eager">
+                @if (project.image) {
+                  <img  class="vf-logo__image" src="{{project.image}}" style="height:120px;cursor: pointer;" alt="{{project.title}}"  loading="eager">
+                }
                 <br>
-                <a
-                        *ngIf="project.url" class="vf-button vf-button--secondary vf-button--sm"
-                        href="{{project.url}}"
-                        target="_blank"
-                >
-                    Project website
-                </a>  <a
-                    *ngIf="project.data_portal_url" class="vf-button vf-button--secondary vf-button--sm"
-                    href="{{project.data_portal_url}}"
+                  @if (project.url) {
+                    <a
+                      class="vf-button vf-button--secondary vf-button--sm"
+                      href="{{project.url}}"
+                      target="_blank"
+                      >
+                      Project website
+                    </a>
+                    }  @if (project.data_portal_url) {
+                    <a
+                      class="vf-button vf-button--secondary vf-button--sm"
+                      href="{{project.data_portal_url}}"
+                      target="_blank"
+                      >
+                      Data Portal
+                    </a>
+                  }
+                  <a
+                    class="vf-button vf-button--secondary vf-button--sm"
+                    href="/biodiversity/data_portal?project_name={{project.title}}"
                     target="_blank"
-            >
-                Data Portal
-            </a>
-                                    <a
-                        class="vf-button vf-button--secondary vf-button--sm"
-                        href="/biodiversity/data_portal?project_name={{project.title}}"
-                        target="_blank"
-                >
+                    >
                     View Records
-                </a>
+                  </a>
+                </mat-card>
+              </div>
+            }
 
-            </mat-card>
 
+          </div>
         </div>
-
-
-    </div>
-</div>
 

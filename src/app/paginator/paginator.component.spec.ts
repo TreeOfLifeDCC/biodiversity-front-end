@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule as MatSelectModule } from '@angular/material/select';
 
 import { PaginatorComponent } from './paginator.component';
 
@@ -27,13 +27,13 @@ describe('PaginationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaginatorComponent ],
-      imports: [
+    imports: [
         CommonModule,
         FormsModule,
         MatSelectModule,
-      ]
-    })
+        PaginatorComponent,
+    ]
+})
     .compileComponents();
   }));
 

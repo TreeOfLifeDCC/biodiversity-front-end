@@ -1,67 +1,65 @@
 <!--
-  Copyright (C) 2006-2021 EMBL - European Bioinformatics Institute
+Copyright (C) 2006-2021 EMBL - European Bioinformatics Institute
 
-  Licensed under the Apache License, Version 2.0 (the License);
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the License);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-         http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an AS IS BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
- -->
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an AS IS BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
 
 
 <section
-        class="vf-hero  vf-hero--search | vf-u-fullbleed"
+  class="vf-hero  vf-hero--search | vf-u-fullbleed"
         style="--vf-hero--bg-image: url('assets/Biodiversity-Portal-Landing-Page.jpg');background-color: #cadeed;  display: block;;
              height: 48vh;width:100vw "
->
-    <div class="vf-hero__content | vf-box | vf-stack vf-stack--800" style="margin-left: 141px;margin-top: 51px;">
-        <h1 class="vf-hero__heading">The Biodiversity Portal</h1>
-        <p class="vf-hero__subheading">Supporting global biodiversity projects</p>
-        <p class="vf-hero__text">Providing open access to biodiversity reference genomes and a range of cross referenced supportive data for research for the Earth BioGenome Project</p>
-    </div>
+  >
+  <div class="vf-hero__content | vf-box | vf-stack vf-stack--800" style="margin-left: 141px;margin-top: 51px;">
+    <h1 class="vf-hero__heading">The Biodiversity Portal</h1>
+    <p class="vf-hero__subheading">Supporting global biodiversity projects</p>
+    <p class="vf-hero__text">Providing open access to biodiversity reference genomes and a range of cross referenced supportive data for research for the Earth BioGenome Project</p>
+  </div>
 </section>
 
 <div class="vf-body" >
-    <div class="vf-grid | vf-grid__col-3 vf-grid--has-sidebar vf-u-margin__top--800">
+  <div class="vf-grid | vf-grid__col-3 vf-grid--has-sidebar vf-u-margin__top--800">
 
-        <div data-e2e="summaries" class="summaries-wrapper vf-content vf-grid__col--span-2">
-            <div class="vf-grid | vf-grid__col-2">
+    <div data-e2e="summaries" class="summaries-wrapper vf-content vf-grid__col--span-2">
+      <div class="vf-grid | vf-grid__col-2">
 
-                <ng-container>
-                    <article *ngFor="let category of categories" class="vf-card vf-card--brand vf-card--bordered">
-
-                        <div class="vf-card__content | vf-stack vf-stack--400">
-
-                            <h3 class="vf-card__heading">
-                                <a  class="vf-card__link" [attr.label]="category.label" [routerLink]="[category.link]">{{ category.title }}
-                                    <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
-                                </a>
-                            </h3>
-                            <br>
-                            <p class="vf-card__text">
-                                {{ category.description }}
-                            </p>
-                        </div>
-
-                    </article>
-                </ng-container>
-            </div>
-<!--            <div class="vf-box vf-box--is-link vf-box-theme--primary vf-box--normal vf-u-margin__top--1200">-->
-<!--                <h3 class="vf-box__heading"><a class="vf-box__link" [routerLink]="['/submit-data']">Share new COVID-19 data  &gt;</a></h3>-->
-<!--                <p class="vf-box__text">-->
-<!--                    Contact our curator teams, who will assist you with submitting your data to EMBL-EBI repositories &gt;-->
-<!--                </p>-->
-<!--            </div>-->
+        <ng-container>
+          @for (category of categories; track category) {
+            <article class="vf-card vf-card--brand vf-card--bordered">
+              <div class="vf-card__content | vf-stack vf-stack--400">
+                <h3 class="vf-card__heading">
+                  <a  class="vf-card__link" [attr.label]="category.label" [routerLink]="[category.link]">{{ category.title }}
+                    <svg aria-hidden="true" class="vf-card__heading__icon | vf-icon vf-icon-arrow--inline-end" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12S18.627 0 12 0C5.376.008.008 5.376 0 12zm13.707-5.209l4.5 4.5a1 1 0 010 1.414l-4.5 4.5a1 1 0 01-1.414-1.414l2.366-2.367a.25.25 0 00-.177-.424H6a1 1 0 010-2h8.482a.25.25 0 00.177-.427l-2.366-2.368a1 1 0 011.414-1.414z" fill="currentColor" fill-rule="nonzero"></path></svg>
+                  </a>
+                </h3>
+                <br>
+                  <p class="vf-card__text">
+                    {{ category.description }}
+                  </p>
+                </div>
+              </article>
+            }
+          </ng-container>
         </div>
+        <!--            <div class="vf-box vf-box--is-link vf-box-theme--primary vf-box--normal vf-u-margin__top--1200">-->
+        <!--                <h3 class="vf-box__heading"><a class="vf-box__link" [routerLink]="['/submit-data']">Share new COVID-19 data  &gt;</a></h3>-->
+        <!--                <p class="vf-box__text">-->
+        <!--                    Contact our curator teams, who will assist you with submitting your data to EMBL-EBI repositories &gt;-->
+      <!--                </p>-->
+    <!--            </div>-->
+  </div>
 
-        <div class="vf-content vf-grid__col--span-1">
-
+  <div class="vf-content vf-grid__col--span-1">
 
             <section class="vf-u-margin__bottom--800">
                 <h2 class="vf-u-type__text-heading--4">About this portal</h2>
@@ -80,4 +78,5 @@
             </section>
         </div>
     </div>
+
 </div>

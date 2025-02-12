@@ -1,15 +1,32 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../../api.service";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatPaginator} from "@angular/material/paginator";
+import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef,
+    MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
+import {MatPaginator as MatPaginator} from "@angular/material/paginator";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import {NgStyle, NgTemplateOutlet} from '@angular/common';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatInput } from '@angular/material/input';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatAnchor } from '@angular/material/button';
+import { MatChip } from '@angular/material/chips';
+import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 
 @Component({
     selector: 'app-data-portal-details',
     templateUrl: './data-portal-details.component.html',
-    styleUrls: ['./data-portal-details.component.css']
+    styleUrls: ['./data-portal-details.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable,
+        MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef,
+        MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
+        MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent, NgTemplateOutlet]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {
@@ -85,6 +102,18 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showGenomeNote = false;
 
 
+    geoLocation: boolean = false;
+    orgGeoList: any;
+    specGeoList: any;
+    nbnatlas: any = [];
+    nbnatlasMapUrl: string = '';
+    url: SafeResourceUrl = '';
+    height = 200;
+    width = 200;
+    loader = '../../assets/200.gif';
+    isLoading: boolean = true;
+    @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
+
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
 
     @ViewChild('metadataSort') metadataSort: MatSort | undefined;
@@ -132,10 +161,12 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
 
 
-    constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+    constructor(private route: ActivatedRoute, private _apiService: ApiService, private sanitizer: DomSanitizer) {
+        this.isLoading = true;
     }
 
     ngOnInit(): void {
+        this.geoLocation = false;
     }
 
     ngAfterViewInit() {
@@ -146,7 +177,36 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
                 this.organismData = data.results[0]['_source'];
+
+                // Geo Location maps
+                this.orgGeoList = this.organismData.orgGeoList;
+                this.specGeoList = this.organismData.specGeoList;
+                if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
+                    this.geoLocation = true;
+
+                    setTimeout(() => {
+                        const tabGroup = this.tabgroup;
+                        const selected = this.tabgroup.selectedIndex || 0;
+                        tabGroup.selectedIndex = 4;
+                        setTimeout(() => {
+                            this.tabgroup.selectedIndex = selected;
+                        }, 1);
+                    }, 400);
+                }
+
+                // NBN Atlas
+                this.nbnatlas = this.organismData?.nbnatlas;
+                if (this.nbnatlas != null) {
+                    const imgUrl = 'https://easymap.nbnatlas.org/Image?tvk=' + this.nbnatlas.split('/')[4] +
+                        '&ref=0&w=400&h=600&b0fill=6ecc39&title=0' ;
+                    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(imgUrl);
+                    this.nbnatlasMapUrl = 'https://records.nbnatlas.org/occurrences/search?q=lsid:' +
+                        this.nbnatlas.split('/')[4] +
+                        '+&nbn_loading=true&fq=-occurrence_status%3A%22absent%22#tab_mapView';
+                }
+
                 this.metadataData = new MatTableDataSource(data.results[0]['_source']['records']);
+
                 this.metadataDataLength = data.results[0]['_source']['records'] ? data.results[0]['_source']['records'].length : 0;
 
                 this.annotationData = new MatTableDataSource(data.results[0]['_source']['annotation']);
@@ -232,6 +292,11 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
             }
 
         );
+
+        // select first tab by default
+        setTimeout(() => {
+            this.tabgroup.selectedIndex = 0;
+        }, 400);
     }
 
     applyFilter(event: Event, dataSource: string) {
@@ -307,6 +372,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         } else {
             return 'background-color: yellow; color: black';
         }
+    }
 
+    hideLoader(){
+        this.isLoading = false;
     }
 }

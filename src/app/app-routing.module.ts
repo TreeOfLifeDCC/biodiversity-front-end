@@ -11,6 +11,8 @@ import {HelpComponent} from "./help/help.component";
 import {AboutComponent} from "./about/about.component";
 import {ProjectsComponent} from "./projects/projects.component";
 import {GisComponent} from "./gis/gis.component";
+import  {BulkDownloadsComponent} from "./bulk-downloads/bulk-downloads.component";
+import {PublicationsComponent} from "./publications/publications.component";
 
 const routes: Routes = [
 
@@ -29,6 +31,8 @@ const routes: Routes = [
     { path: 'help', component: HelpComponent },
     { path: 'projects', component: ProjectsComponent },
     { path: 'about', component: AboutComponent },
+    { path: 'bulk-downloads' , component: BulkDownloadsComponent},
+    { path: 'publications' , component: PublicationsComponent},
     {
         path: 'gis', component: GisComponent
     }

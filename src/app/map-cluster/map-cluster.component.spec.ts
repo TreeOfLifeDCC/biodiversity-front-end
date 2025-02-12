@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HelpComponent } from './help.component';
+import { MapClusterComponent } from './map-cluster.component';
 
-describe('HelpComponent', () => {
-  let component: HelpComponent;
-  let fixture: ComponentFixture<HelpComponent>;
+describe('MapClusterComponent', () => {
+  let component: MapClusterComponent;
+  let fixture: ComponentFixture<MapClusterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [HelpComponent]
-})
+      imports: [MapClusterComponent]
+    })
     .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(HelpComponent);
+    fixture = TestBed.createComponent(MapClusterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="sub-container">
+        <mat-card>
+            <mat-card-title class="card-title">
+                <h1>Download Data</h1>
+            </mat-card-title>
+            <mat-card-content class="card-content">
+                <section>
+                    <h2>Downloader Utility</h2>
+                    <p>
+                        Download data using a Python script. The downloader utility is a Python
+                        script used for downloading all assemblies, annotations, and experiments data.
+                        This utility can be run on any machine where Python or Docker is installed.
+                    </p>
+                    <p>
+                        If you don't have Python installed, you can download it from the
+                        <a href="https://www.python.org/downloads/">Python website</a>. If you want to
+                        download Docker, you can get it from the
+                        <a href="https://www.docker.com/products/docker-desktop/">Docker website</a>.
+                    </p>
+                    <button
+                            mat-raised-button
+                            class="download-button"
+                            color="accent"
+                            onclick="location.href='https://github.com/TreeOfLifeDCC/downloader-utility';">
+                        Download Downloader Utility
+                    </button>
+                </section>
+
+                <section>
+                    <p>There are two ways to run this utility:</p>
+
+                    <!-- Method 1: Running the Python Script -->
+                    <h4>1. Run the Python Script by Providing Parameters</h4>
+                    <div>
+                        <h5>Requirements:</h5>
+                        <ul>
+                            <li>Python installed</li>
+                            <li>
+                                Run <code>requirement.txt</code> using the command:
+                                <code>pip install -r requirement.txt</code>
+                            </li>
+                        </ul>
+
+                        <h5>Run the script using the following command:</h5>
+                        <p>Enter the following command in the terminal:</p>
+                        <pre>
+<code>python app/downloader-utility.py --project_name "DToL" --phylogeny "Chordata" --data_status "Mapped Reads - Done" --experiment_type "Chromium genome" --download_location "/Users/Documents" --download_option "assemblies" --species_list "Apamea sordens,Bufo bufo"</code>
+            </pre>
+                        <p>
+                            <strong>Note:</strong> The <code>--phylogeny</code> and
+                            <code>--species_list</code> parameters are conditional; you need to provide
+                            one of them.
+                        </p>
+                    </div>
+
+                    <!-- Method 2: Building and Running Docker Image -->
+                    <h4>2. Build and Run Docker Image</h4>
+                    <div>
+                        <h5>Requirements:</h5>
+                        <ul>
+                            <li>Docker installed and running</li>
+                        </ul>
+
+                        <h5>Create Docker build using the command:</h5>
+                        <pre><code>docker build -t downloader-utility:latest .</code></pre>
+
+                        <h5>Run Docker image by providing parameters:</h5>
+                        <pre>
+<code>docker run --rm -v "$PWD/download_location:/code/app/download_option" downloader-utility:latest --project_name "DToL" --phylogeny "Chordata" --experiment_type "Chromium genome" --download_option annotations --species_list "Apamea sordens,Bufo bufo"</code>
+            </pre>
+
+                        <p>
+                            <strong>Note:</strong> When using Docker, data is downloaded into the
+                            <code>download_location</code> (e.g., <code>/Users/downloads</code>), and
+                            <code>download_option</code> refers to either <code>"annotations,assemblies"</code> or
+                            <code>"experiments"</code>.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Support Section -->
+                <section>
+                    <h2>Support</h2>
+                    <p>
+                        Please report any issues at
+                        <a href="mailto:dtol-dcc@ebi.ac.uk">biodiversity-portal&#64;ac.uk</a>.
+                    </p>
+                </section>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

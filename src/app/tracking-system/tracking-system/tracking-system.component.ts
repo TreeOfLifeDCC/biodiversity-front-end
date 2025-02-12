@@ -1,18 +1,39 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 // @ts-ignore
 import {ApiService} from "../../api.service";
-import { PageEvent} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import { PageEvent as PageEvent} from "@angular/material/paginator";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {merge, of as observableOf} from "rxjs";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
+
+import { MatLine } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatTableExporterModule } from 'mat-table-exporter';
+import { MatAnchor } from '@angular/material/button';
+import { PaginatorComponent } from '../../paginator/paginator.component';
+import {MatProgressBar} from "@angular/material/progress-bar";
+
 @Component({
     selector: 'app-status-tracking',
     templateUrl: './tracking-system.component.html',
-    styleUrls: ['./tracking-system.component.css']
+    styleUrls: ['./tracking-system.component.css'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet,
+        MatChip, MatInput, FormsModule, MatProgressSpinner, MatTable, MatSort, MatTableExporterModule, MatColumnDef,
+        MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef,
+        MatHeaderRow, MatRowDef, MatRow, PaginatorComponent, MatProgressBar]
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',
@@ -41,8 +62,10 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         "species_group", "species_subgroup", "species", "subspecies", "varietas", "forma"];
     timer: any;
     phylogenyFilters: string[] = [];
-
-    preventSimpleClick = false;
+    isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
+    queryParams: any = {};
+    lastPhylogenyVal = '';
+    displayProgressBar = false;
 
     // @ts-ignore
     @ViewChild(MatSort) sort: MatSort;
@@ -75,34 +98,40 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.titleService.setTitle('Status tracking');
-        const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
-        // @ts-ignore
-        const params = queryParamMap['params'];
-        if (Object.keys(params).length != 0) {
-            for (let key in params) {
-                if (key === 'phylogeny_filters') {
-                    this.phylogenyFilters = params[key];
-                }else if(key === 'currentClass'){
-                    this.currentClass = params[key];
-                }else if (key === 'phylogeny') {
-                    this.isFilterSelected = true;
-                    this.selectedFilterValue = params[key];
-                    this.appendActiveFilters(key, params);
-                }else {
-                    this.appendActiveFilters(key, params);
+        // reload page if user clicks on menu link
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                if (event.urlAfterRedirects === '/tracking') {
+                    this.refreshPage();
                 }
+            }
+        });
 
+        this.titleService.setTitle('Status tracking');
+        // get url parameters
+        const queryParamMap: any = this.activatedRoute.snapshot['queryParamMap'];
+        const params = queryParamMap['params'];
+        if (Object.keys(params).length !== 0) {
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    if (params[key].includes('phylogenyFilters - ')) {
+                        const phylogenyFilters = params[key].split('phylogenyFilters - ')[1];
+                        // Remove square brackets and split by comma
+                        this.phylogenyFilters = phylogenyFilters.slice(1, -1).split(',');
+                    } else if (params[key].includes('phylogenyCurrentClass - ')) {
+                        const phylogenyCurrentClass = params[key].split('phylogenyCurrentClass - ')[1];
+                        this.currentClass = phylogenyCurrentClass;
+                    } else if (params[key].includes('searchValue - ')) {
+                        this.searchValue = params[key].split('searchValue - ')[1];
+                    } else {
+                        this.activeFilters.push(params[key]);
+                    }
+
+                }
             }
         }
     }
-    // @ts-ignore
-    appendActiveFilters(key, params) {
-        // @ts-ignore
-        this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
-        this.activeFilters.push(params[key]);
 
-    }
     ngAfterViewInit() {
         // If the user changes the metadataSort order, reset back to the first page.
         this.sort.sortChange.subscribe(() => (this.pageIndex = 0));
@@ -172,11 +201,59 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                             'metagenomes_assemblies_status');
                     }
 
-                    // @ts-ignore
+                    // get last phylogeny element for filter button
+                    this.lastPhylogenyVal = this.phylogenyFilters.slice(-1)[0];
+
+                    this.queryParams = [...this.activeFilters];
+
+                    // add search value to URL query param
+                    if (this.searchValue) {
+                        this.queryParams.push(`searchValue - ${this.searchValue}`);
+                    }
+
+                    if (this.phylogenyFilters && this.phylogenyFilters.length) {
+                        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+                        if (index > -1) {
+                            this.queryParams[index] = `phylogenyFilters - [${this.phylogenyFilters}]`;
+                        } else {
+                            this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
+                        }
+                    }
+
+                    // update url with the value of the phylogeny current class
+                    this.updateQueryParams('phylogenyCurrentClass');
+
+                    this.replaceUrlQueryParams();
                     return data.results;
                 }),
             )
             .subscribe(data => (this.data = data));
+    }
+
+    replaceUrlQueryParams() {
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: this.queryParams,
+            replaceUrl: true,
+            skipLocationChange: false
+        });
+    }
+
+
+    displayActiveFilterName(filterName: string) {
+        if (filterName === 'DToL') {
+            return 'Darwin Tree of Life';
+        } else if(filterName=='ASG'){
+            return 'The Aquatic Symbiosis Project';
+        }else if(filterName=='ERGA'){
+            return 'European Reference Genome Atlas';
+        } else if (filterName && filterName.startsWith('symbionts_')){
+            return 'Symbionts-' + filterName.split('-')[1]
+        } else if (filterName && filterName.startsWith('metagenomes_')){
+            return 'Metagenomes-' + filterName.split('-')[1]
+        } else{
+            return filterName;
+        }
     }
 
     merge = (first: any[], second: any[], filterLabel: string) => {
@@ -203,43 +280,74 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             return data;
         }
     }
-    convertProjectNameKey(data: string) {
-        if (data === 'DToL') {
-            return 'Darwin Tree of Life';
-        } else if(data=='ASG'){
-            return 'The Aquatic Symbiosis Project';
-        }else if(data=='ERGA'){
-            return 'European Reference Genome Atlas';
-        } else if (data.startsWith('symbionts_')){
-            return 'Symbionts-' + data.split('-')[1]
-        } else if (data.startsWith('metagenomes_')){
-            return 'Metagenomes-' + data.split('-')[1]
-        } else{
-            return data;
+
+    updateQueryParams(urlParam: string){
+        if (urlParam === 'phylogenyCurrentClass'){
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
+            }
         }
     }
-    onFilterClick(filterName:string, filterValue: string) {
 
-        this.preventSimpleClick = true;
-        clearTimeout(this.timer);
-
-        if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
-            filterValue = `${filterName}-${filterValue}`;
-        }
-        const index = this.activeFilters.indexOf(this.convertProjectNameKey(filterValue));
-        if (index !== -1) {
-            this.removeFilter(filterValue);
-        } else {
-            this.activeFilters.push(filterValue);
-
-            if (filterName === 'phylogeny') {
-                this.isFilterSelected = true;
-                this.selectedFilterValue = filterValue;
+    onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
+        // phylogeney filter selection
+        if (phylogenyFilter) {
+            if (this.isPhylogenyFilterProcessing) {
+                return;
             }
-            // @ts-ignore
-            this.selectedFilterArray(filterName, filterValue);
-            this.updateActiveRouteParams();
+            // Set flag to prevent further clicks
+            this.isPhylogenyFilterProcessing = true;
+
+            this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
+            const index = this.classes.indexOf(this.currentClass) + 1;
+            this.currentClass = this.classes[index];
+
+            // update url with the value of the phylogeny current class
+            this.updateQueryParams('phylogenyCurrentClass');
+
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+            this.filterChanged.emit();
+
+            // Reset isPhylogenyFilterProcessing flag
+            setTimeout(() => {
+                this.isPhylogenyFilterProcessing = false;
+            }, 500);
+        } else{
+            clearTimeout(this.timer);
+            if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
+                filterValue = `${filterName}-${filterValue}`;
+            }
+            const index = this.activeFilters.indexOf(filterValue);
+
+
+            index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
+
+            this.filterChanged.emit();
         }
+    }
+
+
+    removePhylogenyFilters() {
+        // update url with the value of the phylogeny current class
+        const queryParamPhyloIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (queryParamPhyloIndex > -1) {
+            this.queryParams.splice(queryParamPhyloIndex, 1);
+        }
+
+        const queryParamCurrentClassIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+        if (queryParamCurrentClassIndex > -1) {
+            this.queryParams.splice(queryParamCurrentClassIndex, 1);
+        }
+        // Replace current url parameters with new parameters.
+        this.replaceUrlQueryParams();
+        // reset phylogeny variables
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.filterChanged.emit();
     }
 
     checkStyle(filterValue: string) {
@@ -264,20 +372,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
         }
     }
 
-    changeCurrentClass(filterValue: string) {
 
-        let delay = 200;
-        this.preventSimpleClick = false;
-        this.timer = setTimeout(() => {
-            if (!this.preventSimpleClick) {
-                this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
-                const index = this.classes.indexOf(this.currentClass) + 1;
-                this.currentClass = this.classes[index];
-
-                this.filterChanged.emit();
-            }
-        }, delay);
-    }
 
     onHistoryClick() {
         this.phylogenyFilters.splice(this.phylogenyFilters.length - 1, 1);
@@ -289,7 +384,24 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
     onRefreshClick() {
         this.phylogenyFilters = [];
         this.currentClass = 'kingdom';
+        // remove phylogenyFilters param from url
+        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (index > -1) {
+            this.queryParams.splice(index, 1);
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+        }
         this.filterChanged.emit();
+    }
+
+    refreshPage() {
+        clearTimeout(this.timer);
+        this.activeFilters = [];
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.searchValue = '';
+        this.filterChanged.emit();
+        this.router.navigate([]);
     }
 
     checkColor(status: string) {
@@ -329,104 +441,8 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             length: this.resultsLength
         });
     }
-    removeFilter(filter: string) {
-        if (filter !== undefined) {
-            const filterIndex = this.activeFilters.indexOf(filter);
-            this.activeFilters.splice(filterIndex, 1);
-            this.updateDomForRemovedFilter(filter);
-            this.updateActiveRouteParams();
-        }
-    }
-    updateDomForRemovedFilter = (filter: string) => {
-        // tslint:disable-next-line:triple-equals
-        if (this.urlAppendFilterArray.length != 0) {
-            let inactiveClassName: string;
-            this.urlAppendFilterArray.filter(obj => {
-                // @ts-ignore
-                if(obj.value === filter){
-                    const filterIndex = this.urlAppendFilterArray.indexOf(obj);
-                    this.urlAppendFilterArray.splice(filterIndex, 1);
-                }
-            });
-        }
-    }
-    selectedFilterArray(key: string, value: string) {
-        let jsonObj: {};
-        if (key.toLowerCase() == 'biosamples') {
-            jsonObj = { "name": "biosamples", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "raw_data") {
-            jsonObj = { "name": "raw_data", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }else if (key.toLowerCase() == "mapped_reads") {
-            jsonObj = { "name": "mapped_reads", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }   else if (key.toLowerCase() == "assemblies") {
-            jsonObj = { "name": "assemblies", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation_complete") {
-            jsonObj = { "name": "annotation_complete", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation") {
-            jsonObj = { "name": "annotation", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        }
-        else if (key.toLowerCase() == "project_name") {
-            jsonObj = { "name": "project_name", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase().startsWith('symbionts_') ||
-            key.toLowerCase().startsWith('metagenomes_')) {
-            jsonObj = {"name": key.toLowerCase(), "value": value};
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if(key.toLowerCase() == 'phylogeny'){
-            jsonObj = { "name": "phylogeny_filters", "value": this.phylogenyFilters };
-            let jsonObj1 = { "name": "phylogeny", "value": value };
-            let jsonObj21 ={"name":"currentClass","value":this.currentClass}
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj1);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj21);
-        }
-
-    }
-
-    updateActiveRouteParams = () => {
-        const params = {};
-        const currentUrl = this.router.url;
-        const paramArray = this.urlAppendFilterArray.map(x => Object.assign({}, x));
-        if (paramArray.length != 0) {
-            for (let i = 0; i < paramArray.length; i++) {
-                // @ts-ignore
-                params[paramArray[i].name] = paramArray[i].value;
-            }
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]], { queryParams: params } );
-            });
-        }
-        else {
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]] );
-            });
-        }
 
 
-    }
     toggleCollapse = () => {
         if (this.isCollapsed) {
             this.itemLimit = 10000;
@@ -435,5 +451,27 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
             this.itemLimit = this.filterSize;
             this.isCollapsed = true;
         }
+    }
+
+    downloadFile(downloadOption: string) {
+        this.displayProgressBar = true;
+        this._apiService.downloadData(downloadOption, this.pageIndex,
+            this.pageSize, this.searchValue || '', this.sort.active, this.sort.direction, this.activeFilters,
+            this.currentClass, this.phylogenyFilters, 'tracking_status_index').subscribe({
+            next: (response: Blob) => {
+                const blobUrl = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = 'download.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                this.displayProgressBar = false;
+            },
+            error: error => {
+                console.error('Error downloading the CSV file:', error);
+                this.displayProgressBar = false;
+            }
+        });
     }
 }

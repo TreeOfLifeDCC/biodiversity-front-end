@@ -6,13 +6,17 @@ import {
   OnInit,
   Output } from '@angular/core';
 
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent as PageEvent } from '@angular/material/paginator';
+import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 
 @Component({
-  selector: 'app-paginator',
-  templateUrl: './paginator.component.html',
-  styleUrls: ['./paginator.component.scss']
+    selector: 'app-paginator',
+    templateUrl: './paginator.component.html',
+    styleUrls: ['./paginator.component.scss'],
+    standalone: true,
+    imports: [FormsModule, DecimalPipe]
 })
 export class PaginatorComponent implements OnInit {
 

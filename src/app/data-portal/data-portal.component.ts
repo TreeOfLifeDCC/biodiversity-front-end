@@ -5,26 +5,73 @@ import {
     ViewChild,
     EventEmitter,
     Input,
-    Output
+    Output, TemplateRef
 } from '@angular/core';
 import {ApiService} from "../api.service";
-import {MatSort} from "@angular/material/sort";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {catchError, map, startWith, switchMap} from "rxjs/operators";
 import {merge, of as observableOf} from "rxjs";
-import {MatMenuTrigger} from "@angular/material/menu";
-import { PageEvent } from '@angular/material/paginator';
+import {MatMenuTrigger as MatMenuTrigger} from "@angular/material/menu";
+import { PageEvent as PageEvent } from '@angular/material/paginator';
 import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
 import {Title} from "@angular/platform-browser";
-import {TolQcLinksComponent} from "./tol-qc-links/tol-qc-links.component";
-import {MatDialog} from "@angular/material/dialog";
 
+import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
+import { MatList, MatListItem } from '@angular/material/list';
+import { MatDivider } from '@angular/material/divider';
+import {TolQcLinksComponent} from "./tol-qc-links/tol-qc-links.component";
+import { MatLine } from '@angular/material/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatChipSet, MatChip } from '@angular/material/chips';
+import {MatError, MatFormField, MatHint, MatInput} from '@angular/material/input';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
+import {
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+
+} from '@angular/material/table';
+import {MatAnchor, MatButton} from '@angular/material/button';
+import { PaginatorComponent } from '../paginator/paginator.component';
+import {MatDialog, MatDialogActions, MatDialogContent} from "@angular/material/dialog";
+import {FloatLabelType} from "@angular/material/form-field";
+import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
+import {MatProgressBar} from "@angular/material/progress-bar";
+import {MatTableExporterModule} from "mat-table-exporter";
+interface FilterGroup {
+    itemLimit: number;
+    defaultItemLimit: number;
+    isCollapsed: boolean;
+    filters: any[];
+}
+
+interface FilterGroups {
+    projects: FilterGroup;
+    experimentTypes: FilterGroup;
+}
 @Component({
     selector: 'app-data-portal',
     templateUrl: './data-portal.component.html',
-    styleUrls: ['./data-portal.component.scss']
+    styleUrls: ['./data-portal.component.scss'],
+    standalone: true,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon,
+        MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
+        MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
+        MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
+        ReactiveFormsModule,  MatError, MatRadioGroup, MatRadioButton,
+        MatDialogContent, MatProgressBar,MatChipSet]
 })
+
 export class DataPortalComponent implements OnInit, AfterViewInit {
     codes = {
         m: 'mammals',
@@ -76,6 +123,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         },
         {name: 'Annotation submitted to ENA', label: 'annotation_status', selected: false}]
 
+    downloadDialogTitle = '';
+    dialogRef: any;
+    public downloadForm!: FormGroup;
+    @ViewChild('downloadTemplate') downloadTemplate = {} as TemplateRef<any>;
+    readonly floatLabelControl = new FormControl('auto' as FloatLabelType);
+    displayErrorMsg: boolean = false;
+
     data: any;
     isCollapsed = true;
     itemLimit = 5;
@@ -92,7 +146,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     symbiontsFilters : any[] = [];
     metagenomesFilters : any[] = [];
     activeFilters = new Array<string>();
-    urlAppendFilterArray = new Array<string>();
     currentClass = 'kingdom';
     classes = ["superkingdom", "kingdom", "subkingdom", "superphylum", "phylum", "subphylum", "superclass", "class",
         "subclass", "infraclass", "cohort", "subcohort", "superorder", "order", "suborder", "infraorder", "parvorder",
@@ -100,9 +153,11 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         "species_group", "species_subgroup", "species", "subspecies", "varietas", "forma"];
     timer: any;
     phylogenyFilters: string[] = [];
-
-    preventSimpleClick = false;
+    isPhylogenyFilterProcessing = false; // Flag to prevent double-clicking
+    queryParams: any = {};
+    lastPhylogenyVal = '';
     searchUpdate = new Subject<string>();
+    displayProgressBar = false;
     // @ts-ignore
     @ViewChild(MatSort) sort: MatSort;
 
@@ -120,12 +175,27 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     @Input()
         // @ts-ignore
     pageSize: number = 15;
-
-    isFilterSelected = false;
     selectedFilterValue = '';
     @Output()
     // @ts-ignore
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+    genomeNotes: any[] = [];
+    experimentTypeFilters: any[] = [];
+    filterGroups = {
+        projects: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        },
+        experimentTypes: {
+            defaultItemLimit: 5,
+            itemLimit: 5,
+            isCollapsed: true,
+            filters: []
+        }
+    };
+
 
 
     constructor(private _apiService: ApiService,
@@ -133,6 +203,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 private router: Router,
                 private titleService: Title,
                 private dialog: MatDialog) {
+
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -146,41 +217,45 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     isOpen = false;
 
     ngOnInit(): void {
+        // reload page if user clicks on menu link
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                if (event.urlAfterRedirects === '/data_portal') {
+                    this.refreshPage();
+                }
+            }
+        });
+
+        this.downloadForm = new FormGroup({
+            downloadOption: new FormControl('', [Validators.required]),
+        });
+
         this.titleService.setTitle('Data portal');
-        const queryParamMap = this.activatedRoute.snapshot['queryParamMap'];
-        // @ts-ignore
+
+        // get url parameters
+        const queryParamMap: any = this.activatedRoute.snapshot['queryParamMap'];
         const params = queryParamMap['params'];
-        if (Object.keys(params).length != 0) {
-            for (let key in params) {
-            if (key === 'phylogeny_filters') {
-                this.phylogenyFilters = params[key];
-                this.appendActiveFilters(key, params);
-            }else if(key === 'currentClass'){
-                this.currentClass = params[key];
-                this.appendActiveFilters(key, params);
-            }else if (key === 'phylogeny') {
-                    this.isFilterSelected = true;
-                    this.selectedFilterValue = params[key];
-                    this.appendActiveFilters(key, params);
-            }else {
-                this.appendActiveFilters(key, params);
-            }
+        if (Object.keys(params).length !== 0) {
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    if (params[key].includes('phylogenyFilters - ')) {
+                        const phylogenyFilters = params[key].split('phylogenyFilters - ')[1];
+                        // Remove square brackets and split by comma
+                        this.phylogenyFilters = phylogenyFilters.slice(1, -1).split(',');
+                    } else if (params[key].includes('phylogenyCurrentClass - ')) {
+                        const phylogenyCurrentClass = params[key].split('phylogenyCurrentClass - ')[1];
+                        this.currentClass = phylogenyCurrentClass;
+                    } else if (params[key].includes('searchValue - ')){
+                        this.searchValue = params[key].split('searchValue - ')[1];
+                    } else {
+                        this.activeFilters.push(params[key]);
+                    }
 
-
+                }
             }
         }
     }
-    // @ts-ignore
-    appendActiveFilters(key, params) {
-        // @ts-ignore
-        this.urlAppendFilterArray.push({ "name": key, "value": params[key] });
-        if(!(key === 'phylogeny_filters' || key === 'currentClass' )){
 
-            this.activeFilters.push(params[key]);
-        }
-
-
-    }
     ngAfterViewInit() {
         // If the user changes the metadataSort order, reset back to the first page.
         this.sort.sortChange.subscribe(() => (this.pageIndex = 0));
@@ -249,12 +324,68 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                             'metagenomes_assemblies_status');
                     }
 
+                    if(this.aggregations.experiment.library_construction_protocol.buckets.length > 0){
+                        this.experimentTypeFilters = this.merge(this.experimentTypeFilters,
+                            this.aggregations.experiment.library_construction_protocol.buckets,
+                            'experimentType');
+                    }
+                    if(this.aggregations.genome && this.aggregations.genome.doc_count.length > 0){
+                        this.genomeNotes = this.merge(this.genomeNotes,
+                            this.aggregations.genome.doc_count,
+                            'genome_notes');
+                    }
+
+
+                    // get last phylogeny element for filter button
+                    this.lastPhylogenyVal = this.phylogenyFilters.slice(-1)[0];
+
+                    this.queryParams = [...this.activeFilters];
+
+                    // add search value to URL query param
+                    if (this.searchValue) {
+                        this.queryParams.push(`searchValue - ${this.searchValue}`);
+                    }
+
+                    if (this.phylogenyFilters && this.phylogenyFilters.length) {
+                        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+                        if (index > -1) {
+                            this.queryParams[index] = `phylogenyFilters - [${this.phylogenyFilters}]`;
+                        } else {
+                            this.queryParams.push(`phylogenyFilters - [${this.phylogenyFilters}]`);
+                        }
+                    }
+                    this.filterGroups.projects.filters = this.aggregations.project_name.buckets;
+                    this.filterGroups.experimentTypes.filters = this.aggregations.experiment.library_construction_protocol.buckets;
+                    // update url with the value of the phylogeny current class
+                    this.updateQueryParams('phylogenyCurrentClass')
+
+                    this.replaceUrlQueryParams();
                     return data.results;
                 }),
             )
             .subscribe(data => {
             this.data = data;
         });
+    }
+
+
+    replaceUrlQueryParams() {
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: this.queryParams,
+            replaceUrl: true,
+            skipLocationChange: false
+        });
+    }
+
+    displayActiveFilterName(filterName: string) {
+        if (filterName && filterName.startsWith('symbionts_')) {
+            return 'Symbionts-' + filterName.split('-')[1];
+        }
+        if (filterName && filterName.startsWith('experimentType_')) {
+            return  filterName.split('_')[1];
+        }
+        return filterName;
     }
 
     merge = (first: any[], second: any[], filterLabel: string) => {
@@ -267,27 +398,18 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     expanded() {
     }
-    toggleCollapse = () => {
-        if (this.isCollapsed) {
-            this.itemLimit = 10000;
-            this.isCollapsed = false;
-        } else {
-            this.itemLimit = this.filterSize;
-            this.isCollapsed = true;
-        }
-    }
+
     showSelectedColumn(selectedColumn: any, checked: any) {
         let index = this.dataColumnsDefination.indexOf(selectedColumn);
         let item = this.dataColumnsDefination[index];
         item.selected = checked.currentTarget.checked;
         this.dataColumnsDefination[index] = item;
         this.getDisplayedColumns();
-        // this.updateActiveRouteParams();
         this.filterChanged.emit();
     }
-
-
-
+    checkNagoyaProtocol(data: any): boolean {
+        return data.hasOwnProperty('nagoya_protocol');
+    }
 
     getDisplayedColumns() {
         this.displayedColumns = [];
@@ -298,8 +420,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
-
 
     getStatusCount(data: any) {
         if (data) {
@@ -334,45 +454,73 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
             return data;
         }
     }
-    onFilterClick(filterName:String , filterValue: string) {
 
-
-        this.preventSimpleClick = true;
-        clearTimeout(this.timer);
-
-        if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
-            filterValue = `${filterName}-${filterValue}`;
-        }
-        const index = this.activeFilters.indexOf(filterValue);
-        if (index !== -1) {
-            this.removeFilter(filterValue);
-        } else {
-            this.activeFilters.push(filterValue);
-
-            if (filterName === 'phylogeny') {
-                this.isFilterSelected = true;
-                this.selectedFilterValue = filterValue;
+    updateQueryParams(urlParam: string){
+        if (urlParam === 'phylogenyCurrentClass'){
+            const queryParamIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+            if (queryParamIndex > -1) {
+                this.queryParams[queryParamIndex] = `phylogenyCurrentClass - ${this.currentClass}`;
+            } else {
+                this.queryParams.push(`phylogenyCurrentClass - ${this.currentClass}`);
             }
-            // @ts-ignore
-            this.selectedFilterArray(filterName, filterValue);
-            this.updateActiveRouteParams();
         }
-        // this.filterChanged.emit();
     }
 
-    changeCurrentClass(filterValue: string) {
-
-        let delay = 200;
-        this.preventSimpleClick = false;
-        this.timer = setTimeout(() => {
-            if (!this.preventSimpleClick) {
-                this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
-                const index = this.classes.indexOf(this.currentClass) + 1;
-                this.currentClass = this.classes[index];
-
-                this.filterChanged.emit();
+    onFilterClick(filterName:String , filterValue: string, phylogenyFilter: boolean = false) {
+        // phylogeny filter selection
+        if (phylogenyFilter) {
+            if (this.isPhylogenyFilterProcessing) {
+                return;
             }
-        }, delay);
+            // Set flag to prevent further clicks
+            this.isPhylogenyFilterProcessing = true;
+
+            this.phylogenyFilters.push(`${this.currentClass}:${filterValue}`);
+            const index = this.classes.indexOf(this.currentClass) + 1;
+            this.currentClass = this.classes[index];
+
+            // update url with the value of the phylogeny current class
+            this.updateQueryParams('phylogenyCurrentClass')
+
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+            this.filterChanged.emit();
+
+            // Reset isPhylogenyFilterProcessing flag
+            setTimeout(() => {
+                this.isPhylogenyFilterProcessing = false;
+            }, 500);
+        } else{
+            clearTimeout(this.timer);
+            if (filterName.startsWith('symbionts_') || filterName.startsWith('metagenomes_')){
+                filterValue = `${filterName}-${filterValue}`;
+            }
+            const index = this.activeFilters.indexOf(filterValue);
+
+
+            index !== -1 ? this.activeFilters.splice(index, 1) : this.activeFilters.push(filterValue);
+
+            this.filterChanged.emit();
+        }
+    }
+
+    removePhylogenyFilters() {
+        // update url with the value of the phylogeny current class
+        const queryParamPhyloIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (queryParamPhyloIndex > -1) {
+            this.queryParams.splice(queryParamPhyloIndex, 1);
+        }
+
+        const queryParamCurrentClassIndex = this.queryParams.findIndex((element: any) => element.includes('phylogenyCurrentClass - '));
+        if (queryParamCurrentClassIndex > -1) {
+            this.queryParams.splice(queryParamCurrentClassIndex, 1);
+        }
+        // Replace current url parameters with new parameters.
+        this.replaceUrlQueryParams();
+        // reset phylogeny variables
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.filterChanged.emit();
     }
 
     onHistoryClick() {
@@ -385,6 +533,13 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     onRefreshClick() {
         this.phylogenyFilters = [];
         this.currentClass = 'kingdom';
+        // remove phylogenyFilters param from url
+        const index = this.queryParams.findIndex((element: any) => element.includes('phylogenyFilters - '));
+        if (index > -1) {
+            this.queryParams.splice(index, 1);
+            // Replace current parameters with new parameters.
+            this.replaceUrlQueryParams();
+        }
         this.filterChanged.emit();
     }
 
@@ -415,7 +570,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         if (source === 'UKSI') {
             return 'background-color: yellow; color: black';
         } else {
-            return 'background-color: cornflowerblue; color: white';
+            return 'color: white; background-color: cornflowerblue; ';
         }
     }
 
@@ -460,6 +615,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                     length: this.resultsLength
                 });
     }
+
     checkStyle(filterValue: string) {
         if (this.activeFilters.includes(filterValue)) {
             if (filterValue === 'Annotation Complete - Done') {
@@ -475,125 +631,78 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 return 'cursor: pointer;width: 290px;';
             }
             if (filterValue.length > 50) {
-                return 'cursor: pointer;height: 80px;';
+                return 'cursor: pointer;height: 60px;';
             } else {
                 return 'cursor: pointer;'
             }
         }
     }
 
-
-    removeFilter(filter: string) {
-        if (filter !== undefined) {
-            const filterIndex = this.activeFilters.indexOf(filter);
-            this.activeFilters.splice(filterIndex, 1);
-            this.updateDomForRemovedFilter(filter);
-            this.updateActiveRouteParams();
-        }
+    refreshPage() {
+        clearTimeout(this.timer);
+        this.activeFilters = [];
+        this.phylogenyFilters = [];
+        this.currentClass = 'kingdom';
+        this.searchValue = '';
+        this.filterChanged.emit();
+        this.router.navigate([]);
     }
-    updateDomForRemovedFilter = (filter: string) => {
-        // tslint:disable-next-line:triple-equals
-        if (this.urlAppendFilterArray.length != 0) {
-            let inactiveClassName: string;
-            this.urlAppendFilterArray.filter(obj => {
-                // @ts-ignore
-                if(obj.value === filter && obj.name === 'phylogeny'){
-                        this.isFilterSelected = false;
-                        this.selectedFilterValue = '';
-                        // @ts-ignore
-                    const filterIndex1 = this.urlAppendFilterArray.findIndex(a => a.name === 'currentClass');
-                        this.urlAppendFilterArray.splice(filterIndex1, 1);
-                    // @ts-ignore
-                        const filterIndex2 = this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny_filters')
-                        this.urlAppendFilterArray.splice(filterIndex2, 1);
-                    // @ts-ignore
-                        const filterIndex3 =  this.urlAppendFilterArray.findIndex(a => a.name === 'phylogeny');
-                        this.urlAppendFilterArray.splice(filterIndex3, 1);
-                    // @ts-ignore
-                    }else if(obj.value === filter && obj.name !== 'phylogeny'){
-                        const filterIndex = this.urlAppendFilterArray.indexOf(obj);
-                        this.urlAppendFilterArray.splice(filterIndex, 1);
-                    }
 
 
-            });
-        }
+    openDownloadDialog(value: string) {
+        this.downloadDialogTitle = `Download data`;
+        this.dialogRef = this.dialog.open(this.downloadTemplate,
+            { data: value, height: '300px', width: '550px' });
     }
-    selectedFilterArray(key: string, value: string) {
-        let jsonObj: {};
-        if (key.toLowerCase() == 'biosamples') {
-            jsonObj = { "name": "biosamples", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
 
-        } else if (key.toLowerCase() == "raw_data") {
-            jsonObj = { "name": "raw_data", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }else if (key.toLowerCase() == "mapped_reads") {
-            jsonObj = { "name": "mapped_reads", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-        }   else if (key.toLowerCase() == "assemblies") {
-            jsonObj = { "name": "assemblies", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
+    public displayError = (controlName: string, errorName: string) => {
+        return this.downloadForm?.controls[controlName].hasError(errorName);
+    }
 
-        } else if (key.toLowerCase() == "annotation_complete") {
-            jsonObj = { "name": "annotation_complete", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "annotation") {
-            jsonObj = { "name": "annotation", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase() == "project_name") {
-            jsonObj = { "name": "project_name", "value": value };
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if (key.toLowerCase().startsWith('symbionts_') ||
-            key.toLowerCase().startsWith('metagenomes_')) {
-            jsonObj = {"name": key.toLowerCase(), "value": value};
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-
-        } else if(key.toLowerCase() == 'phylogeny'){
-            jsonObj = { "name": "phylogeny_filters", "value": this.phylogenyFilters };
-            let jsonObj1 = { "name": "phylogeny", "value": value };
-            let jsonObj21 ={"name":"currentClass","value":this.currentClass}
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj1);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj);
-            // @ts-ignore
-            this.urlAppendFilterArray.push(jsonObj21);
+    onDownload() {
+        if (this.downloadForm?.valid && this.downloadForm?.touched) {
+            this.displayProgressBar = true;
+            const downloadOption = this.downloadForm.value['downloadOption']
+            this.downloadFile(downloadOption, true);
         }
+        this.displayErrorMsg = true;
 
     }
 
-    updateActiveRouteParams = () => {
-        const params = {};
-        const currentUrl = this.router.url;
-        const paramArray = this.urlAppendFilterArray.map(x => Object.assign({}, x));
-        if (paramArray.length != 0) {
-            for (let i = 0; i < paramArray.length; i++) {
-                // @ts-ignore
-                params[paramArray[i].name] = paramArray[i].value;
+    onCancelDialog() {
+        this.dialogRef.close();
+    }
+
+    downloadFile(downloadOption: string, dialog: boolean) {
+        this._apiService.downloadData(downloadOption, this.pageIndex,
+            this.pageSize, this.searchValue || "", this.sort.active, this.sort.direction, this.activeFilters,
+            this.currentClass, this.phylogenyFilters, 'data_portal_test').subscribe({
+            next: (response: Blob) => {
+                const blobUrl = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = 'download.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                this.displayProgressBar = false;
+                if (dialog) {
+                    // close dialog box
+                    setTimeout(() => {
+                        this.dialogRef.close();
+                    }, 500)
+                }
+            },
+            error: error => {
+                console.error('Error downloading the CSV file:', error);
             }
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]], { queryParams: params } );
-            });
-        }
-        else {
-            this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-                this.router.navigate([currentUrl.split('?')[0]] );
-            });
-        }
+        });
+    }
 
-
+    toggleCollapse(filterGroupName: keyof FilterGroups) {
+        const group = this.filterGroups[filterGroupName];
+        group.isCollapsed = !group.isCollapsed;
+        group.itemLimit = group.isCollapsed ? group.defaultItemLimit : group.filters.length;
     }
 
     checkShowTolQc(data: any): boolean {
