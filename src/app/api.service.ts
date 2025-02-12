@@ -18,7 +18,7 @@ export class ApiService {
         const projectNames = ['DToL', 'ASG', 'ERGA',
             'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
         const offset = pageIndex * pageSize;
-       let url = `http://localhost:8000/${indexName}?limit=${pageSize}&offset=${offset}`;
+       let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -127,7 +127,7 @@ export class ApiService {
     downloadData(downloadOption: string, pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
                  filterValue: string[], currentClass: string, phylogeny_filters: string[], index_name: string) {
 
-        let url = `http://127.0.0.1:8000/data-download`;
+        let url = `https://www.ebi.ac.uk/biodiversity/api/data-download`;
 
         // phylogeny
         let phylogenyStr = phylogeny_filters.length ? phylogeny_filters.join('-') : '';
@@ -171,7 +171,7 @@ export class ApiService {
 
     getAllPublications(offset: number, limit: number, filter?: string[]) {
         const filters = [];
-        let url = `http://localhost:8000/articles?offset=${offset}&limit=${limit}`;
+        let url = `https://www.ebi.ac.uk/biodiversity/api/articles?offset=${offset}&limit=${limit}`;
         // @ts-ignore
         for (const key of filter) {
             if (['Genome Note', 'Research Article'].indexOf(key) !== -1) {

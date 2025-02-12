@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 })
 export class StatusesService {
 
-    private API_BASE_URL = 'http://45.88.81.74/biodiversity/api';
+    private API_BASE_URL = 'https://www.ebi.ac.uk/biodiversity/api';
     // private API_BASE_URL = 'http://45.88.81.97/backend';
     // private API_BASE_URL = 'http://localhost:8080';
 
