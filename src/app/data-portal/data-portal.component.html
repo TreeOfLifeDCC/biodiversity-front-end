@@ -275,9 +275,11 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
         </td>
       </ng-container>
 
-
-
-
+        <ng-container matColumnDef="commonName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Common Name</th>
+            <td mat-cell *matCellDef="let row">{{row._source.commonName}}</td>
+        </ng-container>
+        
       <ng-container matColumnDef="commonNameSource">
         <th mat-header-cell *matHeaderCellDef>Common Name Source</th>
         <td mat-cell *matCellDef="let row">
