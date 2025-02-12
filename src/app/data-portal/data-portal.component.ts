@@ -69,7 +69,7 @@ interface FilterGroups {
         MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
         ReactiveFormsModule,  MatError, MatRadioGroup, MatRadioButton,
-        MatDialogContent, MatProgressBar]
+        MatDialogContent, MatProgressBar,MatChipSet]
 })
 
 export class DataPortalComponent implements OnInit, AfterViewInit {

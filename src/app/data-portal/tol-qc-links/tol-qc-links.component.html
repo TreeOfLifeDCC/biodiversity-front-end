@@ -9,12 +9,15 @@
                 </h1>
             </div>
             <div class="modal-body">
-                <ng-container *ngFor="let tolqc_link of data.tolqcLinks">
-                    <mat-list role="list">
-                        <a mat-list-item role="listitem" href="{{tolqc_link}}">
-                            {{ tolqc_link }}
-                        </a>
-                    </mat-list>
+
+                <ng-container >
+                    @for (tolqc_link of data.tolqcLinks; track data){
+                        <mat-list role="list">
+                            <a mat-list-item role="listitem" href="{{tolqc_link}}">
+                                {{ tolqc_link }}
+                            </a>
+                        </mat-list>
+                    }
                 </ng-container>
             </div>
             <div class="modal-footer">
