@@ -52,6 +52,21 @@
     </mat-card-actions>
   </mat-card>
   <br>
+      <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+          <mat-card-title>Symbionts</mat-card-title>
+          <mat-card-actions >
+              <mat-list role="list">
+                  @for (filter of symbiontsFilters; track filter; let i = $index) {
+                      <mat-divider></mat-divider>
+                      <mat-list-item role="listbox"
+                                     [style]="checkStyle(filter.label + '-' + filter.key)"
+                                     (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;">
+                          <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
+                      </mat-list-item>
+                  }
+              </mat-list>
+          </mat-card-actions>
+      </mat-card>
     <br>
       <mat-card fxFlex class="mat-elevation-z8" layout-margin >
         <mat-card-title>Metagenomes</mat-card-title>
