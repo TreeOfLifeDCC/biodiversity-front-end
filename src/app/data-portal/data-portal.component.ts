@@ -676,7 +676,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     downloadFile(downloadOption: string, dialog: boolean) {
         this._apiService.downloadData(downloadOption, this.pageIndex,
             this.pageSize, this.searchValue || "", this.sort.active, this.sort.direction, this.activeFilters,
-            this.currentClass, this.phylogenyFilters, 'data_portal').subscribe({
+            this.currentClass, this.phylogenyFilters, 'data_portal_test').subscribe({
             next: (response: Blob) => {
                 const blobUrl = window.URL.createObjectURL(response);
                 const a = document.createElement('a');
