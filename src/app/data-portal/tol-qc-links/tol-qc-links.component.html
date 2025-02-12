@@ -1,0 +1,28 @@
+<div id="genomeNotesModalId" tabindex="-1" role="dialog"
+     aria-labelledby="genomeNotesModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h1 class=" modal-heading" style="margin-top:20px">
+                    ToL QC links
+                </h1>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngFor="let tolqc_link of data.tolqcLinks">
+                    <mat-list role="list">
+                        <a mat-list-item role="listitem" href="{{tolqc_link}}">
+                            {{ tolqc_link }}
+                        </a>
+                    </mat-list>
+                </ng-container>
+            </div>
+            <div class="modal-footer">
+                <button mat-raised-button type="button" data-dismiss="modal"
+                        (click)="close()"
+                        style="margin-bottom:15px;margin-left: 471px">Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

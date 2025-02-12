@@ -275,11 +275,8 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
         </td>
       </ng-container>
 
-      <!-- Title Column -->
-      <ng-container matColumnDef="commonName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Common Name</th>
-        <td mat-cell *matCellDef="let row">{{row._source.commonName}}</td>
-      </ng-container>
+
+
 
       <ng-container matColumnDef="commonNameSource">
         <th mat-header-cell *matHeaderCellDef>Common Name Source</th>
@@ -291,6 +288,17 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
           }
         </td>
       </ng-container>
+
+<!--                        <button  class="table-scroll table-scroll&#45;&#45;right">-->
+<!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">-->
+<!--                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />-->
+<!--                            </svg>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
 
       <!-- State Column -->
       <ng-container matColumnDef="currentStatus">
@@ -343,6 +351,7 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
         </td>
       </ng-container>
 
+
       <ng-container matColumnDef="mapped_reads">
         <th *matHeaderCellDef mat-sort-header> Mapped reads submitted to ENA
         </th>
@@ -350,6 +359,7 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
           <mat-chip selected [style]="getStatusClass(row['_source']['mapped_reads'])">{{row._source.mapped_reads}}</mat-chip>
         </td>
       </ng-container>
+
 
       <ng-container matColumnDef="assemblies_status">
         <th *matHeaderCellDef mat-sort-header> Assemblies submitted to ENA</th>

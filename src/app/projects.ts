@@ -2,13 +2,10 @@
 
 export class Constants {
     public static  projects = [
-
-
         {
             "accession": "PRJEB40665",
-            "title": "DToL",
+            "title": "DTOL",
             "name":"Darwin Tree of Life Data Portal",
-            "description": "The Darwin Tree of Life Project (darwintreeoflife.org) generates high quality genome assemblies for the approximately 60,000 species of eukaryotic organisms found in Britain and Ireland to contribute towards providing reference genome sequences for all life. It is a collaboration between biodiversity, genomics and analysis partners that hopes to transform the way we do biology, conservation and biotechnology. The project partners are the Natural History Museum London, the Royal Botanic Gardens Kew, the Royal Botanic Gardens Edinburgh, the Marine Biological Association, the Earlham Institute, the University of Oxford and its Wytham Woods field station, the University of Edinburgh, the University of Cambridge, EMBL-EBI and others, led by the Wellcome Sanger Institute, UK",
             "url": "https://www.darwintreeoflife.org/",
             "image":"assets/projects-logo-images/dtol-logo.png",
             "data_portal_url": "https://portal.darwintreeoflife.org/data"
@@ -17,7 +14,14 @@ export class Constants {
             "accession": "PRJEB43743",
             "title": "ASG",
             "name":"The Aquatic Symbiosis Project",
-            "description": "The Aquatic Symbiosis Genomics (ASG) project (https://www.sanger.ac.uk/collaboration/aquatic-symbiosis-genomics-project/) uses high quality references of symbiotic species to probe and understand the close association between eukaryotic macrosymbionts and their microsymbionts in freshwater and marine ecosystems. Using genome assemblies of both the eukaryotic \"hosts\" and their eukaryotic and prokaryotic microsymbionts, the project is exploring the origins, ongoing evolution and future environmental resilience of symbionts such as photosymbiotic corals, protists and molluscs, nutritional symbioses between deep sea vent animals and sulphur bacteria and within lichens, and defensive symbioses between photoluminescent microorganisms and their animal partners. The project is a collaboration between the Tree of Life programme at the Wellcome Sanger Institute, the European Bioinformatics Institute and a ten international Hubs who coordinate with partners across the biological sciences (led by researchers at Dalhousie University, University of Rhode Island, University of California, GEOMAR Helmholtz Centre for Ocean Research, University of British Columbia, Nova Southeastern University, Queen Mary University of London, Senckenberg Research Institute, University of Vienna, University of Oregon, University of Derby, The Sainsbury Laboratory, and Portland State University). The Aquatic Symbiosis Genomics project is funded by the Gordon and Betty Moore Foundation and the Wellcome Sanger institute.",
+            "description": "The Aquatic Symbiosis Genomics (ASG) project " +
+                "(https://www.sanger.ac.uk/collaboration/aquatic-symbiosis-genomics-project/) uses high quality " +
+                "references of symbiotic species to probe and understand the close association between eukaryotic " +
+                "macrosymbionts and their microsymbionts in freshwater and marine ecosystems. Using genome assemblies " +
+                "of both the eukaryotic \"hosts\" and their eukaryotic and prokaryotic microsymbionts, the project " +
+                "is exploring the origins, ongoing evolution and future environmental resilience of symbionts such as " +
+                "photosymbiotic corals, protists and molluscs, nutritional symbioses between deep sea vent animals and " +
+                "sulphur bacteria and within lichens, and defensive symbioses between photoluminescent microorganisms and their animal partners. The project is a collaboration between the Tree of Life programme at the Wellcome Sanger Institute, the European Bioinformatics Institute and a ten international Hubs who coordinate with partners across the biological sciences (led by researchers at Dalhousie University, University of Rhode Island, University of California, GEOMAR Helmholtz Centre for Ocean Research, University of British Columbia, Nova Southeastern University, Queen Mary University of London, Senckenberg Research Institute, University of Vienna, University of Oregon, University of Derby, The Sainsbury Laboratory, and Portland State University). The Aquatic Symbiosis Genomics project is funded by the Gordon and Betty Moore Foundation and the Wellcome Sanger institute.",
             "url": "https://www.aquaticsymbiosisgenomics.org/",
             "image":"assets/projects-logo-images/asg-logo.png",
             "data_portal_url": "https://portal.aquaticsymbiosisgenomics.org/data"
@@ -73,7 +77,7 @@ export class Constants {
             "description": "The chromosome-level genome assembly of Monomorium pharaonis",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA634441",
             "url": "",
-            "image": "",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
         {
@@ -110,11 +114,9 @@ export class Constants {
             "description": "Modern cartilaginous fishes are divided into elasmobranchs (sharks, rays, and skates) and chimaeras, and the lack of established whole-genome sequence information for elasmobranchs has prevented our understanding of early vertebrate evolution and their unique phenotypic traits. Here we report whole genome sequencing and related molecular analysis of two elasmobranch shark species. Their genomes, whose sizes surpass that of ours, harbor sparse distribution of conserved genic and regulatory elements and exhibit reduced molecular evolutionary rates. Our investigation uncovered altered sensory gene repertory possibly associated with adaptation to unique underwater niche and relict members of the Hox C cluster previously hypothesized to be absent in elasmobranchs. We also showed the antiquity of gene repertory governing mammalian homeostasis and reproduction, including Leptin, by identifying their shark homologs. Our study provides the foundation of comprehensive exploration of morphology, physiology, and behavior of elasmobranch sharks at the molecular level, especially those with sustainable supply of animal samples.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJDB6260",
             "url": "",
-            "image":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
-
-
         {
             "accession": "PRJNA312960",
             "title": "200 Mammals",
@@ -122,27 +124,26 @@ export class Constants {
             "description": "Sequencing the genome of 200 mammals",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA312960",
             "url": "",
-            "image":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
-
         {
             "accession": "PRJNA682446",
-            "title": "Genome sequencing data and assemblies generated by the Lewin Lab @ UC Davis Genome Center.",
-            "name": "Genome sequencing data and assemblies generated by the Lewin Lab @ UC Davis Genome Center.",
+            "title": "Genome sequencing data and assemblies generated by the Lewin Lab @ UC Davis Genome Center",
+            "name": "Genome sequencing data and assemblies generated by the Lewin Lab @ UC Davis Genome Center",
             "description": "Genome sequencing data and assemblies generated by the Lewin Lab @ UC Davis Genome Center.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA682446",
             "url":"",
-            "image":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
         {
             "accession": "PRJNA293101",
             "title": "Orestias ascotanensis Genome sequencing and assembly",
             "name": "Orestias ascotanensis Genome sequencing and assembly",
-            "description": "Orestias ascotanensis is a fish specie that inhabit the tributaries of the Salar de Ascotan, in northern Chile. This and other species of the genus, which also inhabit salars and lakes of andean altiplane, are the result of a rapid speciation process caused by a geographic isolation (allopatric speciation).</p><p>Describing the genome of O. ascotanensis is a first approach for understanding its speciation process, and how this fish has been genetically adapted to extreme enviromental conditions.",
+            "description": "Orestias ascotanensis is a fish specie that inhabit the tributaries of the Salar de Ascotan, in northern Chile.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA293101",
-            "image":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "url":"",
             "data_portal_url": ""
         },
@@ -156,14 +157,13 @@ export class Constants {
             "data_portal_url": ""
         },
         {
+
             "accession": "PRJNA734913",
-            "title": "Amphibalanus amphitrite(Genome Sequencing and assembly)",
-            "name": "Amphibalanus amphitrite(Genome Sequencing and assembly)",
+            "title": "Amphibalanus amphitrite (Genome Sequencing and assembly)",
+            "name": "Amphibalanus amphitrite (Genome Sequencing and assembly)",
             "description": "The objective of this project is to sequence, assemble, and accurately annotate the genome Acorn Barnacle, Amphibalanus amphitrite.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA734913",
-            "url": "",
-            "image":"",
-            "data_portal_url": ""
+            "image":"assets/projects-logo-images/earth-project-new.png"
         },
         {
             "accession": "PRJEB33226",
@@ -184,13 +184,6 @@ export class Constants {
             "image":"assets/projects-logo-images/maxresdefault.jpg",
             "data_portal_url": ""
         },
-        // {   No Public data available
-        //     "accession": "PRJNA844590",
-        //     "title": "Illinois EBP Pilot",
-        //     "description": "During this pilot phase, agriculturally relevant insects for which little or no genomic data are available will serve as the focal taxa with which to demonstrate project scalability, communicate scientific discovery, and inspire potential economic and societal benefits.",
-        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA844590",
-        //     "image":"../assets/projects-logo-images/Illinois-EBP-Pilot.jpeg"
-        // },
         {
             "accession": "PRJEB49670",
             "title": "Catalan Initiative for the Earth BioGenome Project (CBP)",
@@ -206,8 +199,7 @@ export class Constants {
             "name": "Bird 10000 Genomes (B10K) Project (Family phase)",
             "description": "The Bird 10,000 Genomes (B10K) Project is an initiative to generate representative draft genome sequences from all extant bird species. The B10K project will allow the completion of a genomic level tree of life of the entire living avian class, decode the link between genetic variation and phenotypic variation, uncover the correlation of genetic evolutionary and biogeographical and biodiversity patterns across a wide-range of species, evaluate the impact of various ecological factors and human influence on species evolution, and unveil the demographic history of an entire class of organisms. Given all these goals, the B10K project is carried out at hierarchical levels of avian classification. This Family Phase Project aims to achieve the above goals using recently generated reference genomes from 363 species representing most of the 236 avian families. This project will have significant scientific and public impact that will change our understanding of avian biology and evolution, which in turn will affect our understanding of other organisms and open doors to new areas of research.",
             "url": "https://b10k.genomics.cn/",
-            "image":"assets/projects-logo-images/b10klogo.png",
-            "data_portal_url": ""
+            "image": "assets/projects-logo-images/b10klogo.png",
         },
         {
             "accession": "PRJNA555319",
@@ -216,7 +208,7 @@ export class Constants {
             "description": "The USDA Agricultural Research Service’s Ag100Pest Initiative will produce annotated, high quality genome assemblies for 100 US agricultural pest arthropods. The Ag100Pest Initiative is a component of both the i5k Initiative and Earth BioGenome Project. Species are being chosen across arthropod pests of US field crops, livestock, bees, trees, and stored products as well as foreign pest species considered potential invasive threats to US agriculture.",
             "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA555319",
             "url": "",
-            "image": "",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
         {
@@ -228,7 +220,6 @@ export class Constants {
             "image": "assets/projects-logo-images/CGen.png",
             "data_portal_url": ""
         },
-
         {
             "accession": "PRJNA706923",
             "title": "LOEWE Centre for Translational Biodiversity Genomics (LOEWE-TBG)",
@@ -262,19 +253,11 @@ export class Constants {
             "title": "Genome sequencing and assembly of primate species Genome sequencing and assembly",
             "name": "Genome sequencing and assembly of primate species Genome sequencing and assembly",
             "description": "The AfricaBP initiative plans to sequence the genomes of 105,000 African endemic species. AfricaBP is a coordinated pan-African effort to build capacity to generate, analyze and deploy genomics data for the improvement and sustainable use of biodiversity and agriculture across Africa. The project aims to foster scientific collaborations and partnerships provide the platform for innovations and policy change across Africa through biodiversity genomics.",
-            "url": "",
-            "image":"",
+            "ena-url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA1020146",
+            "url":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
             "data_portal_url": ""
         },
-        // {
-        //     "accession": "PRJNA911016",
-        //     "title": "Cephalopachus bancanus breed:not provided Genome sequencing and assembly",
-        //     "name": "Cephalopachus bancanus breed:not provided Genome sequencing and assembly",
-        //     "description": "Phylogenomic analyses provide insights into primate genomic and phenotypic evolution.",
-        //     "url": "",
-        //     "image":"",
-        //     "data_portal_url": ""
-        // },
         {
             "accession": "PRJEB65317",
             "title": "Earth BioGenome Project Norway (EBP-Nor)",
@@ -292,12 +275,102 @@ export class Constants {
             "url": "https://www.projectpsyche.org/",
             "image":"assets/projects-logo-images/psyche_logo.png",
             "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA1020146",
+            "title": "Cetacean Genomes Project",
+            "name": "Cetacean Genomes Project",
+            "description": "Our primary goal is to coordinate or facilitate generation of high-quality, nearly complete reference genomes for all cetacean species, to maximize the utility of cetacean genomic data for research and conservation. To meet this goal, we have adopted the Vertebrate Genome Project's (VGP) minimum genome quality metrics, but also support draft genome sequencing for species for which high-quality samples or sequencing resources are not available.",
+            "ena_url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA1020146",
+            "url": "",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA844590",
+            "title": "Illinois EBP Pilot",
+            "name": "Illinois EBP Pilot",
+            "description": "During this pilot phase, agriculturally relevant insects for which little or no genomic data are available will serve as the focal taxa with which to demonstrate project scalability, communicate scientific discovery, and inspire potential economic and societal benefits.",
+            "ena_url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA844590",
+            "url":"",
+            "image":"assets/projects-logo-images/earth-project-new.png"
+
+        },
+        {
+            "accession": "PRJNA1180976",
+            "title": "GBB Consortium",
+            "name": "GBB Consortium",
+            "description": "The GBB is a Consortium funded by Vale and is under the coordination of both Vale Institute of Technology and ICMBio.",
+            "url": "https://www.itv.org/en/genomics-of-the-brazilian-biodiversity-gbb/",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA1046164",
+            "title": "Ocean Genomes (Minderoo OceanOmics Centre at University of the Western Australia)",
+            "name": "Ocean Genomes (Minderoo OceanOmics Centre at University of the Western Australia)",
+            "description": "Ocean Genomes is an an initiative enabled by Minderoo Foundation (Perth, Australia) OceanOmics Division and delivered in collaboration with the University of Western Australia (Perth, Australia) via the Minderoo OceanOmics Centre at UWA. Ocean Genomes works to accelerate and scale the production of openly accessible reference genome assemblies for marine vertebrates.",
+            "url": "https://www.uwa.edu.au/oceans-institute/partnerships/minderoo-oceanomics-centre-at-uwa",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJEB80366",
+            "title": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability)",
+            "name": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability)",
+            "description": "AEGIS (Ancient Environmental Genomics Initiative for Sustainability) is a multi-centre project, funded by the NovoNordisk Foundation (Denmark) and the Wellcome Trust (UK). The overarching aims of AEGIS are to develop the essential science and methodology to use ancient eDNA – coupled with other ancient and modern biomolecule-based approaches – to identify important organismal associations and genetic adaptations in natural and agroecosystems that will improve future food security under climate change.",
+            "url": "https://globe.ku.dk/research/ancient-environmental-genomics-initiative-for-sustainability/",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA911016",
+            "title": "Cephalopachus bancanus breed (not provided Genome sequencing and assembly)",
+            "name": "Cephalopachus bancanus breed (not provided Genome sequencing and assembly)",
+            "description": "Phylogenomic analyses provide insights into primate genomic and phenotypic evolution.",
+            "ena_url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA911016",
+            "url":"",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
+        },
+        {
+            "accession": "PRJNA1120070",
+            "title": "Lepus timidus genome sequencing",
+            "name": "Lepus timidus genome sequencing",
+            "description": "Repository for data generated from EBP-Nor, the Norwegian initiative for the Earth Biogenome Project, which aims to generate a detailed catalogue of the genomes of eukaryotic species in Norway.",
+            "ena_url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA1120070",
+            "url": "",
+            "image":"assets/projects-logo-images/earth-project-new.png",
+            "data_portal_url": ""
         }
-        // { No data available
+        // {  No data available
+        //     "accession": "PRJNA1112568",
+        //     "title": "Lepus timidus alternate haplotype genome sequencing",
+        //     "name": "Lepus timidus alternate haplotype genome sequencing",
+        //     "description": "This is the alternate haplotype of the Lepus timidus isolate LT1 genome that we sequenced.",
+        //     "url": "",
+        //     "image":"",
+        //     "data_portal_url": ""
+        // },
+        // {  No data available
         //     "accession": "PRJNA707235",
         //     "title": "University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
         //     "description": "Read data and genome assemblies produced by the University of California Consortium for the Earth BioGenome Project (Cal-EBP)",
         //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA707235"
+        // },
+
+        // {  No data available
+        //     "accession": "PRJNA714837",
+        //     "title": "Lilioid monocots core group genome sequencing and assembly",
+        //     "description": "Monocots are one of the most important plant lineages and contribute to the majority of agricultural biomass on earth. Phylogenetically, monocots can be divided into three groups; the basal (alismatid), lilioid, and commelinid monocots, the latter two form a monophyletic lineage called the \"core monocots\".",
+        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA714837"
+        // },
+
+        // {  No data available
+        //     "accession": "PRJNA1157211",
+        //     "title": "B10K Consortium",
+        //     "description": "Genome sequences and bird genomes assemblies for the Danish Bird Genome (DBG) project under the B10K consortium Genome sequencing and assembly",
+        //     "url": "https://www.ebi.ac.uk/ena/browser/view/PRJNA714837"
         // }
     ]
 }

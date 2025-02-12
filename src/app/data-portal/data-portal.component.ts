@@ -17,10 +17,11 @@ import {Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 import {ActivatedRoute, NavigationEnd, Router, RouterLink} from "@angular/router";
 import {Title} from "@angular/platform-browser";
+
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-
+import {TolQcLinksComponent} from "./tol-qc-links/tol-qc-links.component";
 import { MatLine } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatChipSet, MatChip } from '@angular/material/chips';
@@ -63,11 +64,12 @@ interface FilterGroups {
     templateUrl: './data-portal.component.html',
     styleUrls: ['./data-portal.component.scss'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon, MatChipSet,
+    imports: [MatCard, MatCardTitle, MatCardActions, MatList, MatDivider, MatListItem, MatLine, MatIcon,
         MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
         MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
-        ReactiveFormsModule, MatFormField, MatError, MatHint, MatRadioGroup, MatRadioButton, MatButton, MatDialogActions, MatDialogContent, MatProgressBar]
+        ReactiveFormsModule,  MatError, MatRadioGroup, MatRadioButton,
+        MatDialogContent, MatProgressBar]
 })
 
 export class DataPortalComponent implements OnInit, AfterViewInit {
@@ -194,8 +196,14 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         }
     };
 
-    constructor(private _apiService: ApiService,private activatedRoute: ActivatedRoute, private router: Router,
-                private titleService: Title, private dialog: MatDialog ) {
+
+
+    constructor(private _apiService: ApiService,
+                private activatedRoute: ActivatedRoute,
+                private router: Router,
+                private titleService: Title,
+                private dialog: MatDialog) {
+
         this.searchUpdate.pipe(
             debounceTime(500),
             distinctUntilChanged()).subscribe(
@@ -610,12 +618,18 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
 
     checkStyle(filterValue: string) {
         if (this.activeFilters.includes(filterValue)) {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'background-color: cornflowerblue; color: white;width: 290px;';
+            }
             if(filterValue.length > 50){
                 return 'background-color: cornflowerblue; color: white;height: 80px;';
             }else {
                 return 'background-color: cornflowerblue; color: white;'
             }
         } else {
+            if (filterValue === 'Annotation Complete - Done') {
+                return 'cursor: pointer;width: 290px;';
+            }
             if (filterValue.length > 50) {
                 return 'cursor: pointer;height: 60px;';
             } else {
@@ -689,6 +703,23 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
         const group = this.filterGroups[filterGroupName];
         group.isCollapsed = !group.isCollapsed;
         group.itemLimit = group.isCollapsed ? group.defaultItemLimit : group.filters.length;
+    }
+
+    checkShowTolQc(data: any): boolean {
+        if (data.hasOwnProperty("tolqc_links")) {
+            return data.tolqc_links.length > 0;
+        }
+        return false;
+    }
+
+    openToLQCDialog(data: any) {
+        const dialogRef = this.dialog.open(TolQcLinksComponent, {
+            width: '1000px',
+            autoFocus: false,
+            data: {
+                tolqcLinks: data.tolqc_links
+            }
+        });
     }
 
 }
