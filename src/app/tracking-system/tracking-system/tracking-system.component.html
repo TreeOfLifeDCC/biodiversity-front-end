@@ -1,306 +1,330 @@
 <div class="vf-u-margin__top--800" style="margin: 0 10% 10%" xmlns="http://www.w3.org/1999/html">
 
-  <section class="embl-grid">
+    <section class="embl-grid">
 
-    <div class="vf-content vf-u-grid__col--span-2--lg"  style="margin: -21px;">
+        <div class="vf-content vf-u-grid__col--span-2--lg" style="margin: -21px;">
 
-      <div class="row column filterList">
+            <div class="row column filterList">
                 <legend class="vf-form__legend hide-for-small-only" style="
 margin-top: 165px;">Filter by:
-        </legend>
-        <br>
-          <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-            <mat-card-title>Data status</mat-card-title>
-            <mat-card-actions >
-              <mat-list role="list">
-                <mat-divider></mat-divider>@if (getStatusCount(aggregations?.biosamples.buckets)) {
-                <mat-list-item role="listbox"
-                  [style]="checkStyle('BioSamples - Submitted')"
-                  (click)="onFilterClick('biosamples','BioSamples - Submitted')" style="cursor: pointer;">
-                  <h4 matLine class="ellipsis">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
-                </mat-list-item>
-              }
-              <mat-divider></mat-divider> @if (getStatusCount(aggregations?.raw_data.buckets)) {
-              <mat-list-item role="listbox"
-                [style]="checkStyle('Raw Data - Submitted')"
-                (click)="onFilterClick('raw_data','Raw Data - Submitted')" style="cursor: pointer;">
-                <h4 matLine class="ellipsis">Raw Data - Submitted (
-                {{getStatusCount(aggregations?.raw_data.buckets)}})</h4>
-              </mat-list-item>
-            }
-            <mat-divider></mat-divider>@if (getStatusCount(aggregations?.assemblies_status.buckets)) {
-            <mat-list-item role="listbox"
-              [style]="checkStyle('Assemblies - Submitted')"
-              (click)="onFilterClick('assemblies','Assemblies - Submitted')" style="cursor: pointer;">
-              <h4 matLine class="ellipsis">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
-            </mat-list-item>
-          }
-          <mat-divider></mat-divider>@if (getStatusCount(aggregations?.annotation_complete.buckets)) {
-          <mat-list-item  role="listbox"
-            [style]="checkStyle('Annotation Complete - Done')"
-            (click)="onFilterClick('annotation_complete','Annotation Complete - Done')" style="cursor: pointer;">
-            <h4 matLine class="ellipsis">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-actions>
-  </mat-card>
-  <br>
-
-    <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-      <mat-card-title>Symbionts</mat-card-title>
-      <mat-card-actions >
-        <mat-list role="list">
-          @for (filter of symbiontsFilters; track filter; let i = $index) {
-            <mat-divider></mat-divider>
-            <mat-list-item role="listbox"
-              [style]="checkStyle(filter.label + '-' + filter.key)"
-              (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;">
-              <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
-            </mat-list-item>
-          }
-        </mat-list>
-      </mat-card-actions>
-    </mat-card>
-    <br>
-      <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-        <mat-card-title>Metagenomes</mat-card-title>
-        <mat-card-actions >
-          <mat-list role="list">
-            @for (filter of metagenomesFilters; track filter; let i = $index) {
-              <mat-divider></mat-divider>
-              <mat-list-item role="listbox"
-                [style]="checkStyle(filter.label + '-' + filter.key)"
-                (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;">
-                <h4 matLine class="ellipsis">{{filter.key}} ( {{filter.doc_count}})</h4>
-              </mat-list-item>
-            }
-          </mat-list>
-        </mat-card-actions>
-      </mat-card>
-      <br>
-
-        <mat-card fxFlex class="mat-elevation-z8"  >
-          <mat-card-title>Projects
-            @if ((( aggregations?.project_name.buckets?.length > filterSize ) && isCollapsed)) {
-              <i class="material-icons float-right" style="cursor: pointer;" (click)="toggleCollapse()">add</i>
-            }
-            @if (( !isCollapsed)) {
-              <i class="material-icons float-right" style="cursor: pointer;"  (click)="toggleCollapse()">remove</i>
-            }
-
-          </mat-card-title>
-          <mat-card-actions>
-            <mat-list  role="listbox">
-              <mat-divider></mat-divider>
-              @for (project of  aggregations?.project_name.buckets; track project; let i = $index) {
-                @if (i<itemLimit) {
-                  <mat-list-item
-                    [style]="checkStyle(project.key)  "
-                    (click)="onFilterClick('project_name',convertProjectName(project.key))"  >
-                    <mat-divider></mat-divider>
-                      <h4 matLine class="ellipsis" style="white-space: normal;">
-                          {{displayActiveFilterName(project.key)}} ({{project.doc_count}})
-                      </h4>
-                  </mat-list-item>
-                }
-              }
-            </mat-list>
-          </mat-card-actions>
-        </mat-card>
-
-        <br>
-
-          <mat-card fxFlex class="mat-elevation-z8"  >
-            <mat-card-title>
-              Phylogeny/{{currentClass}}
-              @if (phylogenyFilters.length !== 0) {
-                <mat-icon (click)="onRefreshClick()" style="cursor: pointer;">
-                  refresh
-                </mat-icon>
-              }
-              @if (phylogenyFilters.length !== 0) {
-                <mat-icon (click)="onHistoryClick()" style="cursor: pointer">
-                  arrow_circle_left
-                </mat-icon>
-              }
-            </mat-card-title>
-            <mat-card-actions>
-              @if (isFilterSelected) {
-                <mat-list role="list" >
-                  <mat-divider></mat-divider>
-                    <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
-                  (click)="onFilterClick('phylogeny',selectedFilterValue, true)">
-                  <h4 matLine class="ellipsis">{{selectedFilterValue}} (
-                  {{resultsLength}})</h4>
-                </mat-list-item>
-              </mat-list>
-            }
-            @if (!isFilterSelected) {
-              <div>
-                @for (phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets; track phylogeny_name) {
-                  <mat-list role="list" >
-                    <mat-divider></mat-divider> <mat-list-item  role="listbox"
-                    style="cursor: pointer" [style]="checkStyle(phylogeny_name.key)"
-                    (click)="onFilterClick('phylogeny',phylogeny_name.key, true)">
-                    <h4 matLine class="ellipsis">{{phylogeny_name.key}} ({{phylogeny_name.doc_count}})</h4>
-                  </mat-list-item>
-                </mat-list>
-              }
-            </div>
-          }
-        </mat-card-actions>
-      </mat-card>
-
-    </div>
-  </div>
-
-  <div class="vf-content vf-u-grid__col--span-3">
-    <label class="vf-page-header__heading"><h1>Tracking System</h1></label>
-    <br>
-      <mat-chip-set>
-        @for (field of activeFilters; track field) {
-          <div class="item4">
-              <mat-chip selected (click)="onFilterClick('removeFilter',field)"
-                        style="cursor: pointer; background-color: limegreen; color: black;">
-                  {{ displayActiveFilterName(field) }}
-                  <mat-icon>close</mat-icon>
-              </mat-chip>
-          </div>
-        }
-          @if (phylogenyFilters.length > 0) {
-              <mat-chip selected (click)="removePhylogenyFilters()"
-                        style="cursor: pointer; background-color: limegreen; color: black;">
-                  {{ displayActiveFilterName(lastPhylogenyVal) }}
-                  <mat-icon>close</mat-icon>
-              </mat-chip>
-          }
-          @if(activeFilters.length > 0 || phylogenyFilters.length > 0){
-              <mat-chip selected (click)="refreshPage()"
-                        style="cursor: pointer; background-color: #EE4B2B; color: white;">
-                  Remove all filters
-                  <mat-icon>close</mat-icon>
-              </mat-chip>
-          }
-
-      </mat-chip-set>
-      <br>
-        <div class="vf-form__item | vf-search__item">
-                <input type="search" id="searchValue" matInput style="
-    width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search__input | vf-form__input" [(ngModel)]='this.searchValue'
-            (ngModelChange)="this.searchUpdate.next($event)">
-        </div>
-
-        <div style="float: right;font-size: 14px; font-weight: 400;">
-            <button  style="float: left;margin-top: 10px;" type="submit"
-                     class="vf-button vf-button--primary vf-button--outline vf-button--sm"
-                     (click)="downloadFile('metadata')"
-                     [disabled]="displayProgressBar">
-                Download metadata
-            </button>
-            @if (displayProgressBar) {
-                <div style="padding: 15px">
-                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                </div>
-            }
-        </div>
-
-        <br>
-
-          <br>
-            <br>
-              <br>
+                </legend>
                 <br>
-                  <div>
-                    @if (isLoadingResults || isRateLimitReached) {
-                      <div class="example-loading-shade"
-                        >
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin>
+                    <mat-card-title>Data status</mat-card-title>
+                    <mat-card-actions>
+                        <mat-list role="list">
+                            <mat-divider></mat-divider>@if (getStatusCount(aggregations?.biosamples.buckets)) {
+                            <mat-list-item role="listbox"
+                                           [style]="checkStyle('BioSamples - Submitted')"
+                                           (click)="onFilterClick('biosamples','BioSamples - Submitted')"
+                                           class="mat-list-item-class">
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">BioSamples -
+                                    Submitted ({{ getStatusCount(aggregations?.biosamples.buckets) }})</h4>
+                            </mat-list-item>
+                        }
+                            <mat-divider></mat-divider> @if (getStatusCount(aggregations?.raw_data.buckets)) {
+                            <mat-list-item role="listbox"
+                                           [style]="checkStyle('Raw Data - Submitted')"
+                                           (click)="onFilterClick('raw_data','Raw Data - Submitted')"
+                                           class="mat-list-item-class">
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Raw Data -
+                                    Submitted (
+                                    {{ getStatusCount(aggregations?.raw_data.buckets) }})</h4>
+                            </mat-list-item>
+                        }
+                            <mat-divider></mat-divider>@if (getStatusCount(aggregations?.assemblies_status.buckets)) {
+                            <mat-list-item role="listbox"
+                                           [style]="checkStyle('Assemblies - Submitted')"
+                                           (click)="onFilterClick('assemblies','Assemblies - Submitted')"
+                                           class="mat-list-item-class">
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Assemblies -
+                                    Submitted ({{ getStatusCount(aggregations?.assemblies_status.buckets) }})</h4>
+                            </mat-list-item>
+                        }
+                            <mat-divider></mat-divider>@if (getStatusCount(aggregations?.annotation_complete.buckets)) {
+                            <mat-list-item role="listbox"
+                                           [style]="checkStyle('Annotation Complete - Done')"
+                                           (click)="onFilterClick('annotation_complete','Annotation Complete - Done')"
+                                           class="mat-list-item-class">
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Annotation Complete
+                                    - Done ({{ getStatusCount(aggregations?.annotation_complete.buckets) }})</h4>
+                            </mat-list-item>
+                        }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+                <br>
+
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin>
+                    <mat-card-title>Symbionts</mat-card-title>
+                    <mat-card-actions>
+                        <mat-list role="list">
+                            @for (filter of symbiontsFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkStyle(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick(filter.label, filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis"
+                                        style="white-space: normal; margin: 0;">{{ filter.key }}
+                                        ( {{ filter.doc_count }})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+                <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin>
+                    <mat-card-title>Metagenomes</mat-card-title>
+                    <mat-card-actions>
+                        <mat-list role="list">
+                            @for (filter of metagenomesFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkStyle(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick(filter.label, filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis"
+                                        style="white-space: normal; margin: 0;">{{ filter.key }}
+                                        ( {{ filter.doc_count }})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+                <br>
+
+                <mat-card fxFlex class="mat-elevation-z8">
+                    <mat-card-title>Projects
+                        @if (((aggregations?.project_name.buckets?.length > filterSize) && isCollapsed)) {
+                            <i class="material-icons float-right" class="mat-list-item-class"
+                               (click)="toggleCollapse()">add</i>
+                        }
+                        @if ((!isCollapsed)) {
+                            <i class="material-icons float-right" class="mat-list-item-class"
+                               (click)="toggleCollapse()">remove</i>
+                        }
+
+                    </mat-card-title>
+                    <mat-card-actions>
+                        <mat-list role="listbox">
+                            <mat-divider></mat-divider>
+                            @for (project of aggregations?.project_name.buckets; track project; let i = $index) {
+                                @if (i < itemLimit) {
+                                    <mat-list-item
+                                            [style]="checkStyle(project.key)"
+                                            (click)="onFilterClick('project_name',convertProjectName(project.key))"
+                                            class="mat-list-item-class">
+                                        <mat-divider></mat-divider>
+                                        <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">
+                                            {{ displayActiveFilterName(project.key) }} ({{ project.doc_count }})
+                                        </h4>
+                                    </mat-list-item>
+                                }
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
+
+                <br>
+
+                <mat-card fxFlex class="mat-elevation-z8">
+                    <mat-card-title>
+                        Phylogeny/{{ currentClass }}
+                        @if (phylogenyFilters.length !== 0) {
+                            <mat-icon (click)="onRefreshClick()" class="mat-list-item-class">
+                                refresh
+                            </mat-icon>
+                        }
+                        @if (phylogenyFilters.length !== 0) {
+                            <mat-icon (click)="onHistoryClick()" class="mat-list-item-class">
+                                arrow_circle_left
+                            </mat-icon>
+                        }
+                    </mat-card-title>
+                    <mat-card-actions>
+                        @if (isFilterSelected) {
+                            <mat-list role="list">
+                                <mat-divider></mat-divider>
+                                <mat-list-item style="cursor: pointer" [style]="checkStyle(selectedFilterValue)"
+                                               (click)="onFilterClick('phylogeny',selectedFilterValue, true)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis"
+                                        style="white-space: normal; margin: 0;">{{ selectedFilterValue }} (
+                                        {{ resultsLength }})</h4>
+                                </mat-list-item>
+                            </mat-list>
+                        }
+                        @if (!isFilterSelected) {
+                            <div>
+                                @for (phylogeny_name of aggregations?.taxonomies[currentClass]?.buckets; track phylogeny_name) {
+                                    <mat-list role="list">
+                                        <mat-divider></mat-divider>
+                                        <mat-list-item role="listbox" class="mat-list-item-class"
+                                                       [style]="checkStyle(phylogeny_name.key)"
+                                                       (click)="onFilterClick('phylogeny',phylogeny_name.key, true)">
+                                            <h4 matLine class="ellipsis"
+                                                style="white-space: normal; margin: 0;">{{ phylogeny_name.key }}
+                                                ({{ phylogeny_name.doc_count }})</h4>
+                                        </mat-list-item>
+                                    </mat-list>
+                                }
+                            </div>
+                        }
+                    </mat-card-actions>
+                </mat-card>
+
+            </div>
+        </div>
+
+        <div class="vf-content vf-u-grid__col--span-3">
+            <label class="vf-page-header__heading"><h1>Tracking System</h1></label>
+            <br>
+            <mat-chip-set>
+                @for (field of activeFilters; track field) {
+                    <div class="item4">
+                        <mat-chip selected (click)="onFilterClick('removeFilter',field)"
+                                  style="cursor: pointer; background-color: limegreen; color: black;">
+                            {{ displayActiveFilterName(field) }}
+                            <mat-icon>close</mat-icon>
+                        </mat-chip>
+                    </div>
+                }
+                @if (phylogenyFilters.length > 0) {
+                    <mat-chip selected (click)="removePhylogenyFilters()"
+                              style="cursor: pointer; background-color: limegreen; color: black;">
+                        {{ displayActiveFilterName(lastPhylogenyVal) }}
+                        <mat-icon>close</mat-icon>
+                    </mat-chip>
+                }
+                @if (activeFilters.length > 0 || phylogenyFilters.length > 0) {
+                    <mat-chip selected (click)="refreshPage()"
+                              style="cursor: pointer; background-color: #EE4B2B; color: white;">
+                        Remove all filters
+                        <mat-icon>close</mat-icon>
+                    </mat-chip>
+                }
+
+            </mat-chip-set>
+            <br>
+            <div class="vf-form__item | vf-search__item">
+                <input type="search" id="searchValue" matInput style="
+    width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search__input | vf-form__input"
+                       [(ngModel)]='this.searchValue'
+                       (ngModelChange)="this.searchUpdate.next($event)">
+            </div>
+
+            <div style="float: right;font-size: 14px; font-weight: 400;">
+                <button style="float: left;margin-top: 10px;" type="submit"
+                        class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                        (click)="downloadFile('metadata')"
+                        [disabled]="displayProgressBar">
+                    Download metadata
+                </button>
+                @if (displayProgressBar) {
+                    <div style="padding: 15px">
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                    </div>
+                }
+            </div>
+
+            <br>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <div>
+                @if (isLoadingResults || isRateLimitReached) {
+                    <div class="example-loading-shade"
+                    >
                         @if (isLoadingResults) {
-                          <mat-spinner></mat-spinner>
+                            <mat-spinner></mat-spinner>
                         }
                         @if (isRateLimitReached) {
-                          <div class="example-rate-limit-reached">
-                            Something went wrong, please try again!
-                          </div>
+                            <div class="example-rate-limit-reached">
+                                Something went wrong, please try again!
+                            </div>
                         }
-                      </div>
-                    }
+                    </div>
+                }
 
-                    <div style=" display: flex;overflow: auto;">
+                <div style=" display: flex;overflow: auto;">
 
-                        <table mat-table [dataSource]="data" style="overflow: auto; min-width: 95% ;" matSort
-                               matSortDisableClear
-                               matSortActive="annotation_complete"
-                               matSortDirection="asc" matTableExporter #exporter="matTableExporter" >
-                            <!-- Number Column -->
-                            <ng-container matColumnDef="organism">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
-                                <td mat-cell *matCellDef="let row">
-                                    <a mat-button [routerLink]="['/data_portal', row._source.tax_id]">
-                                        {{row._source.organism}}
-                                    </a>
-                                </td>
-                            </ng-container>
+                    <table mat-table [dataSource]="data" style="overflow: auto; min-width: 95% ;" matSort
+                           matSortDisableClear
+                           matSortActive="annotation_complete"
+                           matSortDirection="asc" matTableExporter #exporter="matTableExporter">
+                        <!-- Number Column -->
+                        <ng-container matColumnDef="organism">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
+                            <td mat-cell *matCellDef="let row">
+                                <a mat-button [routerLink]="['/data_portal', row._source.tax_id]">
+                                    {{ row._source.organism }}
+                                </a>
+                            </td>
+                        </ng-container>
 
                         <ng-container matColumnDef="commonName">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Common Name</th>
-                          <td  mat-cell
-                          *matCellDef="let row">{{row._source.commonName}}</td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Common Name</th>
+                            <td mat-cell
+                                *matCellDef="let row">{{ row._source.commonName }}
+                            </td>
                         </ng-container>
 
                         <!-- State Column -->
                         <ng-container matColumnDef="biosamples">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header >Metadata submitted to BioSamples</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip  selected [style]="getStyle(row._source.biosamples)">
-                              {{row._source.biosamples}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Metadata submitted to BioSamples</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(row._source.biosamples)">
+                                    {{ row._source.biosamples }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="raw_data">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Raw data submitted to ENA</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip  selected [style]="getStyle(row._source.raw_data)">
-                              {{row._source.raw_data}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Raw data submitted to ENA</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(row._source.raw_data)">
+                                    {{ row._source.raw_data }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="mapped_reads">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Mapped reads submitted to ENA</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip selected [style]="getStyle(row._source.mapped_reads)">
-                              {{row._source.mapped_reads}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Mapped reads submitted to ENA</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(row._source.mapped_reads)">
+                                    {{ row._source.mapped_reads }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="assemblies_status">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Assemblies submitted to ENA</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip  selected [style]="getStyle(row._source.assemblies_status)">
-                              {{row._source.assemblies_status}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Assemblies submitted to ENA</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(row._source.assemblies_status)">
+                                    {{ row._source.assemblies_status }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="annotation_complete">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Annotation complete</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip  selected [style]="getStyle(row._source.annotation_complete)">
-                              {{row._source.annotation_complete}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Annotation complete</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(row._source.annotation_complete)">
+                                    {{ row._source.annotation_complete }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
                         <ng-container matColumnDef="annotation_status">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header>Annotation submitted to ENA</th>
-                          <td mat-cell *matCellDef="let row" style="text-align: center">
-                            <mat-chip  selected [style]="getStyle(checkColor(row._source.annotation_status))">
-                              {{row._source.annotation_status}}
-                            </mat-chip>
-                          </td>
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Annotation submitted to ENA</th>
+                            <td mat-cell *matCellDef="let row" style="text-align: center">
+                                <mat-chip selected [style]="getStyle(checkColor(row._source.annotation_status))">
+                                    {{ row._source.annotation_status }}
+                                </mat-chip>
+                            </td>
                         </ng-container>
 
 
@@ -309,19 +333,19 @@ margin-top: 165px;">Filter by:
 
                         <!--          <tr class="mat-row" *matNoDataRow>-->
                         <!--            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>-->
-                      <!--          </tr>-->
+                        <!--          </tr>-->
                     </table>
-                  </div>
                 </div>
-                <app-paginator
-                  [pageSize]="pageSize"
-                  [pageSizeOptions]=pageSizeOptions
-                  [pageIndex]="pageIndex"
-                  [length]="resultsLength"
-                  (page)="changePage($event)"
-                ></app-paginator>
-              </div>
-            </section>
-          </div>
-          <br>
+            </div>
+            <app-paginator
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]=pageSizeOptions
+                    [pageIndex]="pageIndex"
+                    [length]="resultsLength"
+                    (page)="changePage($event)"
+            ></app-paginator>
+        </div>
+    </section>
+</div>
+<br>
 

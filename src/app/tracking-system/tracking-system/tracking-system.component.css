@@ -28,3 +28,9 @@ input.vf-form__input, select.vf-form__select {
     font-size: 14px;
 }
 
+.mat-list-item-class {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+}
