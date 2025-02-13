@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit,  ViewChild, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../../api.service";
 import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef,
@@ -161,7 +161,10 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
 
 
-    constructor(private route: ActivatedRoute, private _apiService: ApiService, private sanitizer: DomSanitizer) {
+    constructor(private route: ActivatedRoute,
+                private _apiService: ApiService,
+                private sanitizer: DomSanitizer,
+                private changeDetectorRef: ChangeDetectorRef) {
         this.isLoading = true;
     }
 
@@ -181,17 +184,29 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 // Geo Location maps
                 this.orgGeoList = this.organismData.orgGeoList;
                 this.specGeoList = this.organismData.specGeoList;
-                if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
+
+                if (this.orgGeoList && this.orgGeoList.length > 0) {
                     this.geoLocation = true;
 
                     setTimeout(() => {
-                        const tabGroup = this.tabgroup;
-                        const selected = this.tabgroup.selectedIndex || 0;
-                        tabGroup.selectedIndex = 4;
-                        setTimeout(() => {
-                            this.tabgroup.selectedIndex = selected;
-                        }, 1);
-                    }, 400);
+                        if (this.tabgroup) {
+                            const previousIndex = this.tabgroup.selectedIndex || 0;
+
+                            // Disable animation
+                            this.tabgroup.animationDuration = '0ms';
+
+                            this.tabgroup.selectedIndex = 4;
+                            this.changeDetectorRef.detectChanges();
+
+                            setTimeout(() => {
+                                this.tabgroup.selectedIndex = previousIndex;
+                                this.changeDetectorRef.detectChanges();
+
+                                // restore animation
+                                this.tabgroup.animationDuration = '300ms';
+                            }, 300);
+                        }
+                    }, 300);
                 }
 
                 // NBN Atlas
