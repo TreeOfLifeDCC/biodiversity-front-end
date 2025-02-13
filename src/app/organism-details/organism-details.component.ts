@@ -21,8 +21,8 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   data: any;
   specimensData: any;
   specimensDataLength: number | undefined;
-  specimensDisplayedColumns: string[] = ['source', 'type', 'target'];
-
+  dataSourceRecords: any;
+  specDisplayedColumns: string[] = ['source', 'type', 'target'];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
@@ -35,11 +35,13 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
   }
 
-  ngAfterViewInit() {
+
+    ngAfterViewInit() {
     const routeParams = this.route.snapshot.paramMap;
     const organismId = routeParams.get('organismId');
     this._apiService.getDetailsData(organismId, 'organism').subscribe(
       data => {
+        console.log(data)
         this.data = data['results'][0]['_source'];
         this.isLoadingResults = false;
         this.isRateLimitReached = data === null;
@@ -52,6 +54,11 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
         }
         this.specimensData.paginator = this.paginator;
         this.specimensData.sort = this.sort;
+        this.dataSourceRecords = new MatTableDataSource<any>(this.data?.relationships ?? []);
+          setTimeout(() => {
+              this.dataSourceRecords.paginator = this.paginator;
+              this.dataSourceRecords.sort = this.sort;
+          });
       }
     );
   }
