@@ -38,7 +38,7 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     const routeParams = this.route.snapshot.paramMap;
     const organismId = routeParams.get('organismId');
-    this._apiService.getDetailsData(organismId, 'organism').subscribe(
+    this._apiService.getDetailsData(organismId, 'specimens').subscribe(
       data => {
         this.data = data['results'][0]['_source'];
         this.isLoadingResults = false;
