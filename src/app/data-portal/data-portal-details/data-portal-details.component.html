@@ -441,16 +441,15 @@
 
                         <ng-template #mapTemplate let-orgGeoList="orgGeoList" let-specGeoList="specGeoList">
                             <mat-tab-group>
-                                @if (geoLocation) {
-                                    <mat-tab label="Sampling Map">
-                                        <!-- Geo Section -->
-                                        <hr>
-                                        <div class="center-align">
-                                            <app-map-cluster [orgGeoList]="orgGeoList" [specGeoList]="specGeoList"></app-map-cluster>
-                                        </div>
-                                        <hr>
-                                    </mat-tab>
-                                }
+                                <mat-tab label="Sampling Map">
+                                    <!-- Geo Section -->
+                                    <hr>
+                                    <div [hidden]="!geoLocation" class="center-align">
+                                        <app-map-cluster [orgGeoList]="orgGeoList"
+                                                         [specGeoList]="specGeoList"></app-map-cluster>
+                                    </div>
+                                    <hr>
+                                </mat-tab>
 
                                 @if (nbnatlas) {
                                     <mat-tab label="Occurrences Map">

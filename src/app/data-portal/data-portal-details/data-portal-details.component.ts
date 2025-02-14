@@ -175,8 +175,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         const routeParams = this.route.snapshot.paramMap;
         const organismId = routeParams.get('organismId');
-        this._apiService.getDetailsData(organismId).subscribe(
-            data => {
+
+        this._apiService.getDetailsData(organismId).subscribe(data => {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
                 this.organismData = data.results[0]['_source'];
@@ -187,26 +187,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
                 if (this.orgGeoList && this.orgGeoList.length > 0) {
                     this.geoLocation = true;
-
-                    setTimeout(() => {
-                        if (this.tabgroup) {
-                            const previousIndex = this.tabgroup.selectedIndex || 0;
-
-                            // Disable animation
-                            this.tabgroup.animationDuration = '0ms';
-
-                            this.tabgroup.selectedIndex = 4;
-                            this.changeDetectorRef.detectChanges();
-
-                            setTimeout(() => {
-                                this.tabgroup.selectedIndex = previousIndex;
-                                this.changeDetectorRef.detectChanges();
-
-                                // restore animation
-                                this.tabgroup.animationDuration = '300ms';
-                            }, 300);
-                        }
-                    }, 300);
                 }
 
                 // NBN Atlas
@@ -305,13 +285,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.annotationData.sort = this.annotationSort;
                 }, 50)
             }
-
         );
-
-        // select first tab by default
-        setTimeout(() => {
-            this.tabgroup.selectedIndex = 0;
-        }, 400);
     }
 
     applyFilter(event: Event, dataSource: string) {
