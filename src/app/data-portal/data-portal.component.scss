@@ -234,3 +234,10 @@ div.pages-navigation-pane span {
   gap: 15px;
   margin-top: 20px;
 }
+
+.mat-list-item-class {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+}

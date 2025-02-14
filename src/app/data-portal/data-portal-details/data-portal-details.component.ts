@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit,  ViewChild, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../../api.service";
 import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef,
@@ -161,7 +161,10 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
 
 
-    constructor(private route: ActivatedRoute, private _apiService: ApiService, private sanitizer: DomSanitizer) {
+    constructor(private route: ActivatedRoute,
+                private _apiService: ApiService,
+                private sanitizer: DomSanitizer,
+                private changeDetectorRef: ChangeDetectorRef) {
         this.isLoading = true;
     }
 
@@ -172,8 +175,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         const routeParams = this.route.snapshot.paramMap;
         const organismId = routeParams.get('organismId');
-        this._apiService.getDetailsData(organismId).subscribe(
-            data => {
+
+        this._apiService.getDetailsData(organismId).subscribe(data => {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
                 this.organismData = data.results[0]['_source'];
@@ -181,17 +184,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 // Geo Location maps
                 this.orgGeoList = this.organismData.orgGeoList;
                 this.specGeoList = this.organismData.specGeoList;
-                if (this.orgGeoList !== undefined && this.orgGeoList.length !== 0) {
-                    this.geoLocation = true;
 
-                    setTimeout(() => {
-                        const tabGroup = this.tabgroup;
-                        const selected = this.tabgroup.selectedIndex || 0;
-                        tabGroup.selectedIndex = 4;
-                        setTimeout(() => {
-                            this.tabgroup.selectedIndex = selected;
-                        }, 1);
-                    }, 400);
+                if (this.orgGeoList && this.orgGeoList.length > 0) {
+                    this.geoLocation = true;
                 }
 
                 // NBN Atlas
@@ -290,13 +285,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.annotationData.sort = this.annotationSort;
                 }, 50)
             }
-
         );
-
-        // select first tab by default
-        setTimeout(() => {
-            this.tabgroup.selectedIndex = 0;
-        }, 400);
     }
 
     applyFilter(event: Event, dataSource: string) {
