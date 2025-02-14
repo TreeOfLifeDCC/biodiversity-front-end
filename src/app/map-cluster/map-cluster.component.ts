@@ -34,6 +34,7 @@ export class MapClusterComponent implements AfterViewInit {
   private tiles: any;
   private markers: any;
   displayProgressBar: boolean = true;
+  mapInitialised: boolean = false;
 
   @Input('orgGeoList') orgGeoList: any;
   @Input('specGeoList') specGeoList: any;
@@ -52,11 +53,18 @@ export class MapClusterComponent implements AfterViewInit {
     }
 
     setTimeout(() => {
-      this.displayProgressBar = false;
-      this.initMap();
+      if (this.mapContainerExists() && !this.mapInitialised) {
+        this.initMap();
+      }
     }, mapTimeout);
   }
-  private initMap(): void {
+
+
+  private mapContainerExists(): boolean {
+    return !!document.getElementById('map');
+  }
+
+  public initMap(): void {
     this.tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
@@ -90,6 +98,8 @@ export class MapClusterComponent implements AfterViewInit {
     this.getLatLong();
     this.showCursorCoordinates();
     this.map.addLayer(this.markers);
+    this.mapInitialised = true;
+    this.displayProgressBar = false;
   }
 
   getLatLong(): any {

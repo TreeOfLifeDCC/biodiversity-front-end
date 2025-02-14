@@ -113,28 +113,20 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     loader = '../../assets/200.gif';
     isLoading: boolean = true;
     @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
-
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
-
     @ViewChild('metadataSort') metadataSort: MatSort | undefined;
-
     @ViewChild('annotationPaginator') annotationPaginator: MatPaginator | undefined;
-
     @ViewChild('annotationSort') annotationSort: MatSort | undefined;
-
     @ViewChild('assembliesPaginator') assembliesPaginator: MatPaginator | undefined;
-
     @ViewChild('assembliesSort') assembliesSort: MatSort | undefined;
-
     @ViewChild('filesPaginator') filesPaginator: MatPaginator | undefined;
-
     @ViewChild('filesSort') filesSort: MatSort  | undefined;
+    @ViewChild(MapClusterComponent) mapComponent!: MapClusterComponent;
 
     specSymbiontsTotalCount: number | undefined;
     dataSourceSymbiontsAssembliesCount: number | undefined;
     dataSourceSymbiontsAssemblies: any;
     displayedColumnsAssemblies = ['accession', 'assembly_name', 'description', 'version'];
-
     dataSourceMetagenomesAssembliesCount: any;
     dataSourceMetagenomesAssemblies: any;
     dataSourceSymbiontsRecords: any;
@@ -142,22 +134,15 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     dataSourceMetagenomesRecords: any;
 
     @ViewChild('metagenomesRecordsPaginator') metPaginator: MatPaginator  | undefined;
-
     @ViewChild('metagenomesRecordsSort') metSort: MatSort  | undefined;
-
     @ViewChild('assembliesMetagenomesPaginator') assembliesMetPaginator: MatPaginator  | undefined;
-
     @ViewChild('assembliesMetagenomesSort') assembliesMetSort: MatSort | undefined;
 
     specDisplayedColumns = ['accession', 'organism', 'commonName', 'sex', 'organismPart', 'trackingSystem'];
 
-
     @ViewChild('relatedSymbiontsPaginator') symPaginator: MatPaginator  | undefined;
-
     @ViewChild('assembliesSymbiontsPaginator') asSymPaginator: MatPaginator  | undefined;
-
     @ViewChild('relatedSymbiontsSort') relatedSymbiontsSort: MatSort  | undefined;
-
     @ViewChild('assembliesSymbiontsSort') assembliesSymbiontsSort: MatSort  | undefined;
 
 
@@ -286,6 +271,19 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 }, 50)
             }
         );
+
+        this.tabgroup.selectedTabChange.subscribe(event => {
+            if (event.index === 4) {
+                setTimeout(() => this.triggerMapInit(), 300);
+            }
+        });
+    }
+
+
+    triggerMapInit() {
+        if (this.mapComponent) {
+            this.mapComponent.initMap();
+        }
     }
 
     applyFilter(event: Event, dataSource: string) {
