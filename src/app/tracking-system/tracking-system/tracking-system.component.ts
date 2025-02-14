@@ -37,7 +37,7 @@ import {MatProgressBar} from "@angular/material/progress-bar";
 })
 export class TrackingSystemComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = ['organism', 'commonName', 'biosamples', 'raw_data', 'mapped_reads', 'assemblies_status',
-        'annotation_complete', 'annotation_status',];
+        'annotation_complete'];
     data: any;
     searchValue: string | undefined;
     searchChanged = new EventEmitter<any>();
@@ -145,7 +145,7 @@ export class TrackingSystemComponent implements OnInit, AfterViewInit {
                     return this._apiService.getData(this.pageIndex,
                         // @ts-ignore
                         this.pageSize, this.searchValue, this.sort.active, this.sort.direction, this.activeFilters,
-                        this.currentClass, this.phylogenyFilters, 'tracking_status_index'
+                        this.currentClass, this.phylogenyFilters, 'tracking_status'
                     ).pipe(catchError(() => observableOf(null)));
                 }),
                 map(data => {
