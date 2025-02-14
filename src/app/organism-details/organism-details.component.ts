@@ -80,8 +80,6 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
                 output.push(obj);
             }
         }
-
-        console.log(output);
         return output;
     }
 

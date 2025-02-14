@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,7 @@ import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './image-slider.component.html',
   styleUrl: './image-slider.component.scss',
 })
-export class ImageSliderComponent implements OnInit {
+export class ImageSliderComponent implements OnInit, OnChanges {
   @Input() slides: any[] = [];
   @Input() indicatorsVisible = true;
   @Input() animationSpeed = 500;
@@ -20,17 +20,34 @@ export class ImageSliderComponent implements OnInit {
   faArrowRight = faArrowRight;
   faArrowLeft = faArrowLeft;
   hidden = false;
-  displayArrows = true;
+  displayArrows = false;
+
+  ngOnInit() {
+    if (this.autoPlay) {
+      setInterval(() => {
+        this.next();
+      }, this.autoPlaySpeed);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['slides'] && this.slides.length > 1) {
+      this.displayArrows = true;
+    } else {
+      this.displayArrows = false;
+    }
+  }
 
   next() {
-    const currentSlide = (this.currentSlide + 1) % this.slides.length;
-    this.jumpToSlide(currentSlide);
+    if (this.slides.length > 0) {
+      this.jumpToSlide((this.currentSlide + 1) % this.slides.length);
+    }
   }
 
   previous() {
-    const currentSlide =
-      (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-    this.jumpToSlide(currentSlide);
+    if (this.slides.length > 0) {
+      this.jumpToSlide((this.currentSlide - 1 + this.slides.length) % this.slides.length);
+    }
   }
 
   jumpToSlide(index: number) {
@@ -41,14 +58,7 @@ export class ImageSliderComponent implements OnInit {
     }, this.animationSpeed);
   }
 
-  ngOnInit() {
-    if (this.autoPlay) {
-      setInterval(() => {
-        this.next();
-      }, this.autoPlaySpeed);
-    }
-    this.displayArrows = this.slides.length > 1 ? true : false;
+  getImageUrl() {
+    return this.slides.length > 0 ? this.slides[this.currentSlide].url : '';
   }
-
-
 }

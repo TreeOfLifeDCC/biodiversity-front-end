@@ -2,7 +2,7 @@
     <div
             class="slide"
             [ngStyle]="{
-      'background-image': 'url(' + slides[currentSlide].url + ')',
+      'background-image': 'url(' + getImageUrl() + ')',
       opacity: hidden ? 0 : 1,
       transition: 'opacity ' + animationSpeed + 'ms ease-in-out'
     }"
@@ -15,7 +15,7 @@
                     <div (click)="jumpToSlide($index)"
                          class="indicator"
                          [ngClass]="{ active: $index == currentSlide }"></div>
-                } @else {
+                }@else {
                     <div (click)="jumpToSlide($index)"
                          class="indicator"
                          [ngClass]="{ onlyOneImage: $index == currentSlide }"></div>
@@ -24,13 +24,14 @@
         </div>
     }
 
-    <ng-container *ngIf="displayArrows">
-        <button (click)="next()" class="nextButton">
-            <fa-icon [icon]="faArrowRight"></fa-icon>
-        </button>
+    @if (displayArrows) {
         <button (click)="previous()" class="previousButton">
             <fa-icon [icon]="faArrowLeft"></fa-icon>
         </button>
-    </ng-container>
+        <button (click)="next()" class="nextButton">
+            <fa-icon [icon]="faArrowRight"></fa-icon>
+        </button>
+    }
+
 
 </div>
