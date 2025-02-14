@@ -3,19 +3,22 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import {ApiService} from "../api.service";
 import {MatPaginator as MatPaginator} from "@angular/material/paginator";
 import { MatSort, MatSortHeader } from "@angular/material/sort";
-import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
+import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell,
+    MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow } from "@angular/material/table";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
-
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
 import { MatAnchor } from '@angular/material/button';
+import {ImageSliderComponent} from "../image-slider/image-slider.component";
 
 @Component({
     selector: 'app-organism-details',
     templateUrl: './organism-details.component.html',
     styleUrls: ['./organism-details.component.css'],
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardActions, MatProgressSpinner, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator]
+    imports: [MatCard, MatCardTitle, MatCardActions, MatProgressSpinner, MatInput, MatTable, MatSort, MatColumnDef,
+        MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, MatAnchor, RouterLink,
+        MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow, MatPaginator, ImageSliderComponent]
 })
 export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   data: any;
@@ -27,6 +30,7 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   pageIndex: number = 0;
+  slides: any[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -58,9 +62,28 @@ export class OrganismDetailsComponent implements OnInit, AfterViewInit {
               this.dataSourceRecords.paginator = this.paginator;
               this.dataSourceRecords.sort = this.sort;
           });
+
+          this.slides = this.generateSlides(this.data);
       }
     );
   }
+
+    generateSlides(bioSampleObj: any){
+        console.log(bioSampleObj);
+        const output = [];
+        const arr = bioSampleObj.images;
+        if (arr!== undefined) {
+            for (let i = 0; i < arr.length; i++) {
+                const obj = {url: encodeURI(arr[i])
+                        .replace('(', '%28')
+                        .replace(')', '%29')};
+                output.push(obj);
+            }
+        }
+
+        console.log(output);
+        return output;
+    }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
