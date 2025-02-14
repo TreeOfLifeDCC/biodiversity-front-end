@@ -80,6 +80,17 @@
                     </div>
                 }
 
+                @if (data?.images) {
+                    <div class="image-slider-container">
+                        <app-image-slider
+                                [indicatorsVisible]="true"
+                                [animationSpeed]="400"
+                                [slides]="slides"
+                                [autoPlay]="false"
+                                [autoPlaySpeed]="5000"
+                        ></app-image-slider>
+                    </div>
+                }
             </div>
 
         </div>
