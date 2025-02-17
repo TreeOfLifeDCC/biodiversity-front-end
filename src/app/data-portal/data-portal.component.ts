@@ -48,6 +48,7 @@ import {FloatLabelType} from "@angular/material/form-field";
 import {MatRadioButton, MatRadioGroup} from "@angular/material/radio";
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {MatTableExporterModule} from "mat-table-exporter";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 interface FilterGroup {
     itemLimit: number;
     defaultItemLimit: number;
@@ -68,8 +69,8 @@ interface FilterGroups {
         MatChip, MatInput, FormsModule, MatExpansionPanel, MatExpansionPanelHeader, MatTable, MatSort,
         MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell,
         MatAnchor, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, PaginatorComponent,
-        ReactiveFormsModule,  MatError, MatRadioGroup, MatRadioButton,
-        MatDialogContent, MatProgressBar,MatChipSet]
+        ReactiveFormsModule, MatError, MatRadioGroup, MatRadioButton,
+        MatDialogContent, MatProgressBar, MatChipSet, MatProgressSpinner]
 })
 
 export class DataPortalComponent implements OnInit, AfterViewInit {
