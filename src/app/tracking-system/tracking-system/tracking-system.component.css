@@ -34,3 +34,9 @@ input.vf-form__input, select.vf-form__select {
     align-items: center;
     min-height: 50px;
 }
+
+.spinner-position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

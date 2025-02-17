@@ -64,6 +64,22 @@
                     </mat-card-actions>
                 </mat-card>
                 <br>
+                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                    <mat-card-title>Symbionts</mat-card-title>
+                    <mat-card-actions >
+                        <mat-list role="list">
+                            @for (filter of symbiontsFilters; track filter; let i = $index) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkStyle(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                </mat-list-item>
+                            }
+                        </mat-list>
+                    </mat-card-actions>
+                </mat-card>
                 <br>
                 <mat-card fxFlex class="mat-elevation-z8" layout-margin>
                     <mat-card-title>Metagenomes</mat-card-title>
@@ -268,7 +284,12 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
 
             <br>
             <br>
-            <div style=" display: flex;">
+            @if (isLoadingResults) {
+                <div class="spinner-position">
+                    <mat-spinner></mat-spinner>
+                </div>
+            }
+            <div style="display: flex;">
                 <table mat-table
                        [dataSource]="data" matSort style="overflow: auto hidden; min-width: 100% ; "
                        matSortActive="currentStatus"
@@ -419,9 +440,6 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                    <!--          <tr class="mat-row" *matNoDataRow>-->
-                    <!--            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>-->
-                    <!--          </tr>-->
                 </table>
 
             </div>

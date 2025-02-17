@@ -239,7 +239,9 @@ margin-top: 165px;">Filter by:
                     <div class="example-loading-shade"
                     >
                         @if (isLoadingResults) {
-                            <mat-spinner></mat-spinner>
+                            <div class="spinner-position">
+                                <mat-spinner></mat-spinner>
+                            </div>
                         }
                         @if (isRateLimitReached) {
                             <div class="example-rate-limit-reached">
