@@ -50,14 +50,14 @@
                                     ({{ getStatusCount(aggregations?.annotation_complete.buckets) }})</h4>
                             </mat-list-item>
                         }
-                            @if (aggregations?.genome != undefined && aggregations?.genome.doc_count) {
+                            @if (aggregations?.genome_notes != undefined && aggregations?.genome_notes.doc_count) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
                                                [style]="checkStyle('Genome Notes - Submitted')"
                                                (click)="onFilterClick('genome_notes','Genome Notes - Submitted')"
                                                class="mat-list-item-class">
                                     <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Genome Notes - Submitted
-                                        ({{ aggregations?.genome.doc_count }})</h4>
+                                        ({{ aggregations?.genome_notes.genome_count.doc_count }})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
