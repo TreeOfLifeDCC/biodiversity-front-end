@@ -253,8 +253,8 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   refreshPage() {
-
     this.activeFilters = [];
+    this.searchValue = '';
     this.filterChanged.emit();
     this.router.navigate([]);
   }
