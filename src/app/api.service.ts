@@ -198,9 +198,6 @@ export class ApiService {
     getPublicationsData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
                         filterValue: string[], index_name: string) {
 
-        console.log(filterValue)
-        console.log(searchValue)
-
         const sortActiveESField: { [index: string]: any } = {
             'title': 'title.keyword',
             'study_id': 'study_id.keyword',
@@ -232,7 +229,6 @@ export class ApiService {
                 filterStr === '&filter=' ? filterStr += `${filterItem}` : filterStr += `,${filterItem}`;
             }
             url += filterStr;
-            console.log(url)
         }
 
 
