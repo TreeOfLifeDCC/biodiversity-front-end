@@ -15,9 +15,10 @@
                             @for (filter of articleTypeFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -28,12 +29,13 @@
                     <mat-card-title>Journal</mat-card-title>
                     <mat-card-actions >
                         <mat-list role="list">
-                            @for (filter of journalNameFilters; track filter; let i = $index) {
+                            @for (filter of journalFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -44,12 +46,13 @@
                     <mat-card-title>Publication Year</mat-card-title>
                     <mat-card-actions >
                         <mat-list role="list">
-                            @for (filter of publicationYearFilters; track filter; let i = $index) {
+                            @for (filter of pubYearFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -84,34 +87,44 @@
 
                 </mat-chip-set>
 
-                <div style=" display: flex;">
+                <div class="vf-form__item | vf-search__item">
+                    <input type="search" id="searchValue" matInput style="width: 99%;"
+                           placeholder="e.g. article name, article terms"
+                           name="searchValue" class="vf-search__input | vf-form__input"
+                           [(ngModel)]='this.searchValue'
+                           (ngModelChange)="this.searchUpdate.next($event)">
+                </div>
+
+                <div style="display: flex; margin-top: 20px;">
+
+
 
                 <table mat-table
                        [dataSource]="dataSource" matSort style="overflow: auto hidden; min-width: 100% ; "
-                       matSortActive="currentStatus"
+                       matSortActive="pubYear"
                        matSortDisableClear
                        matSortDirection="asc"  >
                     <ng-container matColumnDef="title">
-                        <th mat-header-cell *matHeaderCellDef  >Title</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Title</th>
                         <td mat-cell *matCellDef="let element" style="max-width: 285px !important;">
                             <a style="white-space: normal" href="{{element['_source']['url']}}">
                                 {{element['_source']['title']}}</a>
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="journal_name">
-                        <th mat-header-cell *matHeaderCellDef  >Journal</th>
+                    <ng-container matColumnDef="journalTitle">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Journal</th>
                         <td mat-cell *matCellDef="let element">
                          {{getJournalName(element['_source'])}}
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="year">
-                        <th mat-header-cell *matHeaderCellDef  >Publication Year</th>
+                    <ng-container matColumnDef="pubYear">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Publication Year</th>
                         <td mat-cell *matCellDef="let element">
                             {{getYear(element['_source'])}}
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="study_id">
-                        <th mat-header-cell *matHeaderCellDef  >Study ID</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Study ID</th>
                         <td mat-cell *matCellDef="let element">
                             <a href="https://www.ebi.ac.uk/ena/browser/view/{{element['_source']['study_id']}}">
                                 {{element['_source']['study_id']}}
@@ -119,7 +132,7 @@
                         </td>
                     </ng-container>
                     <ng-container matColumnDef="organism_name">
-                        <th mat-header-cell *matHeaderCellDef >Organism Name</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Organism Name</th>
                         <td mat-cell *matCellDef="let element">
                             <a [routerLink]="['/data_portal', element['_source']['organism_name']]">
                                 {{element['_source']['organism_name']}}</a>

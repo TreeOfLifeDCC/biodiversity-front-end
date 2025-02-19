@@ -269,3 +269,9 @@ element.style {
     border-radius: 0.25rem;
 }
 
+.mat-list-item-class {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+}
