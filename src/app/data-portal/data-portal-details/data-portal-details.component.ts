@@ -15,7 +15,7 @@ import { MatAnchor } from '@angular/material/button';
 import { MatChip } from '@angular/material/chips';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {DomSanitizer, SafeHtml, SafeResourceUrl} from "@angular/platform-browser";
 
 
 @Component({
@@ -96,7 +96,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     resultsLength = 0;
     isLoadingResults = true;
     isRateLimitReached = false;
-
+    popupImage: string | null = null;
     showMetadata = false;
     showData = false;
     showGenomeNote = false;
@@ -363,5 +363,17 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
     hideLoader(){
         this.isLoading = false;
+    }
+
+    sanitizeHTML(content: string): SafeHtml {
+        return this.sanitizer.bypassSecurityTrustHtml(content);
+    }
+
+    openPopup(imageUrl: string) {
+        this.popupImage = imageUrl;
+    }
+
+    closePopup() {
+        this.popupImage = null;
     }
 }

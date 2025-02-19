@@ -1,79 +1,3 @@
-/*.container {*/
-/*  display: flex; !* or inline-flex *!*/
-/*  flex-flow: row wrap;*/
-/*  justify-content: space-evenly;*/
-/*  gap: 5px 5px;*/
-/*}*/
-/*.card-header,*/
-/*.btn-success,*/
-/*.badge-success {*/
-/*  background-color: lightblue;*/
-/*}*/
-/*.filter-heading {*/
-/*  margin: 0px !important;*/
-/*}*/
-
-/*.item1 {*/
-/*  flex-grow: 3;*/
-/*}*/
-
-/*.item2 {*/
-/*  flex-grow: 25;*/
-/*}*/
-
-/*.item3 {*/
-/*  flex-grow: 1;*/
-/*}*/
-
-/*.item0 {*/
-/*  flex-grow: 1;*/
-/*}*/
-
-/*dl {*/
-/*  display: flex;*/
-/*  flex-wrap: wrap;*/
-/*}*/
-/*dt {*/
-/*  width: 20%;*/
-/*}*/
-/*dd {*/
-/*  margin-left: auto;*/
-/*  width: 80%;*/
-/*}*/
-
-/*table {*/
-/*  width: 100%;*/
-/*}*/
-
-/*.mat-form-field {*/
-/*  font-size: 14px;*/
-/*  width: 100%;*/
-/*}*/
-/*h1 {*/
-/*  color: white;*/
-/*}*/
-
-/*.example-loading-shade {*/
-/*  position: absolute;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  bottom: 56px;*/
-/*  right: 0;*/
-/*  background: rgba(0, 0, 0, 0.15);*/
-/*  z-index: 1;*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*}*/
-
-/*.example-rate-limit-reached {*/
-/*  max-width: 360px;*/
-/*  text-align: center;*/
-/*}*/
-
-/*img {*/
-/*  max-width: 800px;*/
-/*}*/
 /* Structure */
 .example-container {
     position: relative;
@@ -174,49 +98,6 @@ element.style {
     min-width:480px;
 }
 
-/*td {*/
-/*  text-align: center;*/
-/*}*/
-
-/*th.mat-header-cell {*/
-/*  text-align: center !important;*/
-/*}*/
-
-/*th.mat-sort-header {*/
-/*  text-align: center !important;*/
-/*}*/
-
-/*a {*/
-/*  color: white;*/
-/*}*/
-/*::ng-deep .mat-tab-labels > .mat-tab-label:first-child {*/
-/*    display: none;*/
-/*}*/
-/*.mat-tab-group {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*}*/
-/*.mat-tab-group, .mat-tab-label, .mat-tab-link {*/
-/*    font-family: Roboto,Helvetica Neue,sans-serif;*/
-/*}*/
-/**, :after, :before {*/
-/*    box-sizing: border-box;*/
-/*}*/
-/*.mat-tab-header, .mat-tab-nav-bar {*/
-/*    border-bottom: 1px solid #f44336;*/
-/*}*/
-
-/**, :after, :before {*/
-/*    box-sizing: border-box;*/
-/*}*/
-
-
-.goat-color2 {
-    color: #fff;
-    background-color: #5cc45e;
-    margin-left: 3px;
-}
-
 .genome {
     color: #fff;
     background-color: grey;
@@ -237,11 +118,6 @@ element.style {
     padding-left: 2px;
 }
 
-.goat-box {
-    padding-right: 2px;
-    padding-left: 2px;
-    padding-bottom: 2px;
-}
 
 .center-align {
     text-align: center;
@@ -267,4 +143,103 @@ element.style {
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.25rem;
+}
+
+
+
+/* css for Publications tab */
+.goat-box {
+    padding: 10px;
+}
+
+.genome-card {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.image {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.image:hover {
+    transform: scale(1.05);
+}
+
+.read-btn {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    overflow: auto;
+}
+
+.popup-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.popup-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }

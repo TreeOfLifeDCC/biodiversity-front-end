@@ -325,68 +325,44 @@
                         }
                     </mat-tab>
                 }
-                @if (showGenomeNote) {
+
+                 @if(showGenomeNote){
                     <mat-tab label="Publications">
-                        <hr>
-                        @if (isLoadingResults || isRateLimitReached) {
-                            <div
-                            >
-                                @if (isLoadingResults) {
-                                    <mat-spinner></mat-spinner>
-                                }
-                                @if (isRateLimitReached) {
-                                    <div>
-                                        Something went wrong, please try again!
+                        <!-- Genome Notes Section -->
+                        <div class="goat-box">
+                            <hr>
+                            <mat-expansion-panel [expanded]="true">
+                                <mat-expansion-panel-header class="page-header">
+                                    <h3>Published Genome Note</h3>
+                                </mat-expansion-panel-header>
+                                @for(gen of organismData?.genome_notes; track $index){
+                                    <div class="genome-card">
+                                        <h3 class="title" [innerHTML]="sanitizeHTML(gen.title)"></h3>
+                                        <div class="content">
+                                            <img class="image" src="{{gen.figureURI}}" alt="Genome Image" (click)="openPopup(gen.figureURI)">
+                                            <div class="text">
+                                                <p>{{gen.abstract}}</p>
+                                                <a href="{{gen.url}}" class="read-btn" target="_blank">Read the Genome Note in full</a>
+                                            </div>
+                                        </div>
+                                        <p class="caption">{{gen.caption}}</p>
+                                        <p class="cite">{{gen.citeURL}}</p>
                                     </div>
                                 }
-                            </div>
-                        }
-                        @if (organismData?.genome_notes) {
-                            <div class="goat-box">
-                                @if (organismData?.genome_notes?.length) {
-                                    <mat-expansion-panel [expanded]="true">
-                                        <mat-expansion-panel-header class="page-header">
-                                            <h3>Published Genome Note</h3>
-                                        </mat-expansion-panel-header>
-                                        @for (gen of organismData?.genome_notes; track gen) {
-                                            <div>
-                                                <div class="card figpanel">
-                                                    <div class="row">
-                                                        <h4 class="page-header">{{ gen.title }}</h4>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-2">
-                                                            <img class="card-img-left" src="{{gen.figureURI}}"
-                                                                 style="width: 150px;float: left;">
-                                                        </div>
-                                                        <div class="col-md-10">
-                                                            <!-- <h1>Abstract</h1> -->
-                                                            <p>{{ gen.abstract }}</p>
-                                                            <a mat-button href="{{gen.url}}"
-                                                               style="background-color: limegreen; color: black;
-                                                                margin-top: 5px">
-                                                            Read the Genome Note in full here</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <h5 class="card-title rounded mx-auto d-block">{{ gen.caption }}</h5>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h5 class="card-title rounded mx-auto d-block">{{ gen.citeURL }}</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                    </mat-expansion-panel>
-                                }
+                            </mat-expansion-panel>
+                        </div>
+
+                        <!-- popup Modal -->
+                        @if(popupImage) {
+                            <div class="popup-overlay" (click)="closePopup()">
+                                <div class="popup-content">
+                                    <img [src]="popupImage" class="popup-image">
+                                </div>
                             </div>
                         }
                     </mat-tab>
                 }
+
                 @if (goatDataLength !== 0) {
                     <mat-tab label="Genome Stats (GoaT)">
                         <br>
