@@ -31,8 +31,7 @@
                     <hr>
                     <h2>Related Organisms</h2>
                     @if (isLoadingResults || isRateLimitReached) {
-                        <div
-                        >
+                        <div>
                             @if (isLoadingResults) {
                                 <mat-spinner></mat-spinner>
                             }
@@ -46,7 +45,9 @@
 
                     <div class="vf-form__item | vf-search__item">
                         <input type="search" id="searchValue" matInput style="
-    width: 99%;" name="searchValue" class="vf-search__input | vf-form__input" (keyup)="applyFilter($event, 'metadata')"
+    width: 99%;" name="searchValue"
+                               class="vf-search__input | vf-form__input"
+                               (keyup)="applyFilter($event, 'metadata')"
                                placeholder="Ex. Mia" #input>
 
                     </div>
@@ -69,6 +70,14 @@
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Accession</th>
                             <td mat-cell *matCellDef="let row">
                                 <a mat-button [routerLink]="['/organism', row.accession]">{{ row.accession }}</a>
+                                @if(row.nagoya_protocol && row.nagoya_protocol === true) {
+                                    <mat-chip
+                                            style="margin-bottom: 5px; background-color: yellow; color: black">
+                                        <a mat-button
+                                           href="https://drive.google.com/file/d/1tkTdo-dI30YFokE2YpwmzP9onhrrEyhD/view?usp=drive_link">
+                                            Ethics and law</a>
+                                    </mat-chip>
+                                }
                             </td>
                         </ng-container>
 
