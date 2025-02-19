@@ -1,17 +1,14 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatNoDataRow, MatRow, MatRowDef, MatTable, MatTableDataSource} from '@angular/material/table';
+import {MatCell, MatCellDef, MatColumnDef, MatHeaderCell, MatHeaderCellDef, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort, MatSortHeader} from '@angular/material/sort';
 import {Title} from '@angular/platform-browser';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-
 import {catchError, map, merge, startWith, Subject, switchMap} from 'rxjs';
 import { ApiService } from '../api.service';
-import {NgClass} from "@angular/common";
 import {MatTableExporterModule} from "mat-table-exporter";
 import {MatCard, MatCardActions, MatCardTitle} from "@angular/material/card";
 import {MatDivider} from "@angular/material/divider";
@@ -30,14 +27,12 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   styleUrls: ['./publications.component.css'],
   standalone : true,
   imports: [
-
     MatTable,
     MatSort,
     MatHeaderCellDef,
     RouterLink,
     MatHeaderCell,
     MatCell,
-
     MatColumnDef,
     MatPaginator,
     MatHeaderRow,
@@ -66,28 +61,17 @@ import {debounceTime, distinctUntilChanged} from "rxjs/operators";
   ]
 })
 export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
-
   dataSource = new MatTableDataSource<any>();
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
   @ViewChild(MatSort, { static: true }) sort!: MatSort;
-
-
-  // @ViewChild(MatSort, { static: true }) sort: MatSort | undefined;
   searchChanged = new EventEmitter<any>();
   filterChanged = new EventEmitter<any>();
   data: any;
   dataCount = 0;
-  @Input()
-  pageIndex: number = 0;
-  @Input()
-      // @ts-ignore
-  pageSizeOptions: number[] = [15,30,50,100];
-
-  @Input()
-      // @ts-ignore
-  pageSize: number = 15;
+  @Input() pageIndex: number = 0;
+  @Input() pageSizeOptions: number[] = [15,30,50,100];
+  @Input() pageSize: number = 15;
   @Output()
-  // @ts-ignore
   readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   urlAppendFilterArray:any[] = []
   activeFilters = new Array<string>();
@@ -134,26 +118,13 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     }
-    // const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
-    // // @ts-ignore
-    //   const params = queryParamMap['params'];
-    // if (Object.keys(params).length !== 0) {
-    //   this.resetFilter();
-    //   for (const key in params) {
-    //     // @ts-ignore
-    //       this.urlAppendFilterArray.push({name: key, value: params[key]});
-    //     this.activeFilters.push(params[key]);
-    //   }
-    // }
   }
 
   ngAfterViewInit() {
     // If the user changes the metadataSort order, reset back to the first page.
-    // @ts-ignore
     this.sort.sortChange.subscribe(() => (this.pageIndex = 0));
     this.searchChanged.subscribe(() => (this.pageIndex = 0));
     this.filterChanged.subscribe(() => (this.pageIndex = 0));
-    // @ts-ignore
       merge(this.page, this.sort.sortChange, this.searchChanged, this.filterChanged)
         .pipe(
             startWith({}),
@@ -248,14 +219,7 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // pageChanged(event: any): void {
-  //   const offset = event.pageIndex * event.pageSize;
-  //   this.getAllPublications(offset, event.pageSize);
-  // }
-
-
-  // @ts-ignore
-    checkFilterIsActive = (filterValue: string) => {
+  checkFilterIsActive = (filterValue: string) => {
       if (this.activeFilters.includes(filterValue)) {
         if(filterValue.length > 50){
           return 'background-color: cornflowerblue; color: white;height: 80px;';
@@ -279,10 +243,6 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   resetFilter(): void {
-    for (const key of Object.keys(this.activeFilters)) {
-      // @ts-ignore
-        this.activeFilters[key] = [];
-    }
     this.activeFilters = [];
     this.urlAppendFilterArray = [];
 
@@ -314,10 +274,7 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
       length: this.resultsLength
     });
   }
-
-
 }
-
 
 
 function observableOf(arg0: null): any {
