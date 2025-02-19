@@ -15,9 +15,10 @@
                             @for (filter of articleTypeFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -28,12 +29,13 @@
                     <mat-card-title>Journal</mat-card-title>
                     <mat-card-actions >
                         <mat-list role="list">
-                            @for (filter of journalNameFilters; track filter; let i = $index) {
+                            @for (filter of journalFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -44,12 +46,13 @@
                     <mat-card-title>Publication Year</mat-card-title>
                     <mat-card-actions >
                         <mat-list role="list">
-                            @for (filter of publicationYearFilters; track filter; let i = $index) {
+                            @for (filter of pubYearFilters; track filter; let i = $index) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkFilterIsActive(filter.key)"
-                                               (click)="onFilterClick( filter.key)" style="cursor: pointer;">
-                                    <h4 matLine class="ellipsis" style="white-space: normal;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                               [style]="checkFilterIsActive(filter.label + '-' + filter.key)"
+                                               (click)="onFilterClick( filter.label + '-' + filter.key)"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -84,11 +87,21 @@
 
                 </mat-chip-set>
 
-                <div style=" display: flex;">
+                <div class="vf-form__item | vf-search__item">
+                    <input type="search" id="searchValue" matInput style="width: 99%;"
+                           placeholder="e.g. article name, article terms"
+                           name="searchValue" class="vf-search__input | vf-form__input"
+                           [(ngModel)]='this.searchValue'
+                           (ngModelChange)="this.searchUpdate.next($event)">
+                </div>
+
+                <div style="display: flex; margin-top: 20px;">
+
+
 
                 <table mat-table
                        [dataSource]="dataSource" matSort style="overflow: auto hidden; min-width: 100% ; "
-                       matSortActive="currentStatus"
+                       matSortActive="pubYear"
                        matSortDisableClear
                        matSortDirection="asc"  >
                     <ng-container matColumnDef="title">
