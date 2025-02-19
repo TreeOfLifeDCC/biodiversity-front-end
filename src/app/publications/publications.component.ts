@@ -91,7 +91,7 @@ export class PublicationsComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
   urlAppendFilterArray:any[] = []
   activeFilters = new Array<string>();
-  columns = ['title', 'journal_name', 'year', 'organism_name', 'study_id'];
+  columns = ['title', 'journalTitle', 'pubYear', 'study_id', 'organism_name'];
   journalFilters:any[] = [];
   pubYearFilters :any[] = [];
   articleTypeFilters :any[] = [];
