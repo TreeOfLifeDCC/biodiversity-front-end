@@ -180,7 +180,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
     @Output()
     // @ts-ignore
     readonly page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-    genomeNotes: any[] = [];
     experimentTypeFilters: any[] = [];
     filterGroups = {
         projects: {
@@ -283,9 +282,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                         return [];
                     }
 
-                    // Only refresh the result length if there is new metadataData. In case of rate
-                    // limit errors, we do not want to reset the metadataPaginator to zero, as that
-                    // would prevent users from re-triggering requests.
                     this.resultsLength = data.count;
                     this.aggregations = data.aggregations;
 
@@ -329,11 +325,6 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                         this.experimentTypeFilters = this.merge(this.experimentTypeFilters,
                             this.aggregations.experiment.library_construction_protocol.buckets,
                             'experimentType');
-                    }
-                    if(this.aggregations.genome && this.aggregations.genome.doc_count.length > 0){
-                        this.genomeNotes = this.merge(this.genomeNotes,
-                            this.aggregations.genome.doc_count,
-                            'genome_notes');
                     }
 
 
