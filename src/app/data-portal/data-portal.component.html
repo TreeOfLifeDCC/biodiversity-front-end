@@ -187,7 +187,7 @@
                                                    [style]="checkStyle(filter.label + '_' + filter.key)"
                                                    (click)="onFilterClick('experimentType',filter.label + '_' + filter.key, false)"
                                                    class="mat-list-item-class">
-                                        <h4 matLine class="ellipsis" style="cursor: pointer; margin: 0;">{{ filter.key }} ( {{ filter.doc_count }})</h4>
+                                        <h4 matLine class="ellipsis" style="cursor: pointer; margin: 0;">{{ filter.key }} ( {{filter?.distinct_docs?.parent_doc_count?.value}})</h4>
                                     </mat-list-item>
                                 }
                             </mat-list>
