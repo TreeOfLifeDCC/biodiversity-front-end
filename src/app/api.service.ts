@@ -176,25 +176,6 @@ export class ApiService {
         return this.http.post(url, payload, { responseType: 'blob' });
     }
 
-    getAllPublications(offset: number, limit: number, filter?: string[]) {
-        const filters = [];
-        let url = `https://www.ebi.ac.uk/biodiversity/api/articles?offset=${offset}&limit=${limit}`;
-        // @ts-ignore
-        for (const key of filter) {
-            if (['Genome Note', 'Research Article'].indexOf(key) !== -1) {
-                filters.push(`articleType=${key}`);
-            } else if (['2020', '2021', '2022', '2023', '2024'].indexOf(key) !== -1) {
-                filters.push(`pubYear=${key}`);
-            } else {
-                filters.push(`journalTitle=${key}`);
-            }
-        }
-        for (const key of filters) {
-            url = `${url}&${key}`;
-        }
-        return this.http.get<any>(url);
-    }
-
 
 
     getPublicationsData(pageIndex: number, pageSize: number, searchValue: string, sortActive: string, sortDirection: string,
