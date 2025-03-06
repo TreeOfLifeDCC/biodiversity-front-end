@@ -239,17 +239,23 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                        (ngModelChange)="this.searchUpdate.next($event)">
 
             </div>
+            @if (displayProgressBar) {
+                <div style="padding: 15px">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+            }
 
             <div style="float: right;font-size: 14px; font-weight: 400;">
 
-                <button (click)="openDownloadDialog(this.activeFilters[0])" style="float: left;margin-top: 10px;"
+                <button  [routerLink]="['/bulk-downloads/']" style="float: left;margin-top: 10px;"
                         class="vf-button vf-button--primary vf-button--outline vf-button--sm">
-                    Download
+                    Download Data
                 </button>
 
                 <button style="float: left;margin-top: 10px;" type="submit"
                         class="vf-button vf-button--primary vf-button--outline vf-button--sm"
-                        (click)="downloadFile('metadata', false)">Download metadata
+                        (click)="downloadFile('metadata', false)"
+                        [disabled]="displayProgressBar">Download metadata
                 </button>
 
                 @if (isLoadingResults || isRateLimitReached) {
