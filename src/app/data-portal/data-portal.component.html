@@ -258,16 +258,19 @@ width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search
                         [disabled]="displayProgressBar">Download metadata
                 </button>
 
-                @if (isLoadingResults || isRateLimitReached) {
-                    <div>
-                        @if (isRateLimitReached) {
-                            <div class="example-loading-shade">
-                                Something went wrong, please try again!
-                            </div>
-                        }
-                    </div>
-                }
+
             </div>
+            @if (isLoadingResults || isRateLimitReached) {
+                <div>
+                    @if (isRateLimitReached) {
+                        <div >
+                            <br>
+                            <h3 style="color:#C41E3A;"> No result has been found for {{this.searchValue}}.
+                                Please try using a different term or contact <a href="mailto:biodiversity-portal@ebi.ac.uk">biodiversity-portal&#64;ebi.ac.uk</a> for help.</h3>
+                        </div>
+                    }
+                </div>
+            }
 
             <mat-expansion-panel (opened)="expanded()" style="top: 20px;width: 100%;overflow: hidden;">
                 <mat-expansion-panel-header>

@@ -227,6 +227,26 @@ margin-top: 165px;">Filter by:
                     </div>
                 }
             </div>
+            @if (isLoadingResults || isRateLimitReached) {
+                <div class="example-loading-shade"
+                >
+                    @if (isLoadingResults) {
+                        <div class="spinner-position">
+                            <mat-spinner></mat-spinner>
+                        </div>
+                    }
+
+
+
+                </div>
+            }
+            @if (isRateLimitReached) {
+                <div >
+                    <br>
+                    <h3 style="color:#C41E3A;"> No result has been found for {{this.searchValue}}.
+                        Please try using a different term or contact <a href="mailto:biodiversity-portal@ebi.ac.uk">biodiversity-portal&#64;ebi.ac.uk</a> for help.</h3>
+                </div>
+            }
 
             <br>
 
@@ -235,21 +255,7 @@ margin-top: 165px;">Filter by:
             <br>
             <br>
             <div>
-                @if (isLoadingResults || isRateLimitReached) {
-                    <div class="example-loading-shade"
-                    >
-                        @if (isLoadingResults) {
-                            <div class="spinner-position">
-                                <mat-spinner></mat-spinner>
-                            </div>
-                        }
-                        @if (isRateLimitReached) {
-                            <div class="example-rate-limit-reached">
-                                Something went wrong, please try again!
-                            </div>
-                        }
-                    </div>
-                }
+
 
                 <div style=" display: flex;overflow: auto;">
 
