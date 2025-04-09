@@ -47,7 +47,7 @@
                         <input type="search" id="searchValue" matInput style="
     width: 99%;" name="searchValue"
                                class="vf-search__input | vf-form__input"
-                               (keyup)="applyFilter($event, 'metadata')"
+                               (keyup)="getSearchResults('metadata')"
                                placeholder="Ex. Mia" #input>
 
                     </div>
@@ -61,6 +61,106 @@
                     </div>
 
                     <br>
+                    <div>
+                        @if (metadataSexFilters.length) {
+                            <div class="col-md-12 col-md-6">
+                                <div class="card bg-lite mb-3 filter-top">
+                                    <h3 class="card-header filter-heading">
+                                        <span #lbltextSex>Sex</span>
+                                        @if (metadataSexFilters.length > 3) {
+                                            <i class="material-icons float-right pointer-cursor"
+                                               (click)="toggleFilter('metadataTab',
+                                                               'sex')">
+                                                {{ showAllFilters['metadataTab']['sex'] ? 'remove' : 'add' }}
+                                            </i>
+                                        }
+                                    </h3>
+
+                                    <ul class="list-group">
+                                        @for (filter of (showAllFilters['metadataTab']['sex'] ? metadataSexFilters : metadataSexFilters.slice(0, 3)); track $index ) {
+                                            @if (filter.key != '') {
+                                                <li id="{{$index}}"
+                                                    class="list-group-item d-flex justify-content-between align-items-center"
+                                                    [ngClass]="checkFilterIsActive(filter.key)"
+                                                    (click)="applyFilter('sex', filter.key, metadataData, 'metadataTab')"
+                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
+                                                    {{ filter.key }}
+                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                </li>
+                                            }
+
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                        @if (metadataOrganismPartFilters.length) {
+                            <div class="col-md-12 col-md-6">
+                                <div class="card bg-lite mb-3 filter-top">
+                                    <h3 class="card-header filter-heading">
+                                        <span #lbltextOrgPart>Organism Part</span>
+                                        @if (metadataOrganismPartFilters.length > 3) {
+                                            <i class="material-icons float-right pointer-cursor"
+                                               (click)="toggleFilter('metadataTab',
+                                                               'organismPart')">
+                                                {{ showAllFilters['metadataTab']['organismPart'] ? 'remove' : 'add' }}
+                                            </i>
+                                        }
+                                    </h3>
+
+                                    <ul class="list-group">
+                                        @for (filter of (showAllFilters['metadataTab']['organismPart'] ? metadataOrganismPartFilters : metadataOrganismPartFilters.slice(0, 3)); track $index ) {
+                                            @if (filter.key != '') {
+                                                <li id="{{$index}}"
+                                                    class="list-group-item d-flex justify-content-between align-items-center"
+                                                    [ngClass]="checkFilterIsActive(filter.key)"
+                                                    (click)="applyFilter('organismPart', filter.key, metadataData,'metadataTab')"
+                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
+                                                    {{ filter.key }}
+                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                        @if (metadataTrackingSystemFilters.length) {
+                            <div class="col-md-12 col-md-6">
+                                <div class="card bg-lite mb-3 filter-top">
+                                    <h3 class="card-header filter-heading">
+                                        <span #lbltextTrack>Tracking Status</span>
+                                        @if (metadataTrackingSystemFilters.length > 3) {
+                                            <i class="material-icons float-right pointer-cursor"
+                                               (click)="toggleFilter('metadataTab',
+                                                               'trackingSystem')">
+                                                {{ showAllFilters['metadataTab']['trackingSystem'] ? 'remove' : 'add' }}
+                                            </i>
+                                        }
+                                    </h3>
+
+                                    <ul class="list-group">
+                                        @for (filter of (showAllFilters['metadataTab']['trackingSystem'] ? metadataTrackingSystemFilters : metadataTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                            @if (filter.key != '') {
+                                                <li id="{{$index}}"
+                                                    class="list-group-item d-flex justify-content-between align-items-center"
+                                                    [ngClass]="checkFilterIsActive(filter.key)"
+                                                    (click)="applyFilter('trackingSystem',filter.key, metadataData,'metadataTab')"
+                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
+                                                    {{ filter.key }}
+                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
                     <br>
 
                     <table mat-table [dataSource]="metadataData" matSort #metadataSort="matSort"
@@ -148,7 +248,7 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="applyFilter($event, 'annotation')" placeholder="Illumina" #input>
+                                       (keyup)="getSearchResults('annotation')" placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -236,7 +336,7 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="applyFilter($event, 'assemblies')" placeholder="Illumina" #input>
+                                       (keyup)="getSearchResults('assemblies')" placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -290,7 +390,7 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="applyFilter($event, 'files')" placeholder="Illumina" #input>
+                                       (keyup)="getSearchResults('files')" placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -476,6 +576,109 @@
                             <div>
                                 <hr>
                                 <h1 class="page-header">Related Symbionts</h1>
+                                <div class="row">
+                                    @if (symbiontsSexFilters.length) {
+                                        <div class="col-md-12 col-md-6">
+                                            <div class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span #lbltextSex>Sex</span>
+                                                    @if (symbiontsSexFilters.length > 3) {
+                                                        <i class="material-icons float-right pointer-cursor"
+                                                           (click)="toggleFilter('symbiontsTab',
+                                                               'sex')">
+                                                            {{ showAllFilters['symbiontsTab']['sex'] ? 'remove' : 'add' }}
+                                                        </i>
+                                                    }
+                                                </h3>
+
+                                                <ul class="list-group">
+                                                    @for (filter of (showAllFilters['symbiontsTab']['sex'] ? symbiontsSexFilters : symbiontsSexFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('sex', filter.key, dataSourceSymbiontsRecords, 'symbiontsTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
+                                                            >
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (symbiontsOrganismPartFilters.length) {
+                                        <div class="col-md-12 col-md-6">
+                                            <div class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span #lbltextOrgPart>Organism Part</span>
+                                                    @if (symbiontsOrganismPartFilters.length > 3) {
+                                                        <i class="material-icons float-right pointer-cursor"
+                                                           (click)="toggleFilter('symbiontsTab',
+                                                               'organismPart')">
+                                                            {{ showAllFilters['symbiontsTab']['organismPart'] ? 'remove' : 'add' }}
+                                                        </i>
+                                                    }
+                                                </h3>
+
+                                                <ul class="list-group">
+
+                                                    @for (filter of (showAllFilters['symbiontsTab']['organismPart'] ? symbiontsOrganismPartFilters : symbiontsOrganismPartFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('organismPart', filter.key, dataSourceSymbiontsRecords,'symbiontsTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;">
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @if (symbiontsTrackingSystemFilters.length) {
+                                        <div class="col-md-12 col-md-6">
+                                            <div class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span #lbltextTrack>Tracking Status</span>
+                                                    @if (symbiontsTrackingSystemFilters.length > 3) {
+                                                        <i class="material-icons float-right pointer-cursor"
+                                                           (click)="toggleFilter('symbiontsTab',
+                                                               'trackingSystem')">
+                                                            {{ showAllFilters['symbiontsTab']['trackingSystem'] ? 'remove' : 'add' }}
+                                                        </i>
+                                                    }
+                                                </h3>
+
+                                                <ul class="list-group">
+                                                    @for (filter of (showAllFilters['symbiontsTab']['trackingSystem'] ? symbiontsTrackingSystemFilters : symbiontsTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('trackingSystem',filter.key, dataSourceSymbiontsRecords,'symbiontsTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
+                                                            >
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
                                 <div class="table-container">
                                     <table mat-table [dataSource]="dataSourceSymbiontsRecords" matSort
                                            #relatedSymbiontsSort="matSort">
@@ -572,6 +775,115 @@
                         @if (organismData?.metagenomes_records.length) {
                             <hr>
                             <h1 class="page-header">Related Metagenomes </h1>
+                            <div class="col-sm-2">
+
+
+                                @if(metagenomesSexFilters && metagenomesSexFilters.length > 0 ){
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-6">
+                                            <div  class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span >Sex</span>
+                                                    @if(metagenomesSexFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('metagenomeTab', 'sex')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['metagenomesTab']['sex'] ? 'add' : 'remove' }}
+                                                        </mat-icon>
+                                                    }
+                                                </h3>
+
+
+                                                <ul class="list-group">
+                                                    @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesSexFilters : metagenomesSexFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('sex',filter.key, dataSourceSymbiontsRecords,'metagenomesTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
+                                                            >
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if(metagenomesOrganismPartFilters && metagenomesOrganismPartFilters.length > 0 ){
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-6">
+                                            <div  class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span >Organism Part</span>
+                                                    @if(metagenomesOrganismPartFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('metagenomeTab','organismPart')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['metagenomesTab']['organismPart']? 'add' : 'remove' }}
+                                                        </mat-icon>
+                                                    }
+                                                </h3>
+
+                                                <ul class="list-group">
+                                                    @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesOrganismPartFilters : metagenomesOrganismPartFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('trackingSystem',filter.key,dataSourceMetagenomesRecords ,'metagenomesTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
+                                                            >
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @if(metagenomesTrackingSystemFilters && metagenomesTrackingSystemFilters.length){
+                                    <div class="row">
+                                        <div class="col-md-12 col-md-6" >
+                                            <div class="card bg-lite mb-3 filter-top">
+                                                <h3 class="card-header filter-heading">
+                                                    <span >Tracking Status</span>
+
+                                                    @if (metagenomesTrackingSystemFilters.length > 3) {
+                                                        <i class="material-icons float-right pointer-cursor"
+                                                           (click)="toggleFilter('metagenomesTab',
+                                                               'trackingSystem')">
+                                                            {{ showAllFilters['metagenomesTab']['trackingSystem'] ? 'remove' : 'add' }}
+                                                        </i>
+                                                    }
+                                                </h3>
+
+                                                <ul class="list-group">
+                                                    @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesTrackingSystemFilters : metagenomesTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                                        @if (filter.key != '') {
+                                                            <li id="{{$index}}"
+                                                                class="list-group-item d-flex justify-content-between align-items-center"
+                                                                [ngClass]="checkFilterIsActive(filter.key)"
+                                                                (click)="applyFilter('trackingSystem',filter.key, dataSourceSymbiontsRecords,'metagenomesTab')"
+                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
+                                                            >
+                                                                {{ filter.key }}
+                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
+                                                            </li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
                             <table mat-table [dataSource]="dataSourceMetagenomesRecords" matSort
                                    #metagenomesRecordsSort="matSort">
                                 <ng-container matColumnDef="accession">
