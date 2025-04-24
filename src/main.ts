@@ -62,10 +62,10 @@ const cookieConfig:NgcCookieConsentConfig = {
         "dismiss": "I agree, dismiss this banner",
 
         privacyPolicyLink: 'Privacy Notice',
-        privacyPolicyHref: 'https://www.ebi.ac.uk/data-protection/privacy-notice/embl-ebi-public-website',
+        privacyPolicyHref: '/assets/gdpr/erga_asg_gbdp_gdpr.pdf',
 
         tosLink: 'Terms of Use',
-        tosHref: 'https://www.ebi.ac.uk/about/terms-of-use',
+        tosHref: '/assets/gdpr/terms_of_use.pdf',
     }
 };
 
