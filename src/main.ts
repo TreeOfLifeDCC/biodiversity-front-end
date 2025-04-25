@@ -62,10 +62,10 @@ const cookieConfig:NgcCookieConsentConfig = {
         "dismiss": "I agree, dismiss this banner",
 
         privacyPolicyLink: 'Privacy Notice',
-        privacyPolicyHref: '/assets/gdpr/erga_asg_gbdp_gdpr.pdf',
+        privacyPolicyHref: '/biodiversity/assets/gdpr/erga_asg_gbdp_gdpr.pdf',
 
         tosLink: 'Terms of Use',
-        tosHref: '/assets/gdpr/terms_of_use.pdf',
+        tosHref: '/biodiversity/assets/gdpr/terms_of_use.pdf',
     }
 };
 
