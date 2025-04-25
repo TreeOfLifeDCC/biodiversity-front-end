@@ -19,7 +19,7 @@ export class ApiService {
         const projectNames = ['DToL', 'ASG', 'ERGA',
             'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
         const offset = pageIndex * pageSize;
-       let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
+       let url = `http://localhost:8000/${indexName}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -74,7 +74,7 @@ export class ApiService {
         return this.http.get<any>(url);
     }
 
-    getDetailsData(organismName: any, indexName = 'data_portal') {
+    getDetailsData(organismName: any, indexName = 'filters_data_portal_index_test') {
         let url = `http://localhost:8000/${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }

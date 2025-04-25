@@ -12,11 +12,15 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
-import { MatChip } from '@angular/material/chips';
+import {MatChip, MatChipSet} from '@angular/material/chips';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
 import {DomSanitizer, SafeHtml, SafeResourceUrl} from "@angular/platform-browser";
 import {MatIcon} from "@angular/material/icon";
+import {MatDivider} from "@angular/material/divider";
+import {MatLine} from "@angular/material/core";
+import {MatList, MatListItem} from "@angular/material/list";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -27,7 +31,7 @@ import {MatIcon} from "@angular/material/icon";
     imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable,
         MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef,
         MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
-        MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent, NgTemplateOutlet, NgClass, MatIcon]
+        MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent, NgTemplateOutlet, NgClass, MatIcon, MatDivider, MatLine, MatList, MatListItem, MatChipSet, FormsModule]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {
@@ -103,6 +107,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showGenomeNote = false;
     aggregations : any;
     activeFilters:any = [];
+    searchText = '';
+    searchSymbiontsText = '';
+    searchRelatedmetaGenomesText='';
     filters = {
         sex: {},
         trackingSystem: {},
@@ -155,8 +162,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     width = 200;
     loader = '../../assets/200.gif';
     isLoading: boolean = true;
-    searchText = '';
-    searchSymbiontsText = '';
+
 
     @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
@@ -357,6 +363,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.generateFilters(dataSource.filteredData, 'metadata');
             } else if (tabName === 'symbiontsTab') {
                 this.generateFilters(dataSource.filteredData, 'symbionts');
+            } else if (tabName === 'metagenomesTab') {
+                this.generateFilters(dataSource.filteredData, 'metagenomes');
             }
         }
     }
@@ -382,7 +390,12 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         return `https://www.ebi.ac.uk/ena/browser/view/${study_id}`;
     }
 
-
+    generateUrl(link: string){
+        if (!link.startsWith('http')) {
+            return "https://" + link;
+        }
+        return link;
+    }
     getGenomeNoteData(data: any, key: string) {
         if (data && data.length !== 0) {
             return data[0][key];
@@ -439,7 +452,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                     this.generateFilters(dataSource.filteredData, 'metadata');
                 } else if (tabName === 'symbiontsTab') {
                     this.generateFilters(dataSource.filteredData, 'symbionts');
-                }
+                }else if (tabName === 'metagenomesTab') {
+                        this.generateFilters(dataSource.filteredData, 'metagenomes');
+                    }
 
             } else {
                 this.filterJson.sex = '';
@@ -469,6 +484,11 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         this.symbiontsSexFilters = this.aggregations.symbionts_filters.sex_filter.buckets;
         this.symbiontsTrackingSystemFilters = this.aggregations.symbionts_filters.tracking_status_filter.buckets;
         this.symbiontsOrganismPartFilters = this.aggregations.symbionts_filters.organism_part_filter.buckets;
+
+        this.metagenomesSexFilters = this.aggregations.metagenomes_filters.sex_filter.buckets;
+        this.metagenomesTrackingSystemFilters = this.aggregations.metagenomes_filters.tracking_status_filter.buckets;
+        this.metagenomesOrganismPartFilters = this.aggregations.metagenomes_filters.
+            organism_part_filter.buckets;
     }
 
 
@@ -514,7 +534,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     }
 
 
-    createFilterJson(key: string, value: string, dataSource: { filterPredicate: (data: { sex: string; organismPart: string; trackingSystem: string; accession: string; commonName: string; }, filter: string) => boolean; }) {
+
+    createFilterJson(key:any, value:any, dataSource:any) {
         if (key === 'sex') {
             this.filterJson.sex = value;
         } else if (key === 'organismPart') {
@@ -525,7 +546,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
             this.filterJson.search = value.toLowerCase();
         }
 
-        dataSource.filterPredicate = (data: { sex: string; organismPart: string; trackingSystem: string; accession: string; commonName: string; }, filter: string): boolean => {
+        dataSource.filterPredicate = (data:any, filter:any): boolean => {
             const filterObj: {
                 sex: string,
                 organismPart: string,
@@ -550,6 +571,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         };
     }
 
+
     toggleFilter(key1: string, key2: string): void {
         // @ts-ignore
         this.showAllFilters[key1][key2] = !this.showAllFilters[key1][key2];
@@ -559,11 +581,33 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     checkFilterIsActive(filter: string) {
         // @ts-ignore
         if (this.activeFilters.indexOf(filter) !== -1) {
-            return 'active';
+            return 'background-color: cornflowerblue; color: white;';
+            ;
         }
     }
 
+    filesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.filesData.filter = filterValue.trim().toLowerCase();
+    }
+
+    assembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.assembliesData.filter = filterValue.trim().toLowerCase();
+    }
+
+    annotationSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.annotationData.filter = filterValue.trim().toLowerCase();
+    }
+
+    // relatedAnnotationSearch(event: Event) {
+    //     const filterValue = (event.target as HTMLInputElement).value;
+    //     this.dataSourceRelatedAnnotation.filter = filterValue.trim().toLowerCase();
+    // }
+
     getSearchResults(dataType: string) {
+
         if (dataType === 'relatedOrganisms') {
             this.applyFilter('search', this.searchText, this.metadataData, 'metadataTab');
         }
@@ -571,10 +615,50 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         if (dataType === 'relatedSymbionts') {
             this.applyFilter('search', this.searchSymbiontsText, this.dataSourceSymbiontsRecords, 'symbiontsTab');
         }
+        if (dataType === 'relatedMetaGenomes') {
+            this.applyFilter('search', this.searchRelatedmetaGenomesText, this.dataSourceMetagenomesRecords, 'metagenomesTab');
+        }
 
     }
 
+    resetDataset(tabName: string){
+        this.activeFilters = [];
+        this.searchText = '';
+        this.searchSymbiontsText = '';
+        this.searchRelatedmetaGenomesText = '';
+        this.filterJson = {
+            sex: '',
+            organismPart: '',
+            trackingSystem: '',
+            search: ''
+        };
+        if (tabName === 'metadataTab' || tabName== 'Metadata') {
+            this.metadataData.filterPredicate = (data: any, filter: any) => true;
+            this.metadataData.filter = '';
+            this.generateFilters(this.metadataData.filteredData, 'metadata' );
+        } else if (tabName === 'symbiontsTab' || tabName== 'Symbionts') {
+            this.dataSourceSymbiontsRecords.filterPredicate = (data: any, filter:any) => true;
+            this.dataSourceSymbiontsRecords.filter = '';
+            this.generateFilters(this.dataSourceSymbiontsRecords.filteredData, 'symbionts');
+        } else if (tabName === 'metagenomesTab' || tabName== 'Metagenomes') {
+            this.dataSourceMetagenomesRecords.filterPredicate = (data: any, filter:any) => true;
+            this.dataSourceMetagenomesRecords.filter = '';
+            this.generateFilters(this.dataSourceMetagenomesRecords.filteredData, 'metagenomes');
+        }
+    }
 
+    tabClick({$event}: { $event: any }) {
+        this.resetDataset($event.tab.textLabel);
+    }
 
+    symbiontsAssembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSourceSymbiontsAssemblies.filter = filterValue.trim().toLowerCase();
+    }
+
+    metagenomesAssembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSourceMetagenomesAssemblies.filter = filterValue.trim().toLowerCase();
+    }
 
 }

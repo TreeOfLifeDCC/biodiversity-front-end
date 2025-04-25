@@ -26,143 +26,176 @@
                 </mat-card-actions>
             </mat-card>
             <br>
-            <mat-tab-group dynamicHeight #tabgroup>
-                <mat-tab label="Metadata" style="width:100%">
+            <mat-tab-group dynamicHeight #tabgroup (selectedTabChange)="tabClick({$event : $event});">
+                <mat-tab label="Metadata" class="tab-width">
                     <hr>
-                    <h2>Related Organisms</h2>
-                    @if (isLoadingResults || isRateLimitReached) {
-                        <div>
-                            @if (isLoadingResults) {
-                                <mat-spinner></mat-spinner>
+                    <div class="embl-grid">
+                        <div class="vf-u-grid__col--span-2--sm" >
+                            <br>
+                            <legend class="vf-form__legend hide-for-small-only">Filter by:
+                            </legend>
+                            @if(metadataSexFilters && metadataSexFilters.length > 0){
+                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                    <mat-card-title class="mat-mdc-card-title">Sex
+                                        @if(metadataSexFilters.length > 3){
+                                            <mat-icon
+                                                    (click)="toggleFilter('metadataTab', 'sex')"
+                                                    style="cursor: pointer; margin-left: auto;">
+                                                {{ showAllFilters['metadataTab']['sex'] ? 'add' : 'remove' }}
+                                            </mat-icon>
+                                        }
+
+                                    </mat-card-title>
+                                    <mat-card-actions>
+
+                                        <mat-list role="listbox">
+                                            @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metadataSexFilters : metadataSexFilters.slice(0, 3)); track $index ) {
+                                                @if (filter.key != '') {
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item
+                                                            [style]="checkFilterIsActive(filter.key)"
+                                                            (click)="applyFilter('sex',filter.key, metadataData,'metadataTab')"
+                                                            class="mat-list-item-class">
+                                                        <mat-divider></mat-divider>
+                                                        <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">
+                                                            {{filter.key}} ({{filter.doc_count}})</h4>
+                                                    </mat-list-item>
+                                                }
+                                            }
+                                        </mat-list>
+
+                                    </mat-card-actions>
+                                </mat-card>
                             }
-                            @if (isRateLimitReached) {
-                                <div>
-                                    Something went wrong, please try again!
-                                </div>
+                            <br>
+                            @if(metadataOrganismPartFilters && metadataOrganismPartFilters.length > 0 ){
+                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                    <mat-card-title class="mat-mdc-card-title">Organism Part
+                                        @if(metadataOrganismPartFilters.length > 3){
+                                            <mat-icon
+                                                    (click)="toggleFilter('metadataTab','organismPart')"
+                                                    style="cursor: pointer; margin-left: auto;">
+                                                {{ showAllFilters['metadataTab']['organismPart']? 'add' : 'remove' }}
+                                            </mat-icon>
+                                        }
+
+                                    </mat-card-title>
+                                    <mat-card-actions>
+
+                                        <mat-list role="listbox">
+                                            @for (filter of (showAllFilters['metadataTab']['organismPart'] ? metadataOrganismPartFilters : metadataOrganismPartFilters.slice(0, 3)); track $index ) {
+                                                @if (filter.key != '') {
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item
+                                                            [style]="checkFilterIsActive(filter.key)"
+                                                            (click)="applyFilter('organismPart',filter.key,metadataData ,'metadataTab')"
+                                                            class="mat-list-item-class">
+                                                        <mat-divider></mat-divider>
+                                                        <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                    </mat-list-item>
+                                                }
+                                            }
+                                        </mat-list>
+
+                                    </mat-card-actions>
+                                </mat-card>
+
                             }
-                        </div>
-                    }
+                            <br>
 
-                    <div class="vf-form__item | vf-search__item">
-                        <input type="search" id="searchValue" matInput style="
-    width: 99%;" name="searchValue"
-                               class="vf-search__input | vf-form__input"
-                               (keyup)="getSearchResults('metadata')"
-                               placeholder="Ex. Mia" #input>
+                            @if(metadataTrackingSystemFilters && metadataTrackingSystemFilters.length > 0){
+
+                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                    <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                        @if(metadataTrackingSystemFilters.length > 3){
+                                            <mat-icon
+                                                    (click)="toggleFilter('metadataTab','trackingSystem')"
+                                                    style="cursor: pointer; margin-left: auto;">
+                                                {{ showAllFilters['metadataTab']['trackingSystem']? 'add' : 'remove' }}
+                                            </mat-icon>
+                                        }
+
+                                    </mat-card-title>
+                                    <mat-card-actions>
+
+                                        <mat-list role="listbox">
+                                            @for (filter of (showAllFilters['metadataTab']['trackingSystem'] ? metadataTrackingSystemFilters : metadataTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                                @if (filter.key != '') {
+                                                    <mat-divider></mat-divider>
+                                                    <mat-list-item
+                                                            [style]="checkFilterIsActive(filter.key)"
+                                                            (click)="applyFilter('trackingSystem',filter.key,metadataData ,'metadataTab')"
+                                                            class="mat-list-item-class">
+                                                        <mat-divider></mat-divider>
+                                                        <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                    </mat-list-item>
+                                                }
+                                            }
+                                        </mat-list>
+
+                                    </mat-card-actions>
+                                </mat-card>
+                            }
 
                     </div>
 
-                    <div style="float: right;font-size: 14px; font-weight: 400;">
+             <div class="vf-u-grid__col--span-3">
+                 <label class="vf-page-header__heading"><h1>Related Organisms</h1></label>
 
-                        <button style="float: left;margin-top: 10px;" type="submit"
-                                class="vf-button vf-button--primary vf-button--outline vf-button--sm"
-                                (click)="exporter.exportTable('csv', {fileName: 'related_organisms'})">Download metadata
-                        </button>
-                    </div>
+                 @if (isLoadingResults || isRateLimitReached) {
+                     <div>
+                         @if (isLoadingResults) {
+                             <mat-spinner></mat-spinner>
+                         }
+                         @if (isRateLimitReached) {
+                             <div>
+                                 Something went wrong, please try again!
+                             </div>
+                         }
+                     </div>
+                 }
 
-                    <br>
-                    <div>
-                        @if (metadataSexFilters.length) {
-                            <div class="col-md-12 col-md-6">
-                                <div class="card bg-lite mb-3 filter-top">
-                                    <h3 class="card-header filter-heading">
-                                        <span #lbltextSex>Sex</span>
-                                        @if (metadataSexFilters.length > 3) {
-                                            <i class="material-icons float-right pointer-cursor"
-                                               (click)="toggleFilter('metadataTab',
-                                                               'sex')">
-                                                {{ showAllFilters['metadataTab']['sex'] ? 'remove' : 'add' }}
-                                            </i>
-                                        }
-                                    </h3>
+                 <div class="vf-form__item | vf-search__item">
+                     <input type="search" id="searchValue" matInput  name="searchValue"
+                            class="vf-search__input | vf-form__input"
+                            [(ngModel)]='searchText'
+                            (keyup)="getSearchResults('relatedOrganisms')"
+                            placeholder="Ex. Mia" #input>
 
-                                    <ul class="list-group">
-                                        @for (filter of (showAllFilters['metadataTab']['sex'] ? metadataSexFilters : metadataSexFilters.slice(0, 3)); track $index ) {
-                                            @if (filter.key != '') {
-                                                <li id="{{$index}}"
-                                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                                    [ngClass]="checkFilterIsActive(filter.key)"
-                                                    (click)="applyFilter('sex', filter.key, metadataData, 'metadataTab')"
-                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
-                                                    {{ filter.key }}
-                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                </li>
-                                            }
+                 </div>
 
-                                        }
+                 <div style="float: right;font-size: 14px; font-weight: 400;">
 
-                                    </ul>
-                                </div>
-                            </div>
-                        }
+                     <button style="float: left;margin-top: 10px;" type="submit"
+                             class="vf-button vf-button--primary vf-button--outline vf-button--sm"
+                             (click)="exporter.exportTable('csv', {fileName: 'related_organisms'})">Download metadata
+                     </button>
+                 </div>
+<br>
+                 <mat-chip-set>
+                     <div class="item4">
+                     @for (filter of activeFilters; track filter) {
 
-                        @if (metadataOrganismPartFilters.length) {
-                            <div class="col-md-12 col-md-6">
-                                <div class="card bg-lite mb-3 filter-top">
-                                    <h3 class="card-header filter-heading">
-                                        <span #lbltextOrgPart>Organism Part</span>
-                                        @if (metadataOrganismPartFilters.length > 3) {
-                                            <i class="material-icons float-right pointer-cursor"
-                                               (click)="toggleFilter('metadataTab',
-                                                               'organismPart')">
-                                                {{ showAllFilters['metadataTab']['organismPart'] ? 'remove' : 'add' }}
-                                            </i>
-                                        }
-                                    </h3>
+                             <mat-chip (click)="removeFilter(filter, metadataData,'metadataTab')"
+                                       style="cursor: pointer; background-color: limegreen; color: black;">
+                                 {{filter}}
+                                 <mat-icon style="margin: -7px;">close</mat-icon>
+                             </mat-chip>
 
-                                    <ul class="list-group">
-                                        @for (filter of (showAllFilters['metadataTab']['organismPart'] ? metadataOrganismPartFilters : metadataOrganismPartFilters.slice(0, 3)); track $index ) {
-                                            @if (filter.key != '') {
-                                                <li id="{{$index}}"
-                                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                                    [ngClass]="checkFilterIsActive(filter.key)"
-                                                    (click)="applyFilter('organismPart', filter.key, metadataData,'metadataTab')"
-                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
-                                                    {{ filter.key }}
-                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                </li>
-                                            }
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        }
+                     }
+                     @if (activeFilters.length > 0 ) {
+                         <mat-chip (click)="resetDataset('metadataTab')"
+                                   style="cursor: pointer; background-color: #EE4B2B; color: white;">
+                             Remove all filters
+                             <mat-icon style="margin: -7px;">close</mat-icon>
+                         </mat-chip>
+                     }
+                     </div>
 
-                        @if (metadataTrackingSystemFilters.length) {
-                            <div class="col-md-12 col-md-6">
-                                <div class="card bg-lite mb-3 filter-top">
-                                    <h3 class="card-header filter-heading">
-                                        <span #lbltextTrack>Tracking Status</span>
-                                        @if (metadataTrackingSystemFilters.length > 3) {
-                                            <i class="material-icons float-right pointer-cursor"
-                                               (click)="toggleFilter('metadataTab',
-                                                               'trackingSystem')">
-                                                {{ showAllFilters['metadataTab']['trackingSystem'] ? 'remove' : 'add' }}
-                                            </i>
-                                        }
-                                    </h3>
-
-                                    <ul class="list-group">
-                                        @for (filter of (showAllFilters['metadataTab']['trackingSystem'] ? metadataTrackingSystemFilters : metadataTrackingSystemFilters.slice(0, 3)); track $index ) {
-                                            @if (filter.key != '') {
-                                                <li id="{{$index}}"
-                                                    class="list-group-item d-flex justify-content-between align-items-center"
-                                                    [ngClass]="checkFilterIsActive(filter.key)"
-                                                    (click)="applyFilter('trackingSystem',filter.key, metadataData,'metadataTab')"
-                                                    style="cursor: pointer; padding: .75rem 0.25rem;">
-                                                    {{ filter.key }}
-                                                    <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                </li>
-                                            }
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
-                        }
-
-                    </div>
-                    <br>
-
+                 </mat-chip-set>
+                 <br><br>
                     <table mat-table [dataSource]="metadataData" matSort #metadataSort="matSort"
                            matTableExporter #exporter="matTableExporter">
 
@@ -223,7 +256,9 @@
                     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metadata Data"
                                    #metadataPaginator [length]="metadataDataLength"></mat-paginator>
 
+             </div>
 
+                    </div>
                 </mat-tab>
                 @if (annotationDataLength !== 0 || assembliesDataLength !== 0 || filesDataLength !== 0) {
                     <mat-tab label="Data"
@@ -248,7 +283,8 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="getSearchResults('annotation')" placeholder="Illumina" #input>
+                                       (keyup)="annotationSearch($event)"
+                                        placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -336,7 +372,7 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="getSearchResults('assemblies')" placeholder="Illumina" #input>
+                                       (keyup)="assembliesSearch($event)" placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -390,7 +426,7 @@
                             <div class="vf-form__item | vf-search__item">
                                 <input type="search" matInput style="
                          width: 99%;" name="searchValue" class="vf-search__input | vf-form__input"
-                                       (keyup)="getSearchResults('files')" placeholder="Illumina" #input>
+                                       (keyup)="filesSearch($event)"   placeholder="Illumina" #input>
                             </div>
                             <div style="float: right;font-size: 14px; font-weight: 400;">
                                 <button style="float: left;margin-top: 10px;" type="submit"
@@ -402,26 +438,61 @@
                             <table mat-table [dataSource]="filesData" matSort #filesSort="matSort" matTableExporter
                                    style="overflow: auto hidden; min-width: 100% ; "
                                    #filesExporter="matTableExporter">
-                                @for (column of filesDisplayedColumns; track column) {
+                                @for (column of filesDisplayedColumns; track $index;) {
                                     <ng-container [matColumnDef]="column">
                                         <th mat-header-cell *matHeaderCellDef
                                             mat-sort-header> {{ getHumanReadableName(column) }}
                                         </th>
                                         <td mat-cell *matCellDef="let element">
                                             @if (column === 'study_accession') {
-                                                <a mat-button
-                                                   href="{{getStudyLink(element[column])}}">{{ element[column] }}</a>
+                                                <ng-container>
+                                                    <a mat-button
+                                                       class="no-underline" href="{{getStudyLink(element[column])}}">{{ element[column] }}</a>
+                                                </ng-container>
                                             }
                                             @if (keyInSpecialColumns(column)) {
-                                                <a mat-button
-                                                   href="{{element.column}}">{{ getKeyFromSpecialColumns(element[column]) }}</a>
+                                                <ng-container>
+                                                    @if (element[column] && element[column].split(';').length > 0){
+                                                        @for (file of element[column].split(';'); track file) {
+                                                            <mat-list-item  style="padding-left:0px" role="listitem">
+                                                            <a mat-button class="no-underline"
+                                                               href="{{generateUrl(file)}}">{{ getKeyFromSpecialColumns(file) }}</a>
+                                                            </mat-list-item>
+                                                        }
+                                                    }@else {
+                                                        NA
+                                                    }
+
+
+                                                </ng-container>
                                             }
                                             @if (!keyInSpecialColumns(column) && column !== 'study_accession') {
-                                                {{ element[column] }}
+                                                <ng-container>
+                                                    {{ element[column] }}
+                                                </ng-container>
                                             }
                                         </td>
                                     </ng-container>
                                 }
+<!--                                @for (column of filesDisplayedColumns; track column) {-->
+<!--                                    <ng-container [matColumnDef]="column">-->
+<!--                                        <th mat-header-cell *matHeaderCellDef-->
+<!--                                            mat-sort-header> {{ getHumanReadableName(column) }}-->
+<!--                                        </th>-->
+<!--                                        <td mat-cell *matCellDef="let element">-->
+<!--&lt;!&ndash;                                            @if (column === 'study_accession') {&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <a mat-button href="{{getStudyLink(element[column])}}">{{ element[column] }}</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            }&ndash;&gt;-->
+<!--                                            @if (keyInSpecialColumns(column)) {-->
+
+<!--                                                <a mat-button target="_blank" href="{{element[column]}})">{{ getKeyFromSpecialColumns(element[column]) }}</a>-->
+<!--                                            }-->
+<!--                                            @if (!keyInSpecialColumns(column) && column !== 'study_accession') {-->
+<!--                                                {{ element[column] }}-->
+<!--                                            }-->
+<!--                                        </td>-->
+<!--                                    </ng-container>-->
+<!--                                }-->
                                 <tr mat-header-row *matHeaderRowDef="filesDisplayedColumns"></tr>
                                 <tr mat-row *matRowDef="let row; columns: filesDisplayedColumns;"></tr>
                                 <tr class="mat-row" *matNoDataRow>
@@ -571,115 +642,155 @@
 
                 @if (organismData?.symbionts_records && organismData?.symbionts_records.length) {
                     <mat-tab label="Symbionts"
-                             class=tab-width>
+                             class=tab-width style="width:100%" >
                         @if (organismData?.symbionts_records.length) {
                             <div>
                                 <hr>
-                                <h1 class="page-header">Related Symbionts</h1>
-                                <div class="row">
-                                    @if (symbiontsSexFilters.length) {
-                                        <div class="col-md-12 col-md-6">
-                                            <div class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span #lbltextSex>Sex</span>
-                                                    @if (symbiontsSexFilters.length > 3) {
-                                                        <i class="material-icons float-right pointer-cursor"
-                                                           (click)="toggleFilter('symbiontsTab',
-                                                               'sex')">
-                                                            {{ showAllFilters['symbiontsTab']['sex'] ? 'remove' : 'add' }}
-                                                        </i>
-                                                    }
-                                                </h3>
 
-                                                <ul class="list-group">
-                                                    @for (filter of (showAllFilters['symbiontsTab']['sex'] ? symbiontsSexFilters : symbiontsSexFilters.slice(0, 3)); track $index ) {
-                                                        @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('sex', filter.key, dataSourceSymbiontsRecords, 'symbiontsTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
-                                                            >
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                <div class="embl-grid">
+                                    <div class="vf-u-grid__col--span-2--sm" >
+                                        <legend class="vf-form__legend hide-for-small-only">Filter by:
+                                        </legend>
+
+                                        @if(symbiontsSexFilters && symbiontsSexFilters.length > 0){
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                                <mat-card-title class="mat-mdc-card-title">Sex
+                                                    @if(symbiontsSexFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('symbiontsTab', 'sex')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['symbiontsTab']['sex'] ? 'add' : 'remove' }}
+                                                        </mat-icon>
+                                                    }
+
+                                                </mat-card-title>
+                                                <mat-card-actions>
+
+                                                    <mat-list role="listbox">
+                                                        @for (filter of (showAllFilters['symbiontsTab']['sex'] ? symbiontsSexFilters : symbiontsSexFilters.slice(0, 3)); track $index ) {
+                                                            @if (filter.key != '') {
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('sex',filter.key, dataSourceSymbiontsRecords,'symbiontsTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                                </mat-list-item>
+                                                            }
                                                         }
+                                                    </mat-list>
 
+                                                </mat-card-actions>
+                                            </mat-card>
+                                        }
+                                        <br>
+                                        @if(symbiontsOrganismPartFilters && symbiontsOrganismPartFilters.length > 0 ){
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                                <mat-card-title class="mat-mdc-card-title">Organism Part
+                                                    @if(symbiontsOrganismPartFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('symbiontsTab','organismPart')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['symbiontsTab']['organismPart']? 'add' : 'remove' }}
+                                                        </mat-icon>
                                                     }
 
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    }
+                                                </mat-card-title>
+                                                <mat-card-actions>
 
-                                    @if (symbiontsOrganismPartFilters.length) {
-                                        <div class="col-md-12 col-md-6">
-                                            <div class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span #lbltextOrgPart>Organism Part</span>
-                                                    @if (symbiontsOrganismPartFilters.length > 3) {
-                                                        <i class="material-icons float-right pointer-cursor"
-                                                           (click)="toggleFilter('symbiontsTab',
-                                                               'organismPart')">
-                                                            {{ showAllFilters['symbiontsTab']['organismPart'] ? 'remove' : 'add' }}
-                                                        </i>
-                                                    }
-                                                </h3>
+                                                    <mat-list role="listbox">
+                                                        @for (filter of (showAllFilters['symbiontsTab']['organismPart'] ? symbiontsOrganismPartFilters : symbiontsOrganismPartFilters.slice(0, 3)); track $index ) {
+                                                            @if (filter.key != '') {
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('organismPart',filter.key,dataSourceSymbiontsRecords ,'symbiontsTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
 
-                                                <ul class="list-group">
-
-                                                    @for (filter of (showAllFilters['symbiontsTab']['organismPart'] ? symbiontsOrganismPartFilters : symbiontsOrganismPartFilters.slice(0, 3)); track $index ) {
-                                                        @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('organismPart', filter.key, dataSourceSymbiontsRecords,'symbiontsTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;">
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                                                </mat-list-item>
+                                                            }
                                                         }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    }
+                                                    </mat-list>
 
-                                    @if (symbiontsTrackingSystemFilters.length) {
-                                        <div class="col-md-12 col-md-6">
-                                            <div class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span #lbltextTrack>Tracking Status</span>
-                                                    @if (symbiontsTrackingSystemFilters.length > 3) {
-                                                        <i class="material-icons float-right pointer-cursor"
-                                                           (click)="toggleFilter('symbiontsTab',
-                                                               'trackingSystem')">
-                                                            {{ showAllFilters['symbiontsTab']['trackingSystem'] ? 'remove' : 'add' }}
-                                                        </i>
-                                                    }
-                                                </h3>
+                                                </mat-card-actions>
+                                            </mat-card>
 
-                                                <ul class="list-group">
-                                                    @for (filter of (showAllFilters['symbiontsTab']['trackingSystem'] ? symbiontsTrackingSystemFilters : symbiontsTrackingSystemFilters.slice(0, 3)); track $index ) {
-                                                        @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('trackingSystem',filter.key, dataSourceSymbiontsRecords,'symbiontsTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
-                                                            >
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                        }
+
+                                        <br>
+                                        @if(symbiontsTrackingSystemFilters && symbiontsTrackingSystemFilters.length){
+
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                                <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                                    @if(symbiontsTrackingSystemFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('symbiontsTab','trackingSystem')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['symbiontsTab']['trackingSystem']? 'add' : 'remove' }}
+                                                        </mat-icon>
+                                                    }
+
+                                                </mat-card-title>
+                                                <mat-card-actions>
+
+                                                    <mat-list role="listbox">
+                                                        @for (filter of (showAllFilters['symbiontsTab']['trackingSystem'] ? symbiontsTrackingSystemFilters : symbiontsTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                                            @if (filter.key != '') {
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('trackingSystem',filter.key,dataSourceSymbiontsRecords ,'symbiontsTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                                </mat-list-item>
+                                                            }
                                                         }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    }
+                                                    </mat-list>
+
+                                                </mat-card-actions>
+                                            </mat-card>
+                                        }
 
                                 </div>
-                                <div class="table-container">
+
+                                    <div class="vf-u-grid__col--span-3">
+                                        <h1 class="page-header">Related Symbionts</h1>
+                                        <div class="vf-form__item | vf-search__item">
+                                            <input type="search"  matInput style="width: 99%;" name="searchValue"
+                                                   class="vf-search__input | vf-form__input"
+                                                   [(ngModel)]='searchSymbiontsText'
+                                                   (keyup)="getSearchResults('relatedSymbionts')"
+                                                   placeholder="Ex. Mia" #input>
+
+                                        </div>
+                                        <br>
+                                        <mat-chip-set>
+                                            <div class="item4">
+                                            @for (filter of activeFilters; track filter) {
+
+                                                    <mat-chip (click)="removeFilter(filter, dataSourceSymbiontsRecords,'symbiontsTab')"
+                                                              style="cursor: pointer; background-color: limegreen; color: black;">
+                                                        {{filter}}
+                                                        <mat-icon style="margin: -7px;">close</mat-icon>
+                                                    </mat-chip>
+
+                                            }
+                                            @if (activeFilters.length > 0 ) {
+                                                <mat-chip (click)="resetDataset('symbiontsTab')"
+                                                          style="cursor: pointer; background-color: #EE4B2B; color: white;">
+                                                    Remove all filters
+                                                    <mat-icon style="margin: -7px;">close</mat-icon>
+                                                </mat-chip>
+                                            }
+                                            </div>
+                                        </mat-chip-set>
+                                        <br>
                                     <table mat-table [dataSource]="dataSourceSymbiontsRecords" matSort
                                            #relatedSymbiontsSort="matSort">
                                         <ng-container matColumnDef="accession">
@@ -715,18 +826,28 @@
                                         <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
                                     </table>
-                                </div>
-                                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
                                                aria-label="Select page of symbionts"
                                                #relatedSymbiontsPaginator
                                                [length]="specSymbiontsTotalCount"></mat-paginator>
+                                    </div>
                             </div>
+                                </div>
                         }
+
                         @if (dataSourceSymbiontsAssembliesCount != 0) {
                             <div>
                                 <hr>
                                 <h1 class="page-header">Related assemblies</h1>
+
+
                                 <div class="table-container">
+
+                                    <input type="search"  matInput style="width: 99%;" name="symbiontsAssembliesSearch"
+                                           class="vf-search__input | vf-form__input"
+                                           (keyup)="symbiontsAssembliesSearch($event)"
+                                           placeholder="Ex. Mia" #input>
+                                    <br>
                                     <table mat-table [dataSource]="dataSourceSymbiontsAssemblies" matSort
                                            #assembliesSymbiontsSort="matSort">
                                         <ng-container matColumnDef="accession">
@@ -771,54 +892,53 @@
                 }
                 @if (organismData?.metagenomes_records && organismData?.metagenomes_records.length) {
                     <mat-tab label="Metagenomes"
-                             class=tab-width>
-                        @if (organismData?.metagenomes_records.length) {
-                            <hr>
-                            <h1 class="page-header">Related Metagenomes </h1>
-                            <div class="col-sm-2">
+                             class=tab-width style="width:100%" >
+                            @if (organismData?.metagenomes_records.length) {
+                                <hr>
 
 
-                                @if(metagenomesSexFilters && metagenomesSexFilters.length > 0 ){
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-6">
-                                            <div  class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span >Sex</span>
-                                                    @if(metagenomesSexFilters.length > 3){
-                                                        <mat-icon
-                                                                (click)="toggleFilter('metagenomeTab', 'sex')"
-                                                                style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['metagenomesTab']['sex'] ? 'add' : 'remove' }}
-                                                        </mat-icon>
-                                                    }
-                                                </h3>
 
+                                <div class="embl-grid">
+                                    <div class="vf-u-grid__col--span-2--sm" >
+                                        <legend class="vf-form__legend hide-for-small-only">Filter by:
+                                        </legend>
+                                        @if(metagenomesSexFilters && metagenomesSexFilters.length > 0){
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                            <mat-card-title class="mat-mdc-card-title">Sex
+                                                @if(metagenomesSexFilters.length > 3){
+                                                    <mat-icon
+                                                            (click)="toggleFilter('metagenomeTab', 'sex')"
+                                                            style="cursor: pointer; margin-left: auto;">
+                                                        {{ showAllFilters['metagenomesTab']['sex'] ? 'add' : 'remove' }}
+                                                    </mat-icon>
+                                                }
 
-                                                <ul class="list-group">
+                                            </mat-card-title>
+                                            <mat-card-actions>
+
+                                                <mat-list role="listbox">
                                                     @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesSexFilters : metagenomesSexFilters.slice(0, 3)); track $index ) {
                                                         @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('sex',filter.key, dataSourceSymbiontsRecords,'metagenomesTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
-                                                            >
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('sex',filter.key, dataSourceMetagenomesRecords,'metagenomesTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                                </mat-list-item>
+                                                            }
                                                         }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                @if(metagenomesOrganismPartFilters && metagenomesOrganismPartFilters.length > 0 ){
-                                    <div class="row">
-                                        <div class="col-md-12 col-sm-6">
-                                            <div  class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span >Organism Part</span>
+                                                </mat-list>
+
+                                            </mat-card-actions>
+                                        </mat-card>
+                                        }
+                                        <br>
+                                        @if(metagenomesOrganismPartFilters && metagenomesOrganismPartFilters.length > 0 ){
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                                <mat-card-title class="mat-mdc-card-title">Organism Part
                                                     @if(metagenomesOrganismPartFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('metagenomeTab','organismPart')"
@@ -826,120 +946,164 @@
                                                             {{ showAllFilters['metagenomesTab']['organismPart']? 'add' : 'remove' }}
                                                         </mat-icon>
                                                     }
-                                                </h3>
 
-                                                <ul class="list-group">
-                                                    @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesOrganismPartFilters : metagenomesOrganismPartFilters.slice(0, 3)); track $index ) {
-                                                        @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('trackingSystem',filter.key,dataSourceMetagenomesRecords ,'metagenomesTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
-                                                            >
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                                </mat-card-title>
+                                                <mat-card-actions>
+
+                                                    <mat-list role="listbox">
+                                                        @for (filter of (showAllFilters['metagenomesTab']['organismPart'] ? metagenomesOrganismPartFilters : metagenomesOrganismPartFilters.slice(0, 3)); track $index ) {
+                                                            @if (filter.key != '') {
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('organismPart',filter.key,dataSourceMetagenomesRecords ,'metagenomesTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                                </mat-list-item>
+                                                            }
                                                         }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                @if(metagenomesTrackingSystemFilters && metagenomesTrackingSystemFilters.length){
-                                    <div class="row">
-                                        <div class="col-md-12 col-md-6" >
-                                            <div class="card bg-lite mb-3 filter-top">
-                                                <h3 class="card-header filter-heading">
-                                                    <span >Tracking Status</span>
+                                                    </mat-list>
 
-                                                    @if (metagenomesTrackingSystemFilters.length > 3) {
-                                                        <i class="material-icons float-right pointer-cursor"
-                                                           (click)="toggleFilter('metagenomesTab',
-                                                               'trackingSystem')">
-                                                            {{ showAllFilters['metagenomesTab']['trackingSystem'] ? 'remove' : 'add' }}
-                                                        </i>
-                                                    }
-                                                </h3>
+                                                </mat-card-actions>
+                                            </mat-card>
 
-                                                <ul class="list-group">
-                                                    @for (filter of (showAllFilters['metagenomesTab']['sex'] ? metagenomesTrackingSystemFilters : metagenomesTrackingSystemFilters.slice(0, 3)); track $index ) {
-                                                        @if (filter.key != '') {
-                                                            <li id="{{$index}}"
-                                                                class="list-group-item d-flex justify-content-between align-items-center"
-                                                                [ngClass]="checkFilterIsActive(filter.key)"
-                                                                (click)="applyFilter('trackingSystem',filter.key, dataSourceSymbiontsRecords,'metagenomesTab')"
-                                                                style="cursor: pointer; padding: .75rem 0.25rem;"
-                                                            >
-                                                                {{ filter.key }}
-                                                                <span class="badge badge-pill badge-info">{{ filter.doc_count }}</span>
-                                                            </li>
+                                        }
+                                        <br>
+                                        @if(metagenomesTrackingSystemFilters && metagenomesTrackingSystemFilters.length){
+
+                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
+                                                <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                                    @if(metagenomesTrackingSystemFilters.length > 3){
+                                                        <mat-icon
+                                                                (click)="toggleFilter('metagenomesTab','trackingSystem')"
+                                                                style="cursor: pointer; margin-left: auto;">
+                                                            {{ showAllFilters['metagenomesTab']['trackingSystem']? 'add' : 'remove' }}
+                                                        </mat-icon>
+                                                    }
+
+                                                </mat-card-title>
+                                                <mat-card-actions>
+
+                                                    <mat-list role="listbox">
+                                                        @for (filter of (showAllFilters['metagenomesTab']['trackingSystem'] ? metagenomesTrackingSystemFilters : metagenomesTrackingSystemFilters.slice(0, 3)); track $index ) {
+                                                            @if (filter.key != '') {
+                                                                <mat-divider></mat-divider>
+                                                                <mat-list-item
+                                                                        [style]="checkFilterIsActive(filter.key)"
+                                                                        (click)="applyFilter('trackingSystem',filter.key,dataSourceMetagenomesRecords ,'metagenomesTab')"
+                                                                        class="mat-list-item-class">
+                                                                    <mat-divider></mat-divider>
+                                                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
+
+                                                                </mat-list-item>
+                                                            }
                                                         }
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                                    </mat-list>
 
-                            </div>
-                            <table mat-table [dataSource]="dataSourceMetagenomesRecords" matSort
-                                   #metagenomesRecordsSort="matSort">
-                                <ng-container matColumnDef="accession">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> BioSample ID</th>
-                                    <td mat-cell *matCellDef="let row">
-                                        <a href="https://www.ebi.ac.uk/biosamples/samples/{{row.accession}}">
-                                            {{ row.accession }}</a>
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="organism">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism</th>
-                                    <td mat-cell *matCellDef="let row">
-                                        {{ row.organism.text }}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="commonName">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Common Name</th>
-                                    <td mat-cell *matCellDef="let row">
-                                        {{ row?.commonName }}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="sex">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sex</th>
-                                    <td mat-cell *matCellDef="let row">
-                                        {{ row?.sex }}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="organismPart">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism part</th>
-                                    <td mat-cell *matCellDef="let row">
-                                        {{ row?.organismPart }}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="trackingSystem"
-                                              class="column-width">
-                                    <th mat-header-cell *matHeaderCellDef
-                                        mat-sort-header class="column-width"> Tracking status
-                                    </th>
-                                    <td mat-cell *matCellDef="let row">
-                                        <mat-chip
-                                                style="background-color: yellow; color: black">{{ row.trackingSystem }}
-                                        </mat-chip>
-                                    </td>
-                                </ng-container>
-                                <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
-                                <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
-                            </table>
-                            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metagenomes"
+                                                </mat-card-actions>
+                                            </mat-card>
+                                        }
+
+                                    </div>
+
+                                    <div class="vf-u-grid__col--span-3">
+                                        <br>
+                                        <h1 class="page-header">Related Metagenomes </h1>
+                                        <div class="vf-form__item | vf-search__item">
+                                            <input type="search"  matInput style="width: 99%;" name="searchRelatedmetaGenomesText"
+                                                   class="vf-search__input | vf-form__input"
+                                                   [(ngModel)]='searchRelatedmetaGenomesText'
+                                                   (keyup)="getSearchResults('relatedMetaGenomes')"
+                                                   placeholder="Ex. Mia" #input>
+
+                                        </div>
+                                        <br>
+                                        <mat-chip-set>
+                                            <div class="item4">
+                                            @for (filter of activeFilters; track filter) {
+
+                                                    <mat-chip (click)="removeFilter(filter, dataSourceMetagenomesRecords,'metagenomesTab')"
+                                                              style="cursor: pointer; background-color: limegreen; color: black;">
+                                                        {{filter}}
+                                                        <mat-icon style="margin: -7px;">close</mat-icon>
+                                                    </mat-chip>
+
+                                            }
+                                            @if (activeFilters.length > 0 ) {
+                                                <mat-chip (click)="resetDataset('metagenomesTab')"
+                                                          style="cursor: pointer; background-color: #EE4B2B; color: white;">
+                                                    Remove all filters
+                                                    <mat-icon style="margin: -7px;">close</mat-icon>
+                                                </mat-chip>
+                                            }
+                                            </div>
+                                        </mat-chip-set>
+                                    <table mat-table [dataSource]="dataSourceMetagenomesRecords" matSort
+                                           #metagenomesRecordsSort="matSort">
+                                        <ng-container matColumnDef="accession">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> BioSample ID</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <a href="https://www.ebi.ac.uk/biosamples/samples/{{row.accession}}">
+                                                    {{ row.accession }}</a>
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="organism">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                {{ row.organism.text }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="commonName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Common Name</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                {{ row?.commonName }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="sex">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Sex</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                {{ row?.sex }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="organismPart">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Organism part</th>
+                                            <td mat-cell *matCellDef="let row">
+                                                {{ row?.organismPart }}
+                                            </td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="trackingSystem"
+                                                      class="column-width">
+                                            <th mat-header-cell *matHeaderCellDef
+                                                mat-sort-header class="column-width"> Tracking status
+                                            </th>
+                                            <td mat-cell *matCellDef="let row">
+                                                <mat-chip
+                                                        style="background-color: yellow; color: black">{{ row.trackingSystem }}
+                                                </mat-chip>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
+                                    </table>
+                                    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metagenomes"
                                            #metagenomesRecordsPaginator
                                            [length]="metagenomesRecordsTotalCount" style="width: 100%;"></mat-paginator>
-                        }
-                        @if (dataSourceMetagenomesAssembliesCount !=
-                        0) {
+                            </div>
+                                </div>
+                                }
+
+
+                        @if (dataSourceMetagenomesAssembliesCount != 0) {
                             <ng-container style=" display: flex;">
                                 <hr>
                                 <h1 class="page-header">Related assemblies</h1>
+                                <input type="search"  matInput style="width: 99%;" name="metagenomesAssembliesSearch"
+                                       class="vf-search__input | vf-form__input"
+                                       (keyup)="metagenomesAssembliesSearch($event)"
+                                       placeholder="Ex. Mia" #input>
+                                <br>
                                 <table mat-table [dataSource]="dataSourceMetagenomesAssemblies" matSort
                                        #assembliesMetagenomesSort="matSort"
                                 >
