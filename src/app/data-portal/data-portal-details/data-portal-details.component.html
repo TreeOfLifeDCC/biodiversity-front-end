@@ -41,7 +41,7 @@
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab', 'sex')"
                                                     style="cursor: pointer; margin-left: auto;">
-                                                {{ showAllFilters['metadataTab']['sex'] ? 'add' : 'remove' }}
+                                                {{ showAllFilters['metadataTab']['sex'] ? 'remove' : 'add'  }}
                                             </mat-icon>
                                         }
 
@@ -75,7 +75,7 @@
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab','organismPart')"
                                                     style="cursor: pointer; margin-left: auto;">
-                                                {{ showAllFilters['metadataTab']['organismPart']? 'add' : 'remove' }}
+                                                {{ showAllFilters['metadataTab']['organismPart']? 'remove' : 'add' }}
                                             </mat-icon>
                                         }
 
@@ -112,7 +112,7 @@
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab','trackingSystem')"
                                                     style="cursor: pointer; margin-left: auto;">
-                                                {{ showAllFilters['metadataTab']['trackingSystem']? 'add' : 'remove' }}
+                                                {{ showAllFilters['metadataTab']['trackingSystem']?  'remove': 'add'  }}
                                             </mat-icon>
                                         }
 
@@ -308,31 +308,31 @@
                                 <ng-container matColumnDef="annotation_gtf">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Annotation GTF</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row['annotation']['GTF']}}">GTF</a>
+                                        <a mat-button href="{{row['annotation']['GTF']}}" target="_blank">GTF</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="annotation_gff3">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> annotation GTF3</th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Annotation GTF3</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.annotation.GFF3}}">GFF3</a>
+                                        <a mat-button href="{{row['annotation']['GFF3']}}" target="_blank">GFF3</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="proteins">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Proteins FASTA</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.proteins.FASTA}}">FASTA</a>
+                                        <a mat-button href="{{row.proteins.FASTA}}" target="_blank">FASTA</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="transcripts">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Transcripts FASTA</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.transcripts.FASTA}}">FASTA</a>
+                                        <a mat-button href="{{row.transcripts.FASTA}}" target="_blank">FASTA</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="softmasked_genome">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Softmasked Genome FASTA</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.softmasked_genome.FASTA}}">FASTA</a>
+                                        <a mat-button href="{{row.softmasked_genome.FASTA}}" target="_blank">FASTA</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="repeat_library">
@@ -344,13 +344,13 @@
                                 <ng-container matColumnDef="other_data">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Other Data FTP Dumps</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.other_data.ftp_dumps}}">FTP Dumps</a>
+                                        <a mat-button href="{{row.other_data.ftp_dumps}}" target="_blank">FTP Dumps</a>
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="view_in_browser">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header> View in Browser</th>
                                     <td mat-cell *matCellDef="let row">
-                                        <a mat-button href="{{row.view_in_browser}}">Ensembl</a>
+                                        <a mat-button href="{{row.view_in_browser}}" target="_blank">Ensembl</a>
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="annotationsDisplayedColumns"></tr>
@@ -454,10 +454,10 @@
                                                 <ng-container>
                                                     @if (element[column] && element[column].split(';').length > 0){
                                                         @for (file of element[column].split(';'); track file) {
-                                                            <mat-list-item  style="padding-left:0px" role="listitem">
-                                                            <a mat-button class="no-underline"
-                                                               href="{{generateUrl(file)}}">{{ getKeyFromSpecialColumns(file) }}</a>
-                                                            </mat-list-item>
+
+                                                            <a  mat-button
+                                                                class="no-underline" href="{{generateUrl(file)}}">{{ getKeyFromSpecialColumns(file) }}</a><br>
+
                                                         }
                                                     }@else {
                                                         NA
@@ -659,7 +659,7 @@
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab', 'sex')"
                                                                 style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['symbiontsTab']['sex'] ? 'add' : 'remove' }}
+                                                            {{ showAllFilters['symbiontsTab']['sex'] ? 'remove' : 'add' }}
                                                         </mat-icon>
                                                     }
 
@@ -693,7 +693,7 @@
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab','organismPart')"
                                                                 style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['symbiontsTab']['organismPart']? 'add' : 'remove' }}
+                                                            {{ showAllFilters['symbiontsTab']['organismPart']?  'remove':'add'  }}
                                                         </mat-icon>
                                                     }
 
@@ -730,7 +730,7 @@
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab','trackingSystem')"
                                                                 style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['symbiontsTab']['trackingSystem']? 'add' : 'remove' }}
+                                                            {{ showAllFilters['symbiontsTab']['trackingSystem']?  'remove' : 'add' }}
                                                         </mat-icon>
                                                     }
 
@@ -825,6 +825,10 @@
                                         </ng-container>
                                         <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
+                                        <tr class="mat-row" *matNoDataRow>
+                                            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"
+                                            </td>
+                                        </tr>
                                     </table>
                                     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
                                                aria-label="Select page of symbionts"
@@ -880,6 +884,10 @@
                                         </ng-container>
                                         <tr mat-header-row *matHeaderRowDef="displayedColumnsAssemblies"></tr>
                                         <tr mat-row *matRowDef="let row; columns: displayedColumnsAssemblies;"></tr>
+                                        <tr class="mat-row" *matNoDataRow>
+                                            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
                                 <mat-paginator #assembliesSymbiontsPaginator [pageSizeOptions]="[5,10, 20, 30]"
@@ -909,7 +917,7 @@
                                                     <mat-icon
                                                             (click)="toggleFilter('metagenomeTab', 'sex')"
                                                             style="cursor: pointer; margin-left: auto;">
-                                                        {{ showAllFilters['metagenomesTab']['sex'] ? 'add' : 'remove' }}
+                                                        {{ showAllFilters['metagenomesTab']['sex'] ? 'remove': 'add'  }}
                                                     </mat-icon>
                                                 }
 
@@ -943,7 +951,7 @@
                                                         <mat-icon
                                                                 (click)="toggleFilter('metagenomeTab','organismPart')"
                                                                 style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['metagenomesTab']['organismPart']? 'add' : 'remove' }}
+                                                            {{ showAllFilters['metagenomesTab']['organismPart']?  'remove': 'add' }}
                                                         </mat-icon>
                                                     }
 
@@ -979,7 +987,7 @@
                                                         <mat-icon
                                                                 (click)="toggleFilter('metagenomesTab','trackingSystem')"
                                                                 style="cursor: pointer; margin-left: auto;">
-                                                            {{ showAllFilters['metagenomesTab']['trackingSystem']? 'add' : 'remove' }}
+                                                            {{ showAllFilters['metagenomesTab']['trackingSystem']?  'remove': 'add' }}
                                                         </mat-icon>
                                                     }
 
@@ -1086,6 +1094,10 @@
                                         </ng-container>
                                         <tr mat-header-row *matHeaderRowDef="specDisplayedColumns"></tr>
                                         <tr mat-row *matRowDef="let row; columns: specDisplayedColumns;"></tr>
+                                        <tr class="mat-row" *matNoDataRow>
+                                            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"
+                                            </td>
+                                        </tr>
                                     </table>
                                     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of metagenomes"
                                            #metagenomesRecordsPaginator
@@ -1134,6 +1146,10 @@
                                     </ng-container>
                                     <tr mat-header-row *matHeaderRowDef="displayedColumnsAssemblies"></tr>
                                     <tr mat-row *matRowDef="let row; columns: displayedColumnsAssemblies;"></tr>
+                                    <tr class="mat-row" *matNoDataRow>
+                                        <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"
+                                        </td>
+                                    </tr>
                                 </table>
                                 <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
                                                aria-label="Select page of metagenomes assemblies"

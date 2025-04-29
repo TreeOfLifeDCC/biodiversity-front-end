@@ -601,11 +601,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         this.annotationData.filter = filterValue.trim().toLowerCase();
     }
 
-    // relatedAnnotationSearch(event: Event) {
-    //     const filterValue = (event.target as HTMLInputElement).value;
-    //     this.dataSourceRelatedAnnotation.filter = filterValue.trim().toLowerCase();
-    // }
-
     getSearchResults(dataType: string) {
 
         if (dataType === 'relatedOrganisms') {
