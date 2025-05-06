@@ -75,7 +75,7 @@ export class ApiService {
     }
 
     getDetailsData(organismName: any, indexName = 'data_portal') {
-        let url = `http://localhost:8000/${indexName}/${organismName}`;
+        let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}/${organismName}`;
         return this.http.get<any>(url);
     }
 
