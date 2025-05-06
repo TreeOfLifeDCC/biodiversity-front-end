@@ -6,16 +6,21 @@ import { MatTableDataSource as MatTableDataSource, MatTable, MatColumnDef, MatHe
 import { MatSort, MatSortHeader } from "@angular/material/sort";
 import {MatPaginator as MatPaginator} from "@angular/material/paginator";
 import { MatCard, MatCardTitle, MatCardActions } from '@angular/material/card';
-import {NgStyle, NgTemplateOutlet} from '@angular/common';
+import {NgClass, NgStyle, NgTemplateOutlet} from '@angular/common';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatInput } from '@angular/material/input';
 import { MatTableExporterModule } from 'mat-table-exporter';
 import { MatAnchor } from '@angular/material/button';
-import { MatChip } from '@angular/material/chips';
+import {MatChip, MatChipSet} from '@angular/material/chips';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
 import {DomSanitizer, SafeHtml, SafeResourceUrl} from "@angular/platform-browser";
+import {MatIcon} from "@angular/material/icon";
+import {MatDivider} from "@angular/material/divider";
+import {MatLine} from "@angular/material/core";
+import {MatList, MatListItem} from "@angular/material/list";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
@@ -26,7 +31,7 @@ import {DomSanitizer, SafeHtml, SafeResourceUrl} from "@angular/platform-browser
     imports: [MatCard, MatCardTitle, MatCardActions, MatTabGroup, MatTab, MatProgressSpinner, MatInput, MatTable,
         MatSort, MatTableExporterModule, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef,
         MatCell, MatAnchor, RouterLink, MatChip, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatNoDataRow,
-        MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent, NgTemplateOutlet]
+        MatPaginator, MatExpansionPanel, MatExpansionPanelHeader, NgStyle, MapClusterComponent, NgTemplateOutlet, NgClass, MatIcon, MatDivider, MatLine, MatList, MatListItem, MatChipSet, FormsModule]
 })
 export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     codes = {
@@ -100,8 +105,53 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     showMetadata = false;
     showData = false;
     showGenomeNote = false;
+    aggregations : any;
+    activeFilters:any = [];
+    searchText = '';
+    searchSymbiontsText = '';
+    searchRelatedmetaGenomesText='';
+    filters = {
+        sex: {},
+        trackingSystem: {},
+        organismPart: {}
+    };
 
+    showAllFilters = {
+        metadataTab: {
+            sex: false,
+            organismPart: false,
+            trackingSystem: false,
+        },
+        symbiontsTab: {
+            sex: false,
+            organismPart: false,
+            trackingSystem: false,
+        },
+        metagenomesTab: {
+            sex: false,
+            organismPart: false,
+            trackingSystem: false,
+        }
+    };
 
+    metadataSexFilters: any = [];
+    metadataTrackingSystemFilters: any  = [];
+    metadataOrganismPartFilters: any= [];
+
+    symbiontsSexFilters: any = [];
+    symbiontsTrackingSystemFilters: any = [];
+    symbiontsOrganismPartFilters: any = [];
+
+    metagenomesSexFilters: any = [];
+    metagenomesTrackingSystemFilters: any = [];
+    metagenomesOrganismPartFilters: any = [];
+
+    filterJson = {
+        sex: '',
+        organismPart: '',
+        trackingSystem: '',
+        search: ''
+    };
     geoLocation: boolean = false;
     orgGeoList: any;
     specGeoList: any;
@@ -112,6 +162,8 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     width = 200;
     loader = '../../assets/200.gif';
     isLoading: boolean = true;
+
+
     @ViewChild("tabgroup", { static: false }) tabgroup: MatTabGroup = <MatTabGroup>{};
     @ViewChild('metadataPaginator') metadataPaginator: MatPaginator | undefined;
     @ViewChild('metadataSort') metadataSort: MatSort | undefined;
@@ -164,8 +216,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         this._apiService.getDetailsData(organismId).subscribe(data => {
                 this.isLoadingResults = false;
                 this.isRateLimitReached = data === null;
+                this.aggregations = data.aggregations;
                 this.organismData = data.results[0]['_source'];
-
+                this.getFilters();
                 // Geo Location maps
                 this.orgGeoList = this.organismData.orgGeoList;
                 this.specGeoList = this.organismData.specGeoList;
@@ -286,27 +339,32 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    applyFilter(event: Event, dataSource: string) {
-        const filterValue = (event.target as HTMLInputElement).value;
-        if (dataSource === 'metadata') {
-            this.metadataData.filter = filterValue.trim().toLowerCase();
-            if (this.metadataData.paginator) {
-                this.metadataData.paginator.firstPage();
+    applyFilter(label: string, filterValue: string, dataSource: MatTableDataSource<any>, tabName: string): void {
+        // reset showAllFilters
+        this.showAllFilters = {
+            metadataTab: { sex: false, organismPart: false, trackingSystem: false },
+            symbiontsTab: { sex: false, organismPart: false, trackingSystem: false },
+            metagenomesTab: { sex: false, organismPart: false, trackingSystem: false }
+        };
+
+        // @ts-ignore
+        const index = this.activeFilters.indexOf(filterValue);
+        this.createFilterJson(label, filterValue, dataSource);
+        if (index !== -1) {
+            this.removeFilter(filterValue, dataSource, tabName);
+        } else {
+            if (label !== 'search') {
+                // @ts-ignore
+                this.activeFilters.push(filterValue);
             }
-        } else if (dataSource === 'annotation') {
-            this.annotationData.filter = filterValue.trim().toLowerCase();
-            if (this.annotationData.paginator) {
-                this.annotationData.paginator.firstPage();
-            }
-        } else if (dataSource === 'assemblies') {
-            this.assembliesData.filter = filterValue.trim().toLowerCase();
-            if (this.assembliesData.paginator) {
-                this.assembliesData.paginator.firstPage();
-            }
-        } else if (dataSource === 'files') {
-            this.filesData.filter = filterValue.trim().toLowerCase();
-            if (this.filesData.paginator) {
-                this.filesData.paginator.firstPage();
+
+            dataSource.filter = JSON.stringify(this.filterJson);
+            if (tabName === 'metadataTab') {
+                this.generateFilters(dataSource.filteredData, 'metadata');
+            } else if (tabName === 'symbiontsTab') {
+                this.generateFilters(dataSource.filteredData, 'symbionts');
+            } else if (tabName === 'metagenomesTab') {
+                this.generateFilters(dataSource.filteredData, 'metagenomes');
             }
         }
     }
@@ -332,7 +390,12 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
         return `https://www.ebi.ac.uk/ena/browser/view/${study_id}`;
     }
 
-
+    generateUrl(link: string){
+        if (!link.startsWith('http')) {
+            return "https://" + link;
+        }
+        return link;
+    }
     getGenomeNoteData(data: any, key: string) {
         if (data && data.length !== 0) {
             return data[0][key];
@@ -376,4 +439,221 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
     closePopup() {
         this.popupImage = null;
     }
+
+    removeFilter(filter: string, dataSource: MatTableDataSource<any>, tabName: string) {
+        if (filter !== undefined) {
+            // @ts-ignore
+            const filterIndex = this.activeFilters.indexOf(filter);
+            if (this.activeFilters.length !== 0) {
+                this.spliceFilterArray(filter);
+                this.activeFilters.splice(filterIndex, 1);
+                dataSource.filter = JSON.stringify(this.filterJson);
+                if (tabName === 'metadataTab') {
+                    this.generateFilters(dataSource.filteredData, 'metadata');
+                } else if (tabName === 'symbiontsTab') {
+                    this.generateFilters(dataSource.filteredData, 'symbionts');
+                }else if (tabName === 'metagenomesTab') {
+                        this.generateFilters(dataSource.filteredData, 'metagenomes');
+                    }
+
+            } else {
+                this.filterJson.sex = '';
+                this.filterJson.organismPart = '';
+                this.filterJson.trackingSystem = '';
+                dataSource.filter = JSON.stringify(this.filterJson);
+                // this.getBiosampleById();
+            }
+        }
+    }
+
+    spliceFilterArray(filter: string) {
+        if (this.filterJson.sex === filter) {
+            this.filterJson.sex = '';
+        } else if (this.filterJson.organismPart === filter) {
+            this.filterJson.organismPart = '';
+        } else if (this.filterJson.trackingSystem === filter) {
+            this.filterJson.trackingSystem = '';
+        }
+    }
+
+    getFilters() {
+        this.metadataSexFilters = this.aggregations.metadata_filters.sex_filter.buckets;
+        this.metadataTrackingSystemFilters = this.aggregations.metadata_filters.tracking_status_filter.buckets;
+        this.metadataOrganismPartFilters = this.aggregations.metadata_filters.organism_part_filter.buckets;
+
+        this.symbiontsSexFilters = this.aggregations.symbionts_filters.sex_filter.buckets;
+        this.symbiontsTrackingSystemFilters = this.aggregations.symbionts_filters.tracking_status_filter.buckets;
+        this.symbiontsOrganismPartFilters = this.aggregations.symbionts_filters.organism_part_filter.buckets;
+
+        this.metagenomesSexFilters = this.aggregations.metagenomes_filters.sex_filter.buckets;
+        this.metagenomesTrackingSystemFilters = this.aggregations.metagenomes_filters.tracking_status_filter.buckets;
+        this.metagenomesOrganismPartFilters = this.aggregations.metagenomes_filters.
+            organism_part_filter.buckets;
+    }
+
+
+    generateFilters(data: any, filterType: string) {
+        const filters = {
+            sex: {},
+            trackingSystem: {},
+            organismPart: {},
+        };
+
+        // @ts-ignore
+        this[`${filterType}SexFilters`] = [];
+        // @ts-ignore
+        this[`${filterType}TrackingSystemFilters`] = [];
+        // @ts-ignore
+        this[`${filterType}OrganismPartFilters`] = [];
+
+        // generate filter counts
+        for (const item of data) {
+            if (item.sex != null) {
+                // @ts-ignore
+                filters.sex[item.sex] = (filters.sex[item.sex] || 0) + 1;
+            }
+            if (item.trackingSystem != null) {
+                // @ts-ignore
+                filters.trackingSystem[item.trackingSystem] = (filters.trackingSystem[item.trackingSystem] || 0) + 1;
+            }
+            if (item.organismPart != null) {
+                // @ts-ignore
+                filters.organismPart[item.organismPart] = (filters.organismPart[item.organismPart] || 0) + 1;
+            }
+        }
+
+        const createFilterArray = (filterObj: { [s: string]: unknown; } | ArrayLike<unknown>) =>
+            Object.entries(filterObj).map(([key, doc_count]) => ({key, doc_count}));
+
+        // @ts-ignore
+        this[`${filterType}SexFilters`] = createFilterArray(filters.sex);
+        // @ts-ignore
+        this[`${filterType}TrackingSystemFilters`] = createFilterArray(filters.trackingSystem);
+        // @ts-ignore
+        this[`${filterType}OrganismPartFilters`] = createFilterArray(filters.organismPart);
+    }
+
+
+
+    createFilterJson(key:any, value:any, dataSource:any) {
+        if (key === 'sex') {
+            this.filterJson.sex = value;
+        } else if (key === 'organismPart') {
+            this.filterJson.organismPart = value;
+        } else if (key === 'trackingSystem') {
+            this.filterJson.trackingSystem = value;
+        } else if (key === 'search') {
+            this.filterJson.search = value.toLowerCase();
+        }
+
+        dataSource.filterPredicate = (data:any, filter:any): boolean => {
+            const filterObj: {
+                sex: string,
+                organismPart: string,
+                trackingSystem: string,
+                search: string
+            } = JSON.parse(filter);
+
+            const sex = !filterObj.sex || data.sex === filterObj.sex;
+            const organismPart = !filterObj.organismPart || data.organismPart === filterObj.organismPart;
+            const trackingSystem = !filterObj.trackingSystem || data.trackingSystem === filterObj.trackingSystem;
+
+            // apply text search on fields
+            const searchText = filterObj.search?.toLowerCase() || '';
+            const searchMatch = !searchText ||
+                data.sex?.toLowerCase().includes(searchText) ||
+                data.organismPart?.toLowerCase().includes(searchText) ||
+                data.trackingSystem?.toLowerCase().includes(searchText) ||
+                data.accession?.toLowerCase().includes(searchText) ||
+                data.commonName?.toLowerCase().includes(searchText);
+
+            return sex && organismPart && trackingSystem && searchMatch;
+        };
+    }
+
+
+    toggleFilter(key1: string, key2: string): void {
+        // @ts-ignore
+        this.showAllFilters[key1][key2] = !this.showAllFilters[key1][key2];
+    }
+
+    // @ts-ignore
+    checkFilterIsActive(filter: string) {
+        // @ts-ignore
+        if (this.activeFilters.indexOf(filter) !== -1) {
+            return 'background-color: cornflowerblue; color: white;';
+            ;
+        }
+    }
+
+    filesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.filesData.filter = filterValue.trim().toLowerCase();
+    }
+
+    assembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.assembliesData.filter = filterValue.trim().toLowerCase();
+    }
+
+    annotationSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.annotationData.filter = filterValue.trim().toLowerCase();
+    }
+
+    getSearchResults(dataType: string) {
+
+        if (dataType === 'relatedOrganisms') {
+            this.applyFilter('search', this.searchText, this.metadataData, 'metadataTab');
+        }
+
+        if (dataType === 'relatedSymbionts') {
+            this.applyFilter('search', this.searchSymbiontsText, this.dataSourceSymbiontsRecords, 'symbiontsTab');
+        }
+        if (dataType === 'relatedMetaGenomes') {
+            this.applyFilter('search', this.searchRelatedmetaGenomesText, this.dataSourceMetagenomesRecords, 'metagenomesTab');
+        }
+
+    }
+
+    resetDataset(tabName: string){
+        this.activeFilters = [];
+        this.searchText = '';
+        this.searchSymbiontsText = '';
+        this.searchRelatedmetaGenomesText = '';
+        this.filterJson = {
+            sex: '',
+            organismPart: '',
+            trackingSystem: '',
+            search: ''
+        };
+        if (tabName === 'metadataTab' || tabName== 'Metadata') {
+            this.metadataData.filterPredicate = (data: any, filter: any) => true;
+            this.metadataData.filter = '';
+            this.generateFilters(this.metadataData.filteredData, 'metadata' );
+        } else if (tabName === 'symbiontsTab' || tabName== 'Symbionts') {
+            this.dataSourceSymbiontsRecords.filterPredicate = (data: any, filter:any) => true;
+            this.dataSourceSymbiontsRecords.filter = '';
+            this.generateFilters(this.dataSourceSymbiontsRecords.filteredData, 'symbionts');
+        } else if (tabName === 'metagenomesTab' || tabName== 'Metagenomes') {
+            this.dataSourceMetagenomesRecords.filterPredicate = (data: any, filter:any) => true;
+            this.dataSourceMetagenomesRecords.filter = '';
+            this.generateFilters(this.dataSourceMetagenomesRecords.filteredData, 'metagenomes');
+        }
+    }
+
+    tabClick({$event}: { $event: any }) {
+        this.resetDataset($event.tab.textLabel);
+    }
+
+    symbiontsAssembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSourceSymbiontsAssemblies.filter = filterValue.trim().toLowerCase();
+    }
+
+    metagenomesAssembliesSearch(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSourceMetagenomesAssemblies.filter = filterValue.trim().toLowerCase();
+    }
+
 }

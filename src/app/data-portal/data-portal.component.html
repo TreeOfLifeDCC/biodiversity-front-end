@@ -18,8 +18,7 @@
                                                [style]="checkStyle('BioSamples - Submitted')"
                                                (click)="onFilterClick('biosamples','BioSamples - Submitted')"
                                                class="mat-list-item-class">
-                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">BioSamples - Submitted
-                                        ({{ getStatusCount(aggregations?.biosamples.buckets) }})</h4>
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">BioSamples - Submitted ({{getStatusCount(aggregations?.biosamples.buckets)}})</h4>
                                 </mat-list-item>
                             }
                             <mat-divider></mat-divider>
@@ -28,8 +27,8 @@
                                            [style]="checkStyle('Raw Data - Submitted')"
                                            (click)="onFilterClick('raw_data','Raw Data - Submitted')"
                                            class="mat-list-item-class">
-                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Raw Data - Submitted (
-                                    {{ getStatusCount(aggregations?.raw_data.buckets) }})</h4>
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Raw Data - Submitted ({{getStatusCount(
+                                    aggregations?.raw_data.buckets)}})</h4>
                             </mat-list-item>
                         }
                             <mat-divider></mat-divider>@if (getStatusCount(aggregations?.assemblies_status.buckets)) {
@@ -37,8 +36,7 @@
                                            [style]="checkStyle('Assemblies - Submitted')"
                                            (click)="onFilterClick('assemblies','Assemblies - Submitted')"
                                            class="mat-list-item-class">
-                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Assemblies - Submitted
-                                    ({{ getStatusCount(aggregations?.assemblies_status.buckets) }})</h4>
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Assemblies - Submitted ({{getStatusCount(aggregations?.assemblies_status.buckets)}})</h4>
                             </mat-list-item>
                         }
                             <mat-divider></mat-divider>@if (getStatusCount(aggregations?.annotation_complete.buckets)) {
@@ -46,8 +44,7 @@
                                            [style]="checkStyle('Annotation Complete - Done')"
                                            (click)="onFilterClick('annotation_complete','Annotation Complete - Done')"
                                            class="mat-list-item-class">
-                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Annotation Complete - Done
-                                    ({{ getStatusCount(aggregations?.annotation_complete.buckets) }})</h4>
+                                <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Annotation Complete - Done ({{getStatusCount(aggregations?.annotation_complete.buckets)}})</h4>
                             </mat-list-item>
                         }
                             @if (aggregations?.genome_notes != undefined && aggregations?.genome_notes.doc_count) {
@@ -57,7 +54,7 @@
                                                (click)="onFilterClick('genome_notes','Genome Notes - Submitted')"
                                                class="mat-list-item-class">
                                     <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Genome Notes - Submitted
-                                        ({{ aggregations?.genome_notes.genome_count.doc_count }})</h4>
+                                        ({{aggregations?.genome_notes.genome_count.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -74,7 +71,7 @@
                                                [style]="checkStyle(filter.label + '-' + filter.key)"
                                                (click)="onFilterClick(filter.label, filter.key)" style="cursor: pointer;"
                                                class="mat-list-item-class">
-                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ( {{filter.doc_count}})</h4>
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key}} ({{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -91,7 +88,7 @@
                                                [style]="checkStyle(filter.label + '-' + filter.key)"
                                                (click)="onFilterClick(filter.label, filter.key)"
                                                class="mat-list-item-class">
-                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{ filter.key }} ( {{ filter.doc_count }})</h4>
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">{{filter.key }} ({{filter.doc_count}})</h4>
                                 </mat-list-item>
                             }
                         </mat-list>
@@ -156,9 +153,7 @@
                                                    class="mat-list-item-class" [style]="checkStyle(phylogeny_name.key)"
                                                    (click)="onFilterClick('phylogeny',phylogeny_name.key, true)">
                                         <h4 matLine class="ellipsis"
-                                            style="white-space: normal; margin: 0;">{{ phylogeny_name.key }}
-                                            ({{ phylogeny_name.doc_count }}
-                                            )</h4>
+                                            style="white-space: normal; margin: 0;">{{phylogeny_name.key}} ({{phylogeny_name.doc_count}})</h4>
                                     </mat-list-item>
                                 </mat-list>
                             }
@@ -179,7 +174,7 @@
                     </mat-card-title>
                     <mat-card-actions>
 
-                        @for (filter of experimentTypeFilters; track filter; let i = $index) {
+                        @for (filter of aggregations?.experiment.library_construction_protocol.buckets; track filter; let i = $index) {
                             <mat-list role="list">
                                 @if (filter.key !== '' && i < this.filterGroups.experimentTypes.itemLimit) {
                                     <mat-divider></mat-divider>
@@ -187,7 +182,7 @@
                                                    [style]="checkStyle(filter.label + '_' + filter.key)"
                                                    (click)="onFilterClick('experimentType',filter.label + '_' + filter.key, false)"
                                                    class="mat-list-item-class">
-                                        <h4 matLine class="ellipsis" style="cursor: pointer; margin: 0;">{{ filter.key }} ( {{filter?.distinct_docs?.parent_doc_count?.value}})</h4>
+                                        <h4 matLine class="ellipsis" style="cursor: pointer; margin: 0;">{{filter.key}} ({{filter?.distinct_docs?.parent_doc_count?.value}})</h4>
                                     </mat-list-item>
                                 }
                             </mat-list>
@@ -234,7 +229,8 @@
             <br>
             <div class="vf-form__item | vf-search__item">
                 <input type="search" id="searchValue" matInput style="
-width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue" class="vf-search__input | vf-form__input"
+                width: 99%;" placeholder="e.g. Salmo trutta" name="searchValue"
+                       class="vf-search__input | vf-form__input"
                        [(ngModel)]='this.searchValue'
                        (ngModelChange)="this.searchUpdate.next($event)">
 
