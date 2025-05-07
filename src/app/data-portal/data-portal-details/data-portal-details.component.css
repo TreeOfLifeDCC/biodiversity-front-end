@@ -244,6 +244,10 @@ element.style {
     }
 }
 
+mat-card {
+    border: 2px solid whitesmoke !important; /* Use !important as a last resort */
+}
+
 .mat-list-item-class {
     cursor: pointer;
     display: flex;
@@ -251,24 +255,25 @@ element.style {
     min-height: 50px;
 }
 
-.mat-mdc-card-title {
-    font-size: 24px;
-    font-weight: 500;
-}
+/*.mat-mdc-card-title {*/
+/*    font-size: 24px;*/
+/*    font-weight: 500;*/
+/*}*/
 
-.mat-mdc-card-title {
-    display: block;
-    margin-bottom: 8px;
-}
-.mat-mdc-card-header .mat-mdc-card-title {
-    font-size: 20px
-}
+/*.mat-mdc-card-title {*/
+/*    display: block;*/
+/*    margin-bottom: 8px;*/
+/*}*/
+/*.mat-mdc-card-header .mat-mdc-card-title {*/
+/*    font-size: 20px*/
+/*}*/
 
 .mdc-list-item__content {
     align-self: auto !important; /* Forces the override */
     white-space: normal;
 
 }
+
 
 .mdc-list {
     align-items: stretch;

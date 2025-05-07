@@ -28,6 +28,7 @@
             <br>
             <mat-tab-group dynamicHeight #tabgroup (selectedTabChange)="tabClick({$event : $event});">
                 <mat-tab label="Metadata" class="tab-width">
+                    <div>
                     <hr>
                     <div class="embl-grid">
                         <div class="vf-u-grid__col--span-2--sm" >
@@ -35,8 +36,8 @@
                             <legend class="vf-form__legend hide-for-small-only">Filter by:
                             </legend>
                             @if(metadataSexFilters && metadataSexFilters.length > 0){
-                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                    <mat-card-title class="mat-mdc-card-title">Sex
+                                <mat-card fxFlex class="mat-elevation-z8" >
+                                    <mat-card-title >Sex
                                         @if(metadataSexFilters.length > 3){
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab', 'sex')"
@@ -69,8 +70,8 @@
                             }
                             <br>
                             @if(metadataOrganismPartFilters && metadataOrganismPartFilters.length > 0 ){
-                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                    <mat-card-title class="mat-mdc-card-title">Organism Part
+                                <mat-card fxFlex class="mat-elevation-z8"  >
+                                    <mat-card-title >Organism Part
                                         @if(metadataOrganismPartFilters.length > 3){
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab','organismPart')"
@@ -106,8 +107,8 @@
 
                             @if(metadataTrackingSystemFilters && metadataTrackingSystemFilters.length > 0){
 
-                                <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                    <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                <mat-card fxFlex class="mat-elevation-z8"  >
+                                    <mat-card-title >Tracking Status
                                         @if(metadataTrackingSystemFilters.length > 3){
                                             <mat-icon
                                                     (click)="toggleFilter('metadataTab','trackingSystem')"
@@ -249,7 +250,7 @@
                         <tr mat-header-row *matHeaderRowDef="metadataDisplayedColumns"></tr>
                         <tr mat-row *matRowDef="let row; columns: metadataDisplayedColumns;"></tr>
                         <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No data matching the filter "{{ input.value }}"</td>
+                            <td class="mat-cell" colspan="4" >No data matching the filter "{{ input.value }}"</td>
                         </tr>
                     </table>
 
@@ -259,8 +260,11 @@
              </div>
 
                     </div>
+                        <hr>
+                    </div>
                 </mat-tab>
                 @if (annotationDataLength !== 0 || assembliesDataLength !== 0 || filesDataLength !== 0) {
+
                     <mat-tab label="Data"
                              style=" white-space: nowrap; cursor: pointer;">
                         <hr>
@@ -653,8 +657,8 @@
                                         </legend>
 
                                         @if(symbiontsSexFilters && symbiontsSexFilters.length > 0){
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                                <mat-card-title class="mat-mdc-card-title">Sex
+                                            <mat-card fxFlex class="mat-elevation-z8"  >
+                                                <mat-card-title >Sex
                                                     @if(symbiontsSexFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab', 'sex')"
@@ -687,8 +691,8 @@
                                         }
                                         <br>
                                         @if(symbiontsOrganismPartFilters && symbiontsOrganismPartFilters.length > 0 ){
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                                <mat-card-title class="mat-mdc-card-title">Organism Part
+                                            <mat-card fxFlex class="mat-elevation-z8" >
+                                                <mat-card-title >Organism Part
                                                     @if(symbiontsOrganismPartFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab','organismPart')"
@@ -724,8 +728,8 @@
                                         <br>
                                         @if(symbiontsTrackingSystemFilters && symbiontsTrackingSystemFilters.length){
 
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                                <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                            <mat-card fxFlex class="mat-elevation-z8"  >
+                                                <mat-card-title>Tracking Status
                                                     @if(symbiontsTrackingSystemFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('symbiontsTab','trackingSystem')"
@@ -911,8 +915,8 @@
                                         <legend class="vf-form__legend hide-for-small-only">Filter by:
                                         </legend>
                                         @if(metagenomesSexFilters && metagenomesSexFilters.length > 0){
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                            <mat-card-title class="mat-mdc-card-title">Sex
+                                            <mat-card fxFlex class="mat-elevation-z8" >
+                                            <mat-card-title >Sex
                                                 @if(metagenomesSexFilters.length > 3){
                                                     <mat-icon
                                                             (click)="toggleFilter('metagenomeTab', 'sex')"
@@ -945,8 +949,8 @@
                                         }
                                         <br>
                                         @if(metagenomesOrganismPartFilters && metagenomesOrganismPartFilters.length > 0 ){
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                                <mat-card-title class="mat-mdc-card-title">Organism Part
+                                            <mat-card fxFlex class="mat-elevation-z8" >
+                                                <mat-card-title >Organism Part
                                                     @if(metagenomesOrganismPartFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('metagenomeTab','organismPart')"
@@ -981,8 +985,8 @@
                                         <br>
                                         @if(metagenomesTrackingSystemFilters && metagenomesTrackingSystemFilters.length){
 
-                                            <mat-card fxFlex class="mat-elevation-z8" layout-margin >
-                                                <mat-card-title class="mat-mdc-card-title">Tracking Status
+                                            <mat-card fxFlex class="mat-elevation-z8" >
+                                                <mat-card-title >Tracking Status
                                                     @if(metagenomesTrackingSystemFilters.length > 3){
                                                         <mat-icon
                                                                 (click)="toggleFilter('metagenomesTab','trackingSystem')"
