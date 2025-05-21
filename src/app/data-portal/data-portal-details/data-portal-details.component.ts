@@ -250,7 +250,7 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
                 this.filesData = new MatTableDataSource(data.results[0]['_source']['experiment']);
                 this.filesDataLength = data.results[0]['_source']['experiment']  ? data.results[0]['_source']['experiment'].length :0 ;
-                if (data.results[0]['_source']['goat_info'] !== undefined){
+                if (data.results[0]['_source']['goat_info'] !== null && data.results[0]['_source']['goat_info'] !== undefined){
                     this.goatData = new MatTableDataSource(data.results[0]['_source']['goat_info']['attributes'] )
                     this.goatDataLength = data.results[0]['_source']['goat_info']['attributes'] ? data.results[0]['_source']['goat_info']['attributes'].length : 0 ;
                     this.goatDataLink = data.results[0]['_source']['goat_info']['url'];
