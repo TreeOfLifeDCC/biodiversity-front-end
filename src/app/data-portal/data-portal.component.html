@@ -57,6 +57,16 @@
                                         ({{aggregations?.genome_notes.genome_count.doc_count}})</h4>
                                 </mat-list-item>
                             }
+                            @if (aggregations?.images_available != undefined && aggregations?.images_available.buckets) {
+                                <mat-divider></mat-divider>
+                                <mat-list-item role="listbox"
+                                               [style]="checkStyle('Images - available')"
+                                               (click)="onFilterClick('images_available','Images - available')"
+                                               class="mat-list-item-class">
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Images - available
+                                        ({{getImagesAvailableTrueCount(aggregations?.images_available.buckets)}})</h4>
+                                </mat-list-item>
+                            }
                         </mat-list>
                     </mat-card-actions>
                 </mat-card>
