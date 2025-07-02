@@ -60,10 +60,10 @@
                             @if (aggregations?.images_available != undefined && aggregations?.images_available.buckets) {
                                 <mat-divider></mat-divider>
                                 <mat-list-item role="listbox"
-                                               [style]="checkStyle('Images - available')"
-                                               (click)="onFilterClick('images_available','Images - available')"
+                                               [style]="checkStyle('Images - Available')"
+                                               (click)="onFilterClick('images_available','Images - Available')"
                                                class="mat-list-item-class">
-                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Images - available
+                                    <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">Images - Available
                                         ({{getImagesAvailableTrueCount(aggregations?.images_available.buckets)}})</h4>
                                 </mat-list-item>
                             }
