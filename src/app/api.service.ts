@@ -19,7 +19,7 @@ export class ApiService {
         const projectNames = ['DToL', 'ASG', 'ERGA',
             'Anopheles Reference Genomes Project (Data and assemblies)', 'DNA Zoo'];
         const offset = pageIndex * pageSize;
-       let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
+        let url = `https://www.ebi.ac.uk/biodiversity/api/${indexName}?limit=${pageSize}&offset=${offset}`;
         if (searchValue) {
             url += `&search=${searchValue}`;
         }
@@ -46,6 +46,8 @@ export class ApiService {
                         filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
                         if (filterItem === 'assemblies') {
                             filterItem = 'assemblies_status:Done';
+                        } else if (filterItem === 'images') {
+                            filterItem = 'images_available:true';
                         } else
                             filterItem = `${filterItem}:Done`;
                     }
@@ -101,6 +103,8 @@ export class ApiService {
                     filterItem = filterValue[i].split(' - ')[0].toLowerCase().split(' ').join('_');
                     if (filterItem === 'assemblies') {
                         filterItem = 'assemblies_status:Done';
+                    } else if (filterItem === 'images') {
+                        filterItem = 'images_available:true';
                     } else
                         filterItem = `${filterItem}:Done`;
                 }
