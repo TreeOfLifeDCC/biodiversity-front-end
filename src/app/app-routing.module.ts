@@ -13,6 +13,8 @@ import {ProjectsComponent} from "./projects/projects.component";
 import {GisComponent} from "./gis/gis.component";
 import  {BulkDownloadsComponent} from "./bulk-downloads/bulk-downloads.component";
 import {PublicationsComponent} from "./publications/publications.component";
+import {PhylogenyComponent} from "./phylogeny/phylogeny.component";
+import {DashboardsComponent} from "./dashboards/dashboards.component";
 
 const routes: Routes = [
 
@@ -33,9 +35,9 @@ const routes: Routes = [
     { path: 'about', component: AboutComponent },
     { path: 'bulk-downloads' , component: BulkDownloadsComponent},
     { path: 'publications' , component: PublicationsComponent},
-    {
-        path: 'gis', component: GisComponent
-    }
+    { path: 'gis', component: GisComponent},
+    { path: 'phylogeny', component: PhylogenyComponent },
+    { path: 'dashboards', component: DashboardsComponent},
 ];
 
 @NgModule({
