@@ -220,24 +220,9 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
                 this.organismData = data.results[0]['_source'];
                 this.getFilters();
                 // Geo Location maps
-                if (this.organismData.orgGeoList !== undefined && this.organismData.orgGeoList.length !== 0){
-                    // tslint:disable-next-line:only-arrow-functions
-                    this.orgGeoList = this.organismData.orgGeoList.filter((item: { lat: null; lng: null; }) => {
-                        return item.lat != null || item.lng != null;
-                    });
+                this.orgGeoList = this.organismData.orgGeoList;
+                this.specGeoList = this.organismData.specGeoList;
 
-                }else {
-                    this.orgGeoList = [];
-                }
-
-                if (this.organismData.specGeoList !== undefined && this.organismData.specGeoList.length !== 0){
-                    // tslint:disable-next-line:only-arrow-functions
-                    this.specGeoList = this.organismData.specGeoList.filter(function(item: { lat: null; lng: null; }) {
-                        return item.lat != null || item.lng != null;
-                    });
-                }else {
-                    this.specGeoList = [];
-                }
                 if (this.orgGeoList && this.orgGeoList.length > 0) {
                     this.geoLocation = true;
                 }
