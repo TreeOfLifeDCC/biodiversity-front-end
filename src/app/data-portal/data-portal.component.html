@@ -110,7 +110,7 @@
                     <mat-card-title>Projects
                         @if (aggregations?.project_name.buckets?.length > filterGroups.projects.defaultItemLimit) {
                             <mat-icon (click)="toggleCollapse('projects')"
-                                      style="cursor: pointer; margin-left: auto; margin-right: 50px;">
+                                      style="cursor: pointer; margin-left: auto; margin-top: -20px;margin-right: 50px;">
                                 {{ filterGroups.projects.isCollapsed ? 'add' : 'remove' }}
                             </mat-icon>
                         }
@@ -119,7 +119,7 @@
 
                     <mat-card-actions>
                         <mat-list role="listbox">
-
+                            <mat-divider></mat-divider>
                             @for (project of aggregations?.project_name.buckets; track project; let i = $index) {
                                 @if (i < this.filterGroups.projects.itemLimit) {
                                     <mat-divider></mat-divider>
@@ -127,15 +127,16 @@
                                             [style]="checkStyle(project.key)"
                                             (click)="onFilterClick('project_name',convertProjectName(project.key))"
                                             class="mat-list-item-class">
-                                        <mat-divider></mat-divider>
                                         <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">
-                                            {{ convertProjectNameKey(project.key) }} ({{ project.doc_count }})
+                                            {{ displayActiveFilterName(project.key) }} ({{ project.doc_count }})
                                         </h4>
                                     </mat-list-item>
                                 }
                             }
                         </mat-list>
                     </mat-card-actions>
+
+
                 </mat-card>
 
                 <br>

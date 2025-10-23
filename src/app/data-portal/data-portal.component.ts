@@ -631,7 +631,7 @@ export class DataPortalComponent implements OnInit, AfterViewInit {
                 return 'cursor: pointer;width: 290px;';
             }
             if (filterValue.length > 50) {
-                return 'cursor: pointer;height: 60px;';
+                return 'cursor: pointer;height: 80px;';
             } else {
                 return 'cursor: pointer;'
             }
