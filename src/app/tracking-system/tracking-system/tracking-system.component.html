@@ -96,13 +96,10 @@ margin-top: 165px;">Filter by:
 
                 <mat-card fxFlex class="mat-elevation-z8">
                     <mat-card-title>Projects
-                        @if (((aggregations?.project_name.buckets?.length > filterSize) && isCollapsed)) {
-                            <i class="material-icons float-right" class="mat-list-item-class"
-                               (click)="toggleCollapse()">add</i>
-                        }
-                        @if ((!isCollapsed)) {
-                            <i class="material-icons float-right" class="mat-list-item-class"
-                               (click)="toggleCollapse()">remove</i>
+                        @if (((aggregations?.project_name.buckets?.length > filterSize))) {
+                            <mat-icon
+                                      style="cursor: pointer;margin-left: auto;margin-top: -36px;margin-right: 138px;"
+                               (click)="toggleCollapse()">{{ isCollapsed ? 'add' : 'remove' }} </mat-icon>
                         }
 
                     </mat-card-title>
@@ -111,11 +108,11 @@ margin-top: 165px;">Filter by:
                             <mat-divider></mat-divider>
                             @for (project of aggregations?.project_name.buckets; track project; let i = $index) {
                                 @if (i < itemLimit) {
+                                    <mat-divider></mat-divider>
                                     <mat-list-item
                                             [style]="checkStyle(project.key)"
                                             (click)="onFilterClick('project_name',convertProjectName(project.key))"
                                             class="mat-list-item-class">
-                                        <mat-divider></mat-divider>
                                         <h4 matLine class="ellipsis" style="white-space: normal; margin: 0;">
                                             {{ displayActiveFilterName(project.key) }} ({{ project.doc_count }})
                                         </h4>
