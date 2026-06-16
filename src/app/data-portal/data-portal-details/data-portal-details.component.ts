@@ -15,7 +15,7 @@ import { MatAnchor } from '@angular/material/button';
 import {MatChip, MatChipSet} from '@angular/material/chips';
 import { MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import {MapClusterComponent} from "../../map-cluster/map-cluster.component";
-import {DomSanitizer, SafeHtml, SafeResourceUrl} from "@angular/platform-browser";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {MatIcon} from "@angular/material/icon";
 import {MatDivider} from "@angular/material/divider";
 import {MatLine} from "@angular/material/core";
@@ -441,10 +441,6 @@ export class DataPortalDetailsComponent implements OnInit, AfterViewInit {
 
     hideLoader(){
         this.isLoading = false;
-    }
-
-    sanitizeHTML(content: string): SafeHtml {
-        return this.sanitizer.bypassSecurityTrustHtml(content);
     }
 
     openPopup(imageUrl: string) {
