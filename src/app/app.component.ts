@@ -15,9 +15,6 @@ export class AppComponent {
     isDashboardsMenuOpen = false;
     isDashboardsMenuDismissed = false;
 
-    constructor(private ccService: NgcCookieConsentService) {
-    }
-
     openDashboardsMenu(): void {
         this.isDashboardsMenuDismissed = false;
         this.isDashboardsMenuOpen = true;
