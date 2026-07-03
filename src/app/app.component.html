@@ -22,9 +22,44 @@
             <li class="vf-navigation__item">
                 <a  routerLink="/gis"  class="vf-navigation__link">Sampling Map</a>
             </li>
-            <li class="vf-navigation__item">
-                <a  routerLink="/dashboards"  class="vf-navigation__link">Dashboards</a>
+
+            <li class="vf-navigation__item dashboards-dropdown"
+                [class.dashboards-dropdown--open]="isDashboardsMenuOpen"
+                [class.dashboards-dropdown--dismissed]="isDashboardsMenuDismissed"
+                (mouseenter)="openDashboardsMenu()"
+                (mouseleave)="resetDashboardsMenu()">
+                <button type="button"
+                        class="vf-navigation__link dashboards-dropdown__button"
+                        aria-haspopup="true"
+                        [attr.aria-expanded]="isDashboardsMenuOpen"
+                        (click)="showDashboardsMenu($event)"
+                        (focus)="openDashboardsMenu()"
+                        (keydown.escape)="closeDashboardsMenu()">
+                    Dashboards
+                </button>
+
+                <ul class="dashboards-submenu" aria-label="Dashboard menu">
+                    <li class="dashboards-submenu__item">
+                        <a routerLink="/dashboards" [queryParams]="{ owner: 'koosum' }"
+                           class="dashboards-submenu__link"
+                           (click)="selectDashboardMenu($event)">Koosum's Dashboards</a>
+                        <div class="dashboards-popup">
+                            <strong>Koosum's Dashboards</strong>
+                            <p>Data-portal metrics for the GBDP project.</p>
+                        </div>
+                    </li>
+                    <li class="dashboards-submenu__item">
+                        <a routerLink="/dashboards" [queryParams]="{ owner: 'juan' }"
+                           class="dashboards-submenu__link"
+                           (click)="selectDashboardMenu($event)">Juan's Dashboards</a>
+                        <div class="dashboards-popup">
+                            <strong>Juan's Dashboards</strong>
+                            <p>Juan, you need to update this section.</p>
+                        </div>
+                    </li>
+                </ul>
             </li>
+
             <li class="vf-navigation__item">
                 <a routerLink="/publications"  class="vf-navigation__link">Publications</a>
             </li>

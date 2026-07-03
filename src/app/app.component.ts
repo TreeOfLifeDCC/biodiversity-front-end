@@ -12,6 +12,34 @@ import { FooterComponent } from './footer/footer.component';
 })
 export class AppComponent {
     title = 'biodiversity-portal-fe';
+    isDashboardsMenuOpen = false;
+    isDashboardsMenuDismissed = false;
+
     constructor(private ccService: NgcCookieConsentService) {
+    }
+
+    openDashboardsMenu(): void {
+        this.isDashboardsMenuDismissed = false;
+        this.isDashboardsMenuOpen = true;
+    }
+
+    closeDashboardsMenu(): void {
+        this.isDashboardsMenuOpen = false;
+        this.isDashboardsMenuDismissed = true;
+    }
+
+    resetDashboardsMenu(): void {
+        this.isDashboardsMenuOpen = false;
+        this.isDashboardsMenuDismissed = false;
+    }
+
+    selectDashboardMenu(event: MouseEvent): void {
+        this.closeDashboardsMenu();
+        (event.currentTarget as HTMLElement).blur();
+    }
+
+    showDashboardsMenu(event: MouseEvent): void {
+        event.stopPropagation();
+        this.isDashboardsMenuOpen = true;
     }
 }
