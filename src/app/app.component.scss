@@ -37,6 +37,9 @@
     border: 1px solid #d9d9d9;
     border-radius: 4px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
     transform: translateY(-4px);
     transition: opacity 120ms ease, transform 120ms ease;
     visibility: hidden;
@@ -63,45 +66,64 @@
     position: relative;
 }
 
-.dashboards-submenu__link {
+.dashboards-dropdown .dashboards-submenu__link {
     display: block;
-    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    padding: 8px 14px;
     white-space: nowrap;
     text-decoration: none;
-    color: #333;
+    color: #54585a;
 }
 
-.dashboards-submenu__item:hover > .dashboards-submenu__link {
+.dashboards-dropdown .dashboards-submenu__link:visited {
+    color: #54585a;
+}
+
+.dashboards-submenu__item:hover > .dashboards-submenu__link,
+.dashboards-dropdown .dashboards-submenu__link:focus {
     background: #f2f6fb;
+    color: #000000;
+    text-decoration: underline;
 }
 
 .dashboards-popup {
+    box-sizing: border-box;
     opacity: 0;
     pointer-events: none;
     position: absolute;
     top: 0;
-    left: 100%;
-    margin-left: 8px;
-    width: 260px;
-    padding: 12px 14px;
-    background: #1f2d3d;
-    color: #ffffff;
+    right: calc(100% + 8px);
+    width: 232px;
+    padding: 10px 12px 11px;
+    background: #f5f8fc;
+    border: 2px solid #7fa6cf;
+    color: #1a1c1a;
     border-radius: 4px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-    font-size: 0.85rem;
-    line-height: 1.4;
+    box-shadow: 0 8px 22px rgba(59, 111, 182, 0.18);
+    font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
     transition: opacity 120ms ease, transform 120ms ease;
-    transform: translateX(-4px);
+    transform: translateX(4px);
     visibility: hidden;
+    overflow-wrap: break-word;
     z-index: 2001;
 }
 
-.dashboards-popup strong {
+.dashboards-dropdown .dashboards-popup strong {
     display: block;
-    margin-bottom: 4px;
+    color: #1a1c1a;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 5px;
 }
 
-.dashboards-popup p {
+.dashboards-dropdown .dashboards-popup p {
+    color: #373a36;
+    font-size: 0.72rem;
+    font-weight: 400;
+    line-height: 1.4;
     margin: 0;
 }
 
@@ -120,6 +142,7 @@
 @media (max-width: 900px) {
     .dashboards-popup {
         left: 0;
+        right: auto;
         margin-left: 0;
         margin-top: 6px;
         top: 100%;
