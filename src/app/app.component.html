@@ -22,9 +22,44 @@
             <li class="vf-navigation__item">
                 <a  routerLink="/gis"  class="vf-navigation__link">Sampling Map</a>
             </li>
-            <li class="vf-navigation__item">
-                <a  routerLink="/dashboards"  class="vf-navigation__link">Dashboards</a>
+
+            <li class="vf-navigation__item dashboards-dropdown"
+                [class.dashboards-dropdown--open]="isDashboardsMenuOpen"
+                [class.dashboards-dropdown--dismissed]="isDashboardsMenuDismissed"
+                (mouseenter)="openDashboardsMenu()"
+                (mouseleave)="resetDashboardsMenu()">
+                <button type="button"
+                        class="vf-navigation__link dashboards-dropdown__button"
+                        aria-haspopup="true"
+                        [attr.aria-expanded]="isDashboardsMenuOpen"
+                        (click)="showDashboardsMenu($event)"
+                        (focus)="openDashboardsMenu()"
+                        (keydown.escape)="closeDashboardsMenu()">
+                    Dashboards
+                </button>
+
+                <ul class="dashboards-submenu" aria-label="Dashboard menu">
+                    <li class="dashboards-submenu__item">
+                        <a routerLink="/dashboards" [queryParams]="{ owner: 'koosum' }"
+                           class="dashboards-submenu__link"
+                           (click)="selectDashboardMenu($event)">Sample and Sequencing Metadata</a>
+                        <div class="dashboards-popup">
+                            <strong>Sample and Sequencing Metadata</strong>
+                            <p>Explore the metadata of the samples and find out about the sequencing that was performed to produce the reference genomes.</p>
+                        </div>
+                    </li>
+                    <li class="dashboards-submenu__item">
+                        <a routerLink="/dashboards" [queryParams]="{ owner: 'juan' }"
+                           class="dashboards-submenu__link"
+                           (click)="selectDashboardMenu($event)">Genome Annotations in an Ecological Context</a>
+                        <div class="dashboards-popup">
+                            <strong>Genome Annotations in an Ecological Context</strong>
+                            <p>Explore gene biotypes and gene annotation metrics across environments and taxa.</p>
+                        </div>
+                    </li>
+                </ul>
             </li>
+
             <li class="vf-navigation__item">
                 <a routerLink="/publications"  class="vf-navigation__link">Publications</a>
             </li>
