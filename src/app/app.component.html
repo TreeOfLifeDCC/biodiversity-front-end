@@ -40,21 +40,21 @@
 
                 <ul class="dashboards-submenu" aria-label="Dashboard menu">
                     <li class="dashboards-submenu__item">
-                        <a routerLink="/dashboards" [queryParams]="{ owner: 'koosum' }"
-                           class="dashboards-submenu__link"
-                           (click)="selectDashboardMenu($event)">Sample and Sequencing Metadata</a>
-                        <div class="dashboards-popup">
-                            <strong>Sample and Sequencing Metadata</strong>
-                            <p>Explore the metadata of the samples and find out about the sequencing that was performed to produce the reference genomes.</p>
-                        </div>
-                    </li>
-                    <li class="dashboards-submenu__item">
-                        <a routerLink="/dashboards" [queryParams]="{ owner: 'juan' }"
+                        <a routerLink="/dashboards" [queryParams]="{ type: 'genomes_annotations_dashboard' }"
                            class="dashboards-submenu__link"
                            (click)="selectDashboardMenu($event)">Genome Annotations in an Ecological Context</a>
                         <div class="dashboards-popup">
                             <strong>Genome Annotations in an Ecological Context</strong>
                             <p>Explore gene biotypes and gene annotation metrics across environments and taxa.</p>
+                        </div>
+                    </li>
+                    <li class="dashboards-submenu__item">
+                        <a routerLink="/dashboards" [queryParams]="{ type: 'metadata_dashboard' }"
+                           class="dashboards-submenu__link"
+                           (click)="selectDashboardMenu($event)">Sample and Sequencing Metadata</a>
+                        <div class="dashboards-popup">
+                            <strong>Sample and Sequencing Metadata</strong>
+                            <p>Explore the metadata of the samples and find out about the sequencing that was performed to produce the reference genomes.</p>
                         </div>
                     </li>
                 </ul>
